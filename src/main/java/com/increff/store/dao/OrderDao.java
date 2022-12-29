@@ -14,8 +14,8 @@ public class OrderDao {
 
     private static String SELECT_ALL = "select p from OrderPojo p";
     private static String SELECT_ID = "select p from OrderPojo p where id=:id";
-    private static String SELECT_DATE_FILTER = "select p from OrderPojo p where place_date_time>=:id1 and " +
-            "place_date_time<=:id2";
+    private static String SELECT_DATE_FILTER = "select p from OrderPojo p where placeDateTime>=:id1 and " +
+            "placeDateTime<=:id2";
 
     @PersistenceContext
     private EntityManager em;
