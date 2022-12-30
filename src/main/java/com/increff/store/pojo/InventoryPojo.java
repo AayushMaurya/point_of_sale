@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class InventoryPojo {
+public class InventoryPojo extends DateAudit{
     @Id
     private int id;
     @Column(nullable = false)

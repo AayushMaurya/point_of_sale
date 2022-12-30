@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class OrderItemPojo {
+public class OrderItemPojo extends DateAudit{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
