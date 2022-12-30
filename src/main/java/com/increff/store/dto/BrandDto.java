@@ -18,7 +18,7 @@ public class BrandDto {
     @Autowired
     BrandService service;
 
-    public void add(BrandForm form)
+    public void add(BrandForm form) throws ApiException
     {
         BrandPojo p = convert(form);
         normalize(p);

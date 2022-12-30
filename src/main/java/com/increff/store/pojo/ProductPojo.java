@@ -12,8 +12,12 @@ public class ProductPojo {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false)
     private String barcode;
+    @Column(nullable = false)
     private int brandCategory;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private double mrp;
 }

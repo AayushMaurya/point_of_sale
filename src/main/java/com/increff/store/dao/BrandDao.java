@@ -16,7 +16,7 @@ public class BrandDao{
     private static String DELETE_ID = "delete from BrandPojo p where id=:id";
     private static String SELECT_ID = "select p from BrandPojo p where id=:id";
     private static String SELECT_ALL = "select p from BrandPojo p";
-    private static String SELECT_BRAND_CATEGORY = "select p from BrandPojo where brand=:id1 and category=:id2";
+    private static String SELECT_BRAND_CATEGORY = "select p from BrandPojo p where brand=:id1 and category=:id2";
 
     @PersistenceContext
     private EntityManager em;
@@ -42,6 +42,20 @@ public class BrandDao{
         catch(Exception e)
         {
             throw new ApiException("No brand found with given id");
+        }
+    }
+
+    public BrandPojo select_brand_category(String brand, String category){
+        try
+        {
+            TypedQuery<BrandPojo> query = getQuery(SELECT_BRAND_CATEGORY);
+            query.setParameter("id1", brand);
+            query.setParameter("id2", category);
+            return query.getSingleResult();
+        }
+        catch(Exception e)
+        {
+            return null;
         }
     }
 

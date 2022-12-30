@@ -15,8 +15,11 @@ public class BrandService {
     private BrandDao dao;
 
     @Transactional
-    public void add(BrandPojo p)
+    public void add(BrandPojo p) throws ApiException
     {
+        BrandPojo brandPojo = get_brand_category(p.getBrand(), p.getCategory());
+        if(brandPojo!=null)
+            throw new ApiException("The given brand category combination already exists");
         dao.insert(p);
     }
 
@@ -36,6 +39,11 @@ public class BrandService {
     public List<BrandPojo> get_all()
     {
         return dao.selectAll();
+    }
+
+    public BrandPojo get_brand_category(String brand, String category)
+    {
+        return dao.select_brand_category(brand, category);
     }
 
 
