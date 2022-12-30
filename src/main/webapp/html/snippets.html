@@ -1,0 +1,23 @@
+<head th:fragment="name_head">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="baseUrl" th:attr="content=${baseUrl}">
+
+    <script src="https://kit.fontawesome.com/c30beb553f.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/static/app.css}">
+
+</head>
+
+<footer class="footer  mt-1" th:fragment="name_footer">
+    Copyright Increff 2019
+    &nbsp;
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script th:src="@{/static/app.js}"/></script>
+    <script th:src="@{/static/papaparse.min.js}"/></script>
+
+</footer>

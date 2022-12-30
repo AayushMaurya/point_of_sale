@@ -13,6 +13,7 @@ D:\java projects\point-of-sale\src\main\java\com\increff\store\dao\InventoryDao.
 D:\java projects\point-of-sale\src\main\java\com\increff\store\pojo\DateAudit.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\dto\ProductDto.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\spring\WebInitializer.java
+D:\java projects\point-of-sale\src\main\java\com\increff\store\controller\AppUiController.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\OrderStatusData.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\pojo\BrandPojo.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\service\ProductService.java
@@ -28,6 +29,7 @@ D:\java projects\point-of-sale\src\main\java\com\increff\store\controller\Revenu
 D:\java projects\point-of-sale\src\main\java\com\increff\store\spring\ControllerConfig.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\BrandForm.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\spring\SpringConfig.java
+D:\java projects\point-of-sale\src\main\java\com\increff\store\model\InfoData.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\dao\OrderItemDao.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\ProductData.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\OrderItemData.java
@@ -35,6 +37,7 @@ D:\java projects\point-of-sale\src\main\java\com\increff\store\model\InventoryFo
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\BrandData.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\OrderItemForm.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\dto\InventoryDto.java
+D:\java projects\point-of-sale\src\main\java\com\increff\store\controller\AbstractUiController.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\util\StringPrefixedSequenceGenerator.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\spring\DbConfig.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\controller\BrandApiController.java

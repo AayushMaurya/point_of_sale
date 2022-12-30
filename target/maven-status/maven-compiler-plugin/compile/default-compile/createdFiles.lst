@@ -11,6 +11,7 @@ com\increff\store\dto\ProductDto.class
 com\increff\store\dto\BrandDto.class
 com\increff\store\spring\SpringConfig.class
 com\increff\store\pojo\ProductPojo.class
+com\increff\store\controller\AbstractUiController.class
 com\increff\store\dao\BrandDao.class
 com\increff\store\model\OrderStatusData.class
 com\increff\store\util\GetCurrentDataTime.class
@@ -23,6 +24,8 @@ com\increff\store\util\StringPrefixedSequenceGenerator.class
 com\increff\store\controller\OrderApiController.class
 com\increff\store\dao\InventoryDao.class
 com\increff\store\pojo\OrderItemPojo.class
+com\increff\store\model\InfoData.class
+com\increff\store\controller\AppUiController.class
 com\increff\store\model\DateFilterForm.class
 com\increff\store\model\InventoryForm.class
 com\increff\store\model\OrderForm.class
