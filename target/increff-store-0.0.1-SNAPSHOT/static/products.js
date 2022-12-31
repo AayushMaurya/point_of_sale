@@ -35,4 +35,4 @@ function displayProductList(data){
 	}
 }
 
-$(document).ready(getProductListList);
+$(document).ready(getProductList);
