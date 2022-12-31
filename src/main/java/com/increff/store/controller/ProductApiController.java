@@ -36,8 +36,18 @@ public class ProductApiController {
 
     @ApiOperation(value = "Adds a product")
     @RequestMapping(path = "/api/product", method = RequestMethod.POST)
-    public void add(@RequestBody ProductForm form) throws ApiException {
-        dto.add(form);
+    public String add(@RequestBody ProductForm form) throws ApiException {
+        String message;
+        try {
+            dto.add(form);
+            message = "Successfully added new product";
+        }
+        catch (Exception e)
+        {
+            message = e.getMessage();
+        }
+
+        return message;
     }
 
     @ApiOperation(value = "Delete product by id")
@@ -48,7 +58,7 @@ public class ProductApiController {
 
     @ApiOperation(value = "Update product")
     @RequestMapping(path = "api/product/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable int id, @RequestBody ProductForm form) {
+    public void update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException {
         dto.update(id, form);
     }
 

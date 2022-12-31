@@ -25,9 +25,19 @@ public class InventoryApiController {
 
     @ApiOperation(value = "Adds an inventory")
     @RequestMapping(path = "/api/inventory", method = RequestMethod.POST)
-    public void add(@RequestBody InventoryForm form) throws ApiException
+    public String add(@RequestBody InventoryForm form) throws ApiException
     {
-        dto.add(form);
+        String message;
+        try {
+            dto.add(form);
+            message = "Inventory successfully updated";
+        }
+        catch(Exception e)
+        {
+            message = e.getMessage();
+        }
+
+        return message;
     }
 
     @ApiOperation(value = "Removes an inventory")

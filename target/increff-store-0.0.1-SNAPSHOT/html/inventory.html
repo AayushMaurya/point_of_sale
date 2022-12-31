@@ -3,7 +3,32 @@
 <head th:replace="snippets.html :: name_head"></head>
 <body>
 <h3>this page will show brand details </h3>
-<table class="table table-striped table-dark" id="inventory-table">
+
+<div>
+  <form class="form-inline" id="inventory-form">
+    <div class="form-group">
+      <label for="inputProductBarcode" class="col-sm-2 col-form-label">Barcode</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="barcode" id="inputProductBarcode" placeholder="barcode">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="Quantity">
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary" id="add-inventory">Add</button>
+    &nbsp;
+    <!--      <button type="button" class="btn btn-primary" id="refresh-data">Refresh</button>-->
+    &nbsp;
+    <!--      <button type="button" class="btn btn-primary" id="upload-data">Upload</button>-->
+  </form>
+  <h5 id="status" style="color:red;"></h5>
+</div>
+
+<div>
+  <table class="table table-striped table-dark" id="inventory-table">
   <thead>
   <tr>
     <th scope="col">Product Id</th>
@@ -14,7 +39,8 @@
   <tbody>
 
   </tbody>
-</table>
+  </table>
+</div>
 </body>
 
 <footer th:replace="snippets.html :: name_footer"></footer>

@@ -21,20 +21,13 @@ public class ProductService {
     @Autowired
     private InventoryService inventoryService;
 
-    @Transactional(rollbackOn = ApiException.class)
+    @Transactional
     public void add(ProductPojo p) throws ApiException
     {
-        int id = p.getBrandCategory();
-
         ProductPojo productPojo = get_barcode(p.getBarcode());
         if(productPojo!=null)
             throw new ApiException("Product with given barcode already exists");
 
-        BrandPojo brandPojo = brandService.get(id);
-//        is line ki zaroorat hi nhi padegi kyu ki null return karne se pehale wo exception throw kar dega.
-        if(brandPojo==null) {
-            throw new ApiException("the given brand does not exist");
-        }
         dao.insert(p);
     }
 

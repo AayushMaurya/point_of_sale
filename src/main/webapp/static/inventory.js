@@ -32,4 +32,41 @@ function displayInventoryList(data){
 	}
 }
 
+function addInventory(event)
+{
+console.log("anything");
+    var $form = $("#inventory-form");
+    var json = toJson($form);
+    console.log(json);
+    var url = getStoreUrl();
+
+    $.ajax({
+    	   url: url,
+    	   type: 'POST',
+    	   data: json,
+    	   headers: {
+           	'Content-Type': 'application/json'
+           },
+    	   success: function(response) {
+    	   		getInventoryList();
+    	   		setStatus(response);
+    	   },
+//    	   error: handleAjaxError
+//            error: setStatus(response)
+
+    	});
+    	return false;
+}
+
+function setStatus(message)
+{
+    document.getElementById("status").innerHTML = "status: " + message;
+}
+
+function init()
+{
+    $('#add-inventory').click(addInventory);
+}
+
 $(document).ready(getInventoryList);
+$(document).ready(init);

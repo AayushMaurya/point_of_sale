@@ -48,8 +48,11 @@ public class InventoryDto {
     private InventoryPojo convert(InventoryForm form) throws ApiException
     {
         InventoryPojo p = new InventoryPojo();
+//        converting the barcode into product id
         String barcode = form.getBarcode();
         ProductPojo productPojo = productService.get_barcode(barcode);
+        if(productPojo == null)
+            throw new ApiException("no product found with given bar code");
         p.setQuantity(form.getQuantity());
         p.setId(productPojo.getId());
         return p;

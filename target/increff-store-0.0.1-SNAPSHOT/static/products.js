@@ -21,8 +21,8 @@ function displayProductList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button >delete</button>'
-		buttonHtml += ' <button >edit</button>'
+//		var buttonHtml = '<button >delete</button>'
+		var buttonHtml = ' <button >edit</button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
@@ -35,4 +35,39 @@ function displayProductList(data){
 	}
 }
 
+function addBrand(event)
+{
+    var $form = $("#product-form");
+    var json = toJson($form);
+    var url = getStoreUrl();
+
+    $.ajax({
+    	   url: url,
+    	   type: 'POST',
+    	   data: json,
+    	   headers: {
+           	'Content-Type': 'application/json'
+           },
+    	   success: function(response) {
+    	   		getProductList();
+    	   		setStatus(response);
+    	   },
+//    	   error: handleAjaxError
+//            error: setStatus(response)
+
+    	});
+    	return false;
+}
+
+function setStatus(message)
+{
+    document.getElementById("status").innerHTML = "status: " + message;
+}
+
+function init()
+{
+    $('#add-product').click(addBrand);
+}
+
 $(document).ready(getProductList);
+$(document).ready(init);

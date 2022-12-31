@@ -58,11 +58,6 @@ public class ProductDao {
         }
     }
 
-    public void update()
-    {
-
-    }
-
     TypedQuery<ProductPojo> getQuery(String jpql) {
         return em.createQuery(jpql, ProductPojo.class);
     }
