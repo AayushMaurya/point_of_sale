@@ -21,9 +21,19 @@ public class OrderApiController {
 
     @ApiOperation(value = "Adds order to order table")
     @RequestMapping(path = "/api/order", method = RequestMethod.POST)
-    public void add(@RequestBody OrderForm form) throws ApiException
+    public String add(@RequestBody OrderForm form) throws ApiException
     {
-        dto.insert(form);
+        String message;
+        try {
+            dto.insert(form);
+            message = "Order Created Successfully";
+        }
+        catch (Exception e)
+        {
+            message = e.getMessage();
+        }
+
+        return message;
     }
 
     @ApiOperation(value = "Select all order")
