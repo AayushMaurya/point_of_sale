@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="snippets.html :: name_head"></head>
+<head th:replace="snippets.html :: name_head">
+</head>
 <body>
 <h3>this page will show brand details </h3>
 <div>
@@ -8,13 +9,13 @@
         <div class="form-group">
             <label for="inputOrderId" class="col-sm-2 col-form-label">OrderId</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="orderId" id="inputOrderId" placeholder="OrderId">
+                <input type="text" class="form-control" name="orderId" id="inputOrderId" readonly>
             </div>
         </div>
         <div class="form-group">
             <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="barCode" id="inputBarcode" placeholder="barode">
+                <input type="text" class="form-control" name="barCode" id="inputBarcode" placeholder="barcode">
             </div>
         </div>
         <div class="form-group">

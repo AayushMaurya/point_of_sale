@@ -30,4 +30,19 @@ public abstract class AbstractUiController {
         return mav;
     }
 
+    protected ModelAndView mav (String page, int id)
+    {
+        // Get current user
+//        UserPrincipal principal = SecurityUtil.getPrincipal();
+
+//        info.setEmail(principal == null ? "" : principal.getEmail());
+
+        ModelAndView mav = new ModelAndView(page);
+
+        mav.addObject("info", info);
+        mav.addObject("orderId", id);
+        mav.addObject("baseUrl", baseUrl);
+        return mav;
+    }
+
 }

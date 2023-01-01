@@ -1,3 +1,5 @@
+var orderId;
+
 function getStoreUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/order-item";
@@ -5,6 +7,7 @@ function getStoreUrl(){
 
 function getOrderItemList(){
 	var url = getStoreUrl();
+	url += "/" + orderId;
 	$.ajax({
 	   url: url,
 	   type: 'GET',
@@ -65,8 +68,10 @@ function setStatus(message)
 
 function init()
 {
+    orderId = $("meta[name=orderId]").attr("content");
+    document.getElementById("inputOrderId").value = orderId;
     $('#add-Item').click(addOrderItem);
 }
 
-$(document).ready(getOrderItemList);
 $(document).ready(init);
+$(document).ready(getOrderItemList);
