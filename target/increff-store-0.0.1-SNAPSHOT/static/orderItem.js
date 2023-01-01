@@ -5,6 +5,11 @@ function getStoreUrl(){
  	return baseUrl + "/api/order-item";
  }
 
+function getOrderUrl(){
+var baseUrl = $("meta[name=baseUrl]").attr("content")
+ 	return baseUrl + "/api/order/place";
+}
+
 function getOrderItemList(){
 	var url = getStoreUrl();
 	url += "/" + orderId;
@@ -25,6 +30,7 @@ function displayOrderItemList(data){
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml = ' <button >edit</button>'
+		buttonHtml += ' <button onclick="deleteOrderItem(' + e.id + ')">edit</button>''
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.orderId + '</td>'
@@ -61,6 +67,40 @@ function addOrderItem(event)
     	return false;
 }
 
+function placeOrder()
+{
+    var url = getOrderUrl() + "/" + orderId;
+    $.ajax({
+        	   url: url,
+        	   type: 'PUT',
+        	   headers: {
+               	'Content-Type': 'application/json'
+               },
+        	   success: function(response) {
+        	   console.log("order placed");
+        	   		setStatus(response);
+        	   },
+    //    	   error: handleAjaxError
+    //            error: setStatus(response)
+
+        	});
+}
+
+function deleteOrderItem(int id)
+{
+    var url = getStoreUrl() + "/" + id;
+
+    	$.ajax({
+    	   url: url,
+    	   type: 'DELETE',
+    	   success: function(data) {
+    	   		getOrderItemList();
+    	   		setStatus(response);
+    	   },
+//    	   error: handleAjaxError
+    	});
+}
+
 function setStatus(message)
 {
     document.getElementById("status").innerHTML = "status: " + message;
@@ -71,6 +111,7 @@ function init()
     orderId = $("meta[name=orderId]").attr("content");
     document.getElementById("inputOrderId").value = orderId;
     $('#add-Item').click(addOrderItem);
+    $('#place-order').click(placeOrder);
 }
 
 $(document).ready(init);

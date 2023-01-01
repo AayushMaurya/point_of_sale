@@ -53,8 +53,17 @@ public class OrderItemApiController {
 
     @ApiOperation(value = "Delete an item by item id")
     @RequestMapping(path = "api/order-item/{id}", method = RequestMethod.DELETE)
-    public void delete_ItemId(@PathVariable int id) throws ApiException
+    public String delete_ItemId(@PathVariable int id) throws ApiException
     {
-        service.delete_ItemId(id);
+        String message;
+        try {
+            service.delete_ItemId(id);
+            message = "Successfully delete the order item: " + id;
+        }
+        catch (Exception e) {
+            message = e.getMessage();
+        }
+
+        return message;
     }
 }
