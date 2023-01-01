@@ -64,4 +64,13 @@ public class OrderItemDto {
         return d;
     }
 
+    public List<OrderItemData> get_all() {
+        List<OrderItemPojo> list1 = service.get_all();
+        List<OrderItemData> list2 = new ArrayList<>();
+
+        for(OrderItemPojo p :list1)
+            list2.add(convert(p));
+
+        return list2;
+    }
 }
