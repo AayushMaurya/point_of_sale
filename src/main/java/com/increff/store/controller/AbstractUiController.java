@@ -1,6 +1,8 @@
 package com.increff.store.controller;
 
+import com.increff.store.dto.OrderDto;
 import com.increff.store.model.InfoData;
+import com.increff.store.model.OrderData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,7 +32,7 @@ public abstract class AbstractUiController {
         return mav;
     }
 
-    protected ModelAndView mav (String page, int id)
+    protected ModelAndView mav (String page, OrderData orderData)
     {
         // Get current user
 //        UserPrincipal principal = SecurityUtil.getPrincipal();
@@ -40,7 +42,9 @@ public abstract class AbstractUiController {
         ModelAndView mav = new ModelAndView(page);
 
         mav.addObject("info", info);
-        mav.addObject("orderId", id);
+        mav.addObject("orderId", orderData.getId());
+        mav.addObject("customerName", orderData.getCustomerName());
+        mav.addObject("status", orderData.getStatus());
         mav.addObject("baseUrl", baseUrl);
         return mav;
     }

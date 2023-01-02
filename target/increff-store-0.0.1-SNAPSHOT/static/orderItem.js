@@ -1,5 +1,6 @@
 var orderId;
 var status;
+var customerName;
 function getStoreUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/order-item";
@@ -29,21 +30,24 @@ function displayOrderItemList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = ' <button class="btn btn-primary" onclick="deleteOrderItem(' + e.id + ')">delete</button>'
+		var buttonHtml = ' <button class="btn-disable btn btn-primary" onclick="deleteOrderItem('
+		+ e.id + ')">delete</button>'
 		+ ' <button onclick="fillFields(' + e.id + ','
 		+ e.orderId + ',' + e.productId + ',' + e.quantity + ','
-		+ e.sellingPrice + ')" class="btn btn-primary" data-toggle="modal"'
-		+ 'data-target="#exampleModalCenter">edit</button>'
+		+ e.sellingPrice + ')" class="btn-disable btn btn-primary" data-toggle="modal"'
+		+ 'data-target="#exampleModalCenter">edit</button>';
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.orderId + '</td>'
-		+ '<td>'  + e.productId + '</td>'
-		+ '<td>'  + e.quantity + '</td>'
-		+ '<td>'  + e.sellingPrice + '</td>'
+		+ '<td>' + e.productId + '</td>'
+		+ '<td>' + e.quantity + '</td>'
+		+ '<td>' + e.sellingPrice + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
 	}
+	if(status)
+	    disableEditing();
 }
 
 function addOrderItem(event)
@@ -64,7 +68,7 @@ function addOrderItem(event)
     	   		setStatus(response);
     	   },
 //    	   error: handleAjaxError
-//            error: setStatus(response)
+            error: setStatus(response)
 
     	});
     	return false;
@@ -84,7 +88,7 @@ function placeOrder()
         	   		setStatus(response);
         	   },
     //    	   error: handleAjaxError
-    //            error: setStatus(response)
+                error: setStatus(response)
 
         	});
 }
@@ -103,7 +107,7 @@ function deleteOrderItem(id)
 //    	   error: handleAjaxError
     	});
 }
-
+//
 function fillFields(id, orderId, productId, quantity, sellingPrice)
 {
 console.log("filling the update order item form fields");
@@ -113,7 +117,7 @@ console.log("filling the update order item form fields");
     document.getElementById("inputUpdateQuantity").value = quantity;
     document.getElementById("inputUpdateMrp").value = sellingPrice;
 }
-
+//
 function updateOrderItem()
 {
     console.log("this function will update order item");
@@ -134,10 +138,21 @@ function updateOrderItem()
         	   		setStatus(response);
         	   },
     //    	   error: handleAjaxError
-    //            error: setStatus(response)
+                error: setStatus(response)
 
         	});
         	return false;
+}
+
+function disableEditing()
+{
+    const buttons = document.getElementsByClassName("btn-disable");
+    console.log(buttons.length);
+    for (let i = 0; i < buttons.length; i++)
+      buttons[i].disabled=true;
+
+    document.getElementById('add-Item').disabled = true;
+    document.getElementById('place-order').disabled = true;
 }
 
 function setStatus(message)
@@ -148,7 +163,14 @@ function setStatus(message)
 function init()
 {
     orderId = $("meta[name=orderId]").attr("content");
+    customerName = $("meta[name=customerName]").attr("content");
     document.getElementById("inputOrderId").value = orderId;
+    document.getElementById("customer-name").innerHTML = customerName;
+
+    if($("meta[name=status]").attr("content") === "Placed")
+        status = true;
+    else
+        status = false;
 
     $('#add-Item').click(addOrderItem);
     $('#place-order').click(placeOrder);
