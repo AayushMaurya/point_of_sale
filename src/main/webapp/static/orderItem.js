@@ -46,7 +46,7 @@ function displayOrderItemList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
-	if(status)
+	if(status === "Placed")
 	    disableEditing();
 }
 
@@ -68,7 +68,7 @@ function addOrderItem(event)
     	   		setStatus(response);
     	   },
 //    	   error: handleAjaxError
-            error: setStatus(response)
+//            error: setStatus(response)
 
     	});
     	return false;
@@ -85,10 +85,11 @@ function placeOrder()
                },
         	   success: function(response) {
         	   console.log("order placed");
-        	   		setStatus(response);
+        	   		alert(response);
+        	   		location.reload();
         	   },
     //    	   error: handleAjaxError
-                error: setStatus(response)
+//                error: setStatus(response)
 
         	});
 }
@@ -172,10 +173,7 @@ function init()
     document.getElementById("inputOrderId").value = orderId;
     document.getElementById("customer-name").innerHTML = customerName;
 
-    if($("meta[name=status]").attr("content") === "Placed")
-        status = true;
-    else
-        status = false;
+    status = $("meta[name=status]").attr("content");
 
     $('#add-Item').click(addOrderItem);
     $('#place-order').click(placeOrder);

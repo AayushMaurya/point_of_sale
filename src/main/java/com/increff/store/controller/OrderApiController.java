@@ -59,9 +59,18 @@ public class OrderApiController {
 
     @ApiOperation(value = "Mark order placed")
     @RequestMapping(path = "api/order/place/{id}", method = RequestMethod.PUT)
-    public void mark_order_placed(@PathVariable int id) throws ApiException
+    public String mark_order_placed(@PathVariable int id) throws ApiException
     {
-        dto.place_order(id);
+        String message;
+        try{
+            dto.place_order(id);
+            message = "Order Placed Successfully";
+        }
+        catch (Exception e)
+        {
+            message = e.getMessage();
+        }
+        return message;
     }
 
 }

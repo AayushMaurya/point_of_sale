@@ -42,8 +42,13 @@ public class RevenueDto {
             ProductRevenueData productRevenueData = convert(p);
             map.put(p.getId(), productRevenueData);
         }
-
-        List<OrderPojo> orderPojoList = orderService.select_date_filter(form.getStart(), form.getEnd());
+//      converting the date into required formate
+        String startDate = form.getStart().replace('-', '/');
+        String endDate = form.getEnd().replace('-', '/');
+        startDate += " 00:00:00";
+        endDate += " 24:00:00";
+        
+        List<OrderPojo> orderPojoList = orderService.select_date_filter(startDate, endDate);
 
 //        setting the quantity and total
 //          -> order wise filtered on basis of date

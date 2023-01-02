@@ -21,7 +21,7 @@ function displayOrderList(data){
  	$tbody.empty();
  	for(var i in data){
  		var e = data[i];
- 		var buttonHtml = ' <button >open</button>'
+ 		var buttonHtml = ' <button class="btn btn-secondary" onClick="redirect('+ e.id +')">open</button>'
  		var row = '<tr>'
  		+ '<td>' + e.id + '</td>'
  		+ '<td>' + e.customerName + '</td>'
@@ -33,6 +33,11 @@ function displayOrderList(data){
          $tbody.append(row);
  	}
  }
+
+function redirect(id)
+{
+    window.location.href = $("meta[name=baseUrl]").attr("content") + "/ui/order-item/" + id;
+}
 
  function createOrder(event)
  {

@@ -47,4 +47,9 @@ public class AppUiController extends AbstractUiController{
         OrderData d = orderDto.get_id(id);
         return mav("orderItem.html", d);
     }
+
+    @RequestMapping(value = "/ui/revenue", method = RequestMethod.GET)
+    public ModelAndView orderItemById() throws ApiException {
+        return mav("revenue.html");
+    }
 }

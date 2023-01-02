@@ -46,7 +46,7 @@ function displayOrderItemList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
-	if(status)
+	if(status === "Placed")
 	    disableEditing();
 }
 
@@ -68,7 +68,7 @@ function addOrderItem(event)
     	   		setStatus(response);
     	   },
 //    	   error: handleAjaxError
-            error: setStatus(response)
+//            error: setStatus(response)
 
     	});
     	return false;
@@ -85,10 +85,11 @@ function placeOrder()
                },
         	   success: function(response) {
         	   console.log("order placed");
-        	   		setStatus(response);
+        	   		alert(response);
+        	   		location.reload();
         	   },
     //    	   error: handleAjaxError
-                error: setStatus(response)
+//                error: setStatus(response)
 
         	});
 }
@@ -147,17 +148,22 @@ function updateOrderItem()
 function disableEditing()
 {
     const buttons = document.getElementsByClassName("btn-disable");
-    console.log(buttons.length);
     for (let i = 0; i < buttons.length; i++)
       buttons[i].disabled=true;
 
     document.getElementById('add-Item').disabled = true;
     document.getElementById('place-order').disabled = true;
+    $('#download-invoice').disabled = true;
 }
 
 function setStatus(message)
 {
     document.getElementById("status").innerHTML = "status: " + message;
+}
+
+function downloadInvoice()
+{
+    console.log("This will start downloading invoice");
 }
 
 function init()
@@ -167,14 +173,12 @@ function init()
     document.getElementById("inputOrderId").value = orderId;
     document.getElementById("customer-name").innerHTML = customerName;
 
-    if($("meta[name=status]").attr("content") === "Placed")
-        status = true;
-    else
-        status = false;
+    status = $("meta[name=status]").attr("content");
 
     $('#add-Item').click(addOrderItem);
     $('#place-order').click(placeOrder);
     $('#update-orderItem').click(updateOrderItem);
+    $('#download-invoice').click(downloadInvoice).disabled = true;
 }
 
 $(document).ready(init);
