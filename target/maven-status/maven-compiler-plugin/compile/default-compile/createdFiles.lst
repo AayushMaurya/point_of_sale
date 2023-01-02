@@ -35,6 +35,7 @@ com\increff\store\spring\DbConfig.class
 com\increff\store\spring\WebInitializer.class
 com\increff\store\dto\OrderItemDto.class
 com\increff\store\dao\OrderItemDao.class
+com\increff\store\model\UpdateOrderItemForm.class
 com\increff\store\dto\InventoryDto.class
 com\increff\store\service\ProductService.class
 com\increff\store\model\ProductData.class

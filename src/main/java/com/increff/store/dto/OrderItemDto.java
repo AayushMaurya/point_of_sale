@@ -2,6 +2,7 @@ package com.increff.store.dto;
 
 import com.increff.store.model.OrderItemData;
 import com.increff.store.model.OrderItemForm;
+import com.increff.store.model.UpdateOrderItemForm;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.ProductPojo;
 import com.increff.store.service.ApiException;
@@ -25,6 +26,17 @@ public class OrderItemDto {
     {
         OrderItemPojo p = convert(form);
         service.add(p);
+    }
+
+    public void update(UpdateOrderItemForm form) throws ApiException
+    {
+        OrderItemPojo newPojo = new OrderItemPojo();
+        newPojo.setId(form.getId());
+        newPojo.setOrderId(form.getOrderId());
+        newPojo.setProductId(form.getProductId());
+        newPojo.setQuantity(form.getQuantity());
+        newPojo.setSellingPrice(form.getMrp());
+        service.update(form.getId(), newPojo);
     }
 
     public List<OrderItemData> get_orderId(int id)

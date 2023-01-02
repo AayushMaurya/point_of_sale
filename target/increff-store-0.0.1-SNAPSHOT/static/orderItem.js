@@ -1,5 +1,5 @@
 var orderId;
-
+var status;
 function getStoreUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/order-item";
@@ -29,8 +29,11 @@ function displayOrderItemList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = ' <button >edit</button>'
-		buttonHtml += ' <button onclick="deleteOrderItem(' + e.id + ')">edit</button>''
+		var buttonHtml = ' <button class="btn btn-primary" onclick="deleteOrderItem(' + e.id + ')">delete</button>'
+		+ ' <button onclick="fillFields(' + e.id + ','
+		+ e.orderId + ',' + e.productId + ',' + e.quantity + ','
+		+ e.sellingPrice + ')" class="btn btn-primary" data-toggle="modal"'
+		+ 'data-target="#exampleModalCenter">edit</button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.orderId + '</td>'
@@ -86,7 +89,7 @@ function placeOrder()
         	});
 }
 
-function deleteOrderItem(int id)
+function deleteOrderItem(id)
 {
     var url = getStoreUrl() + "/" + id;
 
@@ -101,6 +104,42 @@ function deleteOrderItem(int id)
     	});
 }
 
+function fillFields(id, orderId, productId, quantity, sellingPrice)
+{
+console.log("filling the update order item form fields");
+    document.getElementById("inputUpdateOrderItemId").value = id;
+    document.getElementById("inputUpdateOrderId").value = orderId;
+    document.getElementById("inputUpdateProductId").value = productId;
+    document.getElementById("inputUpdateQuantity").value = quantity;
+    document.getElementById("inputUpdateMrp").value = sellingPrice;
+}
+
+function updateOrderItem()
+{
+    console.log("this function will update order item");
+    var $form = $("#editOrderItemForm");
+    var json = toJson($form);
+    var url = getStoreUrl();
+    console.log(json);
+
+    $.ajax({
+        	   url: url,
+        	   type: 'PUT',
+        	   data: json,
+        	   headers: {
+               	'Content-Type': 'application/json'
+               },
+        	   success: function(response) {
+        	   		getOrderItemList();
+        	   		setStatus(response);
+        	   },
+    //    	   error: handleAjaxError
+    //            error: setStatus(response)
+
+        	});
+        	return false;
+}
+
 function setStatus(message)
 {
     document.getElementById("status").innerHTML = "status: " + message;
@@ -110,8 +149,10 @@ function init()
 {
     orderId = $("meta[name=orderId]").attr("content");
     document.getElementById("inputOrderId").value = orderId;
+
     $('#add-Item').click(addOrderItem);
     $('#place-order').click(placeOrder);
+    $('#update-orderItem').click(updateOrderItem);
 }
 
 $(document).ready(init);

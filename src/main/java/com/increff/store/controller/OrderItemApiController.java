@@ -3,6 +3,7 @@ package com.increff.store.controller;
 import com.increff.store.dto.OrderItemDto;
 import com.increff.store.model.OrderItemData;
 import com.increff.store.model.OrderItemForm;
+import com.increff.store.model.UpdateOrderItemForm;
 import com.increff.store.service.ApiException;
 import com.increff.store.service.OrderItemService;
 import io.swagger.annotations.Api;
@@ -64,6 +65,22 @@ public class OrderItemApiController {
             message = e.getMessage();
         }
 
+        return message;
+    }
+
+    @ApiOperation(value = "Update Order Item")
+    @RequestMapping(path = "/api/order-item", method = RequestMethod.PUT)
+    public String update(@RequestBody UpdateOrderItemForm form)
+    {
+        String message;
+        try{
+            dto.update(form);
+            message = "successfully updated";
+        }
+        catch (Exception e)
+        {
+            message = e.getMessage();
+        }
         return message;
     }
 }

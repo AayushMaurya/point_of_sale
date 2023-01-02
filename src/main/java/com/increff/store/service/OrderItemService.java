@@ -48,6 +48,12 @@ public class OrderItemService {
         return dao.get_all();
     }
 
+    @Transactional
+    public OrderItemPojo get_id(int id) throws ApiException
+    {
+        return dao.select_ItemId(id);
+    }
+
     @Transactional(rollbackOn = ApiException.class)
     public void delete_ItemId(int id) throws ApiException
     {
@@ -57,5 +63,28 @@ public class OrderItemService {
         inventoryPojo.setQuantity(orderItemPojo.getQuantity());
         inventoryService.add(inventoryPojo);
         dao.delete_ItemId(id);
+    }
+
+    @Transactional(rollbackOn = ApiException.class)
+    public void update(int id, OrderItemPojo newPojo) throws ApiException
+    {
+        OrderItemPojo p = get_id(id);
+        int oldQuantity = p.getQuantity();
+        int newQuantity = newPojo.getQuantity();
+        InventoryPojo inventoryPojo = new InventoryPojo();
+
+//        removing old quantity from old inventory
+        inventoryPojo.setId(p.getProductId());
+        inventoryPojo.setQuantity(oldQuantity);
+        inventoryService.add(inventoryPojo);
+//        adding new quantity to new inventory
+        inventoryPojo.setId(newPojo.getProductId());
+        inventoryPojo.setQuantity(newQuantity);
+        inventoryService.remove(inventoryPojo);
+
+        p.setQuantity(newPojo.getQuantity());
+        p.setOrderId(newPojo.getOrderId());
+        p.setSellingPrice(newPojo.getSellingPrice());
+        p.setProductId(newPojo.getProductId());
     }
 }
