@@ -8,6 +8,7 @@ D:\java projects\point-of-sale\src\main\java\com\increff\store\model\DateFilterF
 D:\java projects\point-of-sale\src\main\java\com\increff\store\pojo\OrderPojo.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\service\ApiException.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\dto\OrderItemDto.java
+D:\java projects\point-of-sale\src\main\java\com\increff\store\model\BrandRevenueData.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\service\InventoryService.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\dao\InventoryDao.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\pojo\DateAudit.java
@@ -19,6 +20,7 @@ D:\java projects\point-of-sale\src\main\java\com\increff\store\pojo\BrandPojo.ja
 D:\java projects\point-of-sale\src\main\java\com\increff\store\service\ProductService.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\dao\ProductDao.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\ProductRevenueData.java
+D:\java projects\point-of-sale\src\main\java\com\increff\store\model\CategoryRevenueData.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\OrderForm.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\InventoryData.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\dto\BrandDto.java

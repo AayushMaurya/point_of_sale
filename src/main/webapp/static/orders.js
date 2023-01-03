@@ -16,6 +16,27 @@ function getOrderList(){
 	});
 }
 
+function getOrderListByDateFilter()
+{
+console.log("filtered orders");
+    var url = getStoreUrl() + "/date-filter";
+    var $form = $("#date-filter-form");
+    var json = toJson($form);
+    	$.ajax({
+    	   url: url,
+    	   type: 'POST',
+    	   data: json,
+           headers: {
+              'Content-Type': 'application/json'
+           },
+    	   success: function(data) {
+    	   console.log(data);
+    	   		displayOrderList(data);
+    	   },
+    //	   error: handleAjaxError
+    	});
+}
+
 function displayOrderList(data){
  	var $tbody = $('#order-table').find('tbody');
  	$tbody.empty();
@@ -71,6 +92,7 @@ function redirect(id)
  function init()
  {
     $('#create-order').click(createOrder);
+    $('#apply-date-filter').click(getOrderListByDateFilter);
  }
 
  $(document).ready(init);

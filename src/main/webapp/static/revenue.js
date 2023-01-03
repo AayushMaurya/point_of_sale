@@ -3,8 +3,15 @@ function getRevenueUrl(){
  	return baseUrl + "/api/revenue";
  }
 
+function getRevenueList()
+{
+    getProductRevenueList();
+    getBrandRevenueList();
+    getCategoryRevenueList();
+}
+
 function getProductRevenueList(){
-	var url = getRevenueUrl();
+	var url = getRevenueUrl() + "-product";
 	var $form = $("#filter-date-form");
     var json = toJson($form);
 	$.ajax({
@@ -22,9 +29,49 @@ function getProductRevenueList(){
 	});
 }
 
+function getBrandRevenueList()
+{
+    var url = getRevenueUrl() + "-brand";
+    	var $form = $("#filter-date-form");
+        var json = toJson($form);
+    	$.ajax({
+    	   url: url,
+    	   type: 'POST',
+    	   data: json,
+    	   headers: {
+                'Content-Type': 'application/json'
+           },
+    	   success: function(data) {
+    	   console.log(data);
+    	   		displayRevenueBrandList(data);
+    	   },
+    //	   error: handleAjaxError
+    	});
+}
+
+function getCategoryRevenueList()
+{
+    var url = getRevenueUrl() + "-category";
+    	var $form = $("#filter-date-form");
+        var json = toJson($form);
+    	$.ajax({
+    	   url: url,
+    	   type: 'POST',
+    	   data: json,
+    	   headers: {
+                'Content-Type': 'application/json'
+           },
+    	   success: function(data) {
+    	   console.log(data);
+    	   		displayRevenueCategoryList(data);
+    	   },
+    //	   error: handleAjaxError
+    	});
+}
+
 function displayRevenueProductList(data)
 {
-    var $tbody = $('#revenue-list-table').find('tbody');
+    var $tbody = $('#product-revenue-list-table').find('tbody');
     $tbody.empty();
     for(var i in data){
     		var e = data[i];
@@ -40,9 +87,67 @@ function displayRevenueProductList(data)
     	}
 }
 
+function displayRevenueBrandList(data)
+{
+    var $tbody = $('#brand-revenue-list-table').find('tbody');
+        $tbody.empty();
+        for(var i in data){
+        		var e = data[i];
+        		var row = '<tr>'
+        		+ '<td>' + e.brand + '</td>'
+        		+ '<td>'  + e.quantity + '</td>'
+        		+ '<td>'  + e.total + '</td>'
+        		+ '</tr>';
+                $tbody.append(row);
+        	}
+}
+
+function displayRevenueCategoryList(data)
+{
+    var $tbody = $('#category-revenue-list-table').find('tbody');
+        $tbody.empty();
+        for(var i in data){
+        		var e = data[i];
+        		var row = '<tr>'
+        		+ '<td>' + e.category + '</td>'
+        		+ '<td>'  + e.quantity + '</td>'
+        		+ '<td>'  + e.total + '</td>'
+        		+ '</tr>';
+                $tbody.append(row);
+        	}
+}
+
+function showBrandView()
+{
+    document.getElementById("category-div").style.display = "none";
+    document.getElementById("product-div").style.display = "none";
+    document.getElementById("brand-div").style.display = "block";
+}
+
+function showCategoryView()
+{
+    document.getElementById("category-div").style.display = "block";
+    document.getElementById("product-div").style.display = "none";
+    document.getElementById("brand-div").style.display = "none";
+}
+
+function showProductView()
+{
+    document.getElementById("category-div").style.display = "none";
+    document.getElementById("product-div").style.display = "block";
+    document.getElementById("brand-div").style.display = "none";
+}
+
 function init()
 {
-    $('#show-revenue').click(getProductRevenueList);
+    $('#show-revenue').click(getRevenueList);
+    $('#product-view').click(showProductView);
+    $('#brand-view').click(showBrandView);
+    $('#category-view').click(showCategoryView);
+
+    document.getElementById("category-div").style.display = "none";
+    document.getElementById("product-div").style.display = "block";
+    document.getElementById("brand-div").style.display = "none";
 }
 
 $(document).ready(init);

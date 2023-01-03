@@ -45,7 +45,10 @@ public class OrderDto {
     public List<OrderData> get_date_filter(DateFilterForm form) throws ApiException
     {
         List<OrderData> list1 = new ArrayList<OrderData>();
-        List<OrderPojo> list2 = service.select_date_filter(form.getStart(), form.getEnd());
+
+        String startDate = form.getStart().replace('-', '/');
+        String endDate = form.getEnd().replace('-', '/');
+        List<OrderPojo> list2 = service.select_date_filter(startDate, endDate);
 
         for(OrderPojo p: list2)
             list1.add(convert(p));
