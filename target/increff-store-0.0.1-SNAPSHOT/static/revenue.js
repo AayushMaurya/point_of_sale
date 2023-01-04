@@ -1,3 +1,5 @@
+var productRevenueData;
+
 function getRevenueUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/revenue";
@@ -23,6 +25,7 @@ function getProductRevenueList(){
        },
 	   success: function(data) {
 	   console.log(data);
+	   productRevenueData = data;
 	   		displayRevenueProductList(data);
 	   },
 //	   error: handleAjaxError
@@ -93,12 +96,14 @@ function displayRevenueBrandList(data)
         $tbody.empty();
         for(var i in data){
         		var e = data[i];
-        		var row = '<tr>'
+        		var brandName = e.brand;
+        		var row = '<tr onclick=displayBrandRevenue()>'
         		+ '<td>' + e.brand + '</td>'
         		+ '<td>'  + e.quantity + '</td>'
         		+ '<td>'  + e.total + '</td>'
         		+ '</tr>';
                 $tbody.append(row);
+                console.log(e.brand);
         	}
 }
 
@@ -108,7 +113,7 @@ function displayRevenueCategoryList(data)
         $tbody.empty();
         for(var i in data){
         		var e = data[i];
-        		var row = '<tr>'
+        		var row = '<tr onclick = "displayCategory()">'
         		+ '<td>' + e.category + '</td>'
         		+ '<td>'  + e.quantity + '</td>'
         		+ '<td>'  + e.total + '</td>'
@@ -117,19 +122,36 @@ function displayRevenueCategoryList(data)
         	}
 }
 
+function displayBrandRevenue()
+{
+console.log("Hi");
+    console.log("this will display revenue of brand: ");
+}
+
+function displayCategory()
+{
+    console.log("this will display revenue of category: ");
+}
+
 function showBrandView()
 {
-
+    document.getElementById("category-div").style.display = "none";
+    document.getElementById("product-div").style.display = "none";
+    document.getElementById("brand-div").style.display = "block";
 }
 
 function showCategoryView()
 {
-
+    document.getElementById("category-div").style.display = "block";
+    document.getElementById("product-div").style.display = "none";
+    document.getElementById("brand-div").style.display = "none";
 }
 
 function showProductView()
 {
-
+    document.getElementById("category-div").style.display = "none";
+    document.getElementById("product-div").style.display = "block";
+    document.getElementById("brand-div").style.display = "none";
 }
 
 function init()
@@ -139,9 +161,9 @@ function init()
     $('#brand-view').click(showBrandView);
     $('#category-view').click(showCategoryView);
 
-    $('#category-div').style.display = "none";
-    $('#product-div').style.display = "none";
-    $('#brand-div').style.display = "block";
+    document.getElementById("category-div").style.display = "none";
+    document.getElementById("product-div").style.display = "block";
+    document.getElementById("brand-div").style.display = "none";
 }
 
 $(document).ready(init);

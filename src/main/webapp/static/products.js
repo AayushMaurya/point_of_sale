@@ -1,7 +1,21 @@
+var newBrands = {};
+
 function getStoreUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/product";
  }
+
+function getBrandUrl()
+{
+    var baseUrl = $("meta[name=baseUrl]").attr("content")
+     	return baseUrl + "/api/brand";
+}
+
+function getBrandOption() {
+        selectElement = document.querySelector('#inputBrandName');
+        output = selectElement.options[selectElement.selectedIndex].value;
+        return output;
+}
 
 function getProductList(){
 	var url = getStoreUrl();
@@ -59,6 +73,62 @@ function addBrand(event)
     	return false;
 }
 
+function getBrandsList()
+{
+    var url = getBrandUrl();
+    $.ajax({
+    	   url: url,
+    	   type: 'GET',
+    	   success: function(data) {
+    	   		console.log(data);
+    	   		displayBrandsList(data);
+    	   }
+    	});
+   }
+
+
+function displayBrandsList(data)
+{
+    for(var i in data)
+    {
+        var a = data[i].brand;
+        var b = data[i].category;
+        if(!newBrands.hasOwnProperty(a))
+            Object.assign(newBrands, {[a]:[]});
+        newBrands[a].push(b);
+    }
+
+    console.log(newBrands);
+
+    var $elB = $("#inputBrandName");
+
+    $elB.empty();
+
+    $.each(newBrands, function(key,value) {
+          $elB.append($("<option></option>")
+             .attr("value", key).text(key));
+        });
+
+}
+
+function displayCategoryList()
+{
+    var $elC = $("#inputBrandCategory");
+
+    $elC.empty();
+
+    console.log("this is it");
+    var a = getBrandOption();
+
+    console.log(newBrands[a]);
+
+    for(var i=0; i<newBrands[a].length; i++)
+    {
+        $elC.append($("<option></option>")
+            .attr("value", newBrands[a]).text(newBrands[a][i]));
+    }
+}
+
 function setStatus(message)
 {
     document.getElementById("status").innerHTML = "status: " + message;
@@ -67,7 +137,9 @@ function setStatus(message)
 function init()
 {
     $('#add-product').click(addBrand);
+    $('#inputBrandName').change(displayCategoryList);
 }
 
 $(document).ready(getProductList);
+$(document).ready(getBrandsList);
 $(document).ready(init);
