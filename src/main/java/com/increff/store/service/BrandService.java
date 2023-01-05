@@ -51,6 +51,14 @@ public class BrandService {
     public void update(int id, BrandPojo newpojo) throws ApiException
     {
         BrandPojo p = dao.select(id);
+        String brand = newpojo.getBrand();
+
+//        check if given brand category combination already exists.
+        String category = newpojo.getCategory();
+        BrandPojo b = get_brand_category(brand, category);
+        if(b!=null)
+            throw new ApiException("the brand with given brand category already exists");
+
         p.setBrand(newpojo.getBrand());
         p.setCategory(newpojo.getCategory());
     }

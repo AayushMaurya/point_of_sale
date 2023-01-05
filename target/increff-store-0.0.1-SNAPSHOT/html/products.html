@@ -60,7 +60,8 @@
         <tr>
             <th scope="col">Id#</th>
             <th scope="col">Barcode</th>
-            <th scope="col">Brand Id</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Category</th>
             <th scope="col">Name</th>
             <th scope="col">MRP</th>
             <th scope="col">Handel</th>
@@ -71,6 +72,67 @@
         </tbody>
     </table>
 </div>
+
+<!--update form html-->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <div class="form-group">
+                <label for="inputUpdateId" class="col-sm-2 col-form-label">Id</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="id" id="inputUpdateId" readonly>
+                </div>
+            </div>
+
+                <form class="form-inline" id="updateProductForm">
+                    <div class="form-group">
+                        <label for="inputUpdateBarcode" class="col-sm-2 col-form-label">Barcode</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="barcode" id="inputUpdateBarcode">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputUpdateBrand" class="col-sm-2 col-form-label">Brand</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="brandName" id="inputUpdateBrand">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputUpdateCategory" class="col-sm-2 col-form-label">Category</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="brandCategory" id="inputUpdateCategory">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputUpdateName" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="name" id="inputUpdateName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputUpdateMrp" class="col-sm-2 col-form-label">Mrp</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="mrp" id="inputUpdateMrp">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="update-product">Save
+                    changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 
 <footer th:replace="snippets.html :: name_footer"></footer>

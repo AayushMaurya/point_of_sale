@@ -21,7 +21,9 @@ function displayBrandList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = ' <button >edit</button>'
+		var buttonHtml = ' <button class="btn btn-primary" data-toggle="modal"'
+        + 'data-target="#exampleModalCenter" onclick="fillUpdateFields('
+		+ e.id +')" >edit</button>';
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.brand + '</td>'
@@ -56,6 +58,36 @@ function addBrand(event)
     	return false;
 }
 
+function fillUpdateFields(id)
+{
+    document.getElementById("inputUpdateBrandId").value = id;
+}
+
+function updateBrand()
+{
+    var id = document.getElementById("inputUpdateBrandId").value;
+    var $form = $("#updateBrandForm");
+    var json = toJson($form);
+    var url = getStoreUrl() + "/" + id ;
+
+    $.ajax({
+        	   url: url,
+        	   type: 'PUT',
+        	   data: json,
+        	   headers: {
+               	'Content-Type': 'application/json'
+               },
+        	   success: function(response) {
+        	   		getBrandList();
+        	   		setStatus(response);
+        	   },
+    //    	   error: handleAjaxError
+    //            error: setStatus(response)
+
+        	});
+        	return false;
+}
+
 function setStatus(message)
 {
     document.getElementById("status").innerHTML = "status: " + message;
@@ -64,6 +96,7 @@ function setStatus(message)
 function init()
 {
     $('#add-brand').click(addBrand);
+    $('#update-brand').click(updateBrand);
 }
 
 $(document).ready(getBrandList);

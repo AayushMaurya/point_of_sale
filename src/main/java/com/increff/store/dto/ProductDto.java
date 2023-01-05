@@ -29,13 +29,13 @@ public class ProductDto {
         service.add(p);
     }
 
-    public ProductData get(int id)
+    public ProductData get(int id) throws ApiException
     {
         ProductPojo p = service.get(id);
         return  convert(p);
     }
 
-    public List<ProductData> get_all()
+    public List<ProductData> get_all() throws ApiException
     {
         List<ProductPojo> list1 = service.get_all();
         List<ProductData> list2 = new ArrayList<ProductData>();
@@ -71,10 +71,13 @@ public class ProductDto {
         return p;
     }
 
-    private ProductData convert(ProductPojo p)
+    private ProductData convert(ProductPojo p) throws ApiException
     {
         ProductData productData = new ProductData();
         productData.setBrandCategory(p.getBrandCategory());
+        BrandPojo brandPojo = brandService.get(p.getBrandCategory());
+        productData.setBrand(brandPojo.getBrand());
+        productData.setCategory(brandPojo.getCategory());
         productData.setName(p.getName());
         productData.setId(p.getId());
         productData.setBarcode(p.getBarcode());

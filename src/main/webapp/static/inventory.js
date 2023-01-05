@@ -21,8 +21,7 @@ function displayInventoryList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button >delete</button>'
-		buttonHtml += ' <button >edit</button>'
+		var buttonHtml = '<button onclick="fillFields('+ e.id +')">edit</button>';
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.quantity + '</td>'
@@ -30,6 +29,12 @@ function displayInventoryList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
+}
+
+function fillFields(id)
+{
+    console.log("this will fill the fields");
+
 }
 
 function addInventory(event)

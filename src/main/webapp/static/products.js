@@ -36,11 +36,13 @@ function displayProductList(data){
 	for(var i in data){
 		var e = data[i];
 //		var buttonHtml = '<button >delete</button>'
-		var buttonHtml = ' <button >edit</button>'
+		var buttonHtml = ' <button class="btn btn-primary" data-toggle="modal" '
+		+ 'data-target="#exampleModalCenter" onclick="fillFields('+ e.id +')">edit</button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
-		+ '<td>'  + e.brandCategory + '</td>'
+		+ '<td>'  + e.brand + '</td>'
+		+ '<td>'  + e.category + '</td>'
 		+ '<td>'  + e.name + '</td>'
 		+ '<td>'  + e.mrp + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
@@ -125,8 +127,40 @@ function displayCategoryList()
     for(var i=0; i<newBrands[a].length; i++)
     {
         $elC.append($("<option></option>")
-            .attr("value", newBrands[a]).text(newBrands[a][i]));
+            .attr("value", newBrands[a][i]).text(newBrands[a][i]));
     }
+}
+
+function fillFields(id)
+{
+    document.getElementById("inputUpdateId").value = id;
+    document.getElementById("updateProductForm").reset();
+}
+
+function updateProduct()
+{
+    var id = document.getElementById("inputUpdateId").value;
+    var $form = $("#updateProductForm");
+    var json = toJson($form);
+    var url = getStoreUrl() + "/" + id ;
+
+    $.ajax({
+            	   url: url,
+            	   type: 'PUT',
+            	   data: json,
+            	   headers: {
+                   	'Content-Type': 'application/json'
+                   },
+            	   success: function(response) {
+            	   		getProductList();
+            	   		setStatus(response);
+            	   },
+        //    	   error: handleAjaxError
+        //            error: setStatus(response)
+
+            	});
+            	return false;
+
 }
 
 function setStatus(message)
@@ -138,6 +172,7 @@ function init()
 {
     $('#add-product').click(addBrand);
     $('#inputBrandName').change(displayCategoryList);
+    $('#update-product').click(updateProduct);
 }
 
 $(document).ready(getProductList);

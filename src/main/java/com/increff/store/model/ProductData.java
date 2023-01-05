@@ -9,6 +9,8 @@ public class ProductData {
     private int id;
     private String barcode;
     private int brandCategory;
+    private String brand;
+    private String category;
     private String name;
     private double mrp;
 }
