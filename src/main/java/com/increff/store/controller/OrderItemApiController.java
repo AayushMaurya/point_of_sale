@@ -45,6 +45,13 @@ public class OrderItemApiController {
         return dto.get_orderId(id);
     }
 
+    @ApiOperation(value = "Gets an order by orderCode")
+    @RequestMapping(path = "/api/order-item/order-code/{id}", method = RequestMethod.GET)
+    public List<OrderItemData> get_orderId(@PathVariable String id)
+    {
+        return dto.get_orderCode(id);
+    }
+
     @ApiOperation(value = "Gets an order by orderId")
     @RequestMapping(path = "/api/order-item", method = RequestMethod.GET)
     public List<OrderItemData> get_all()

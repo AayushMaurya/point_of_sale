@@ -47,10 +47,8 @@ public class RevenueDto {
             map.put(p.getId(), productRevenueData);
         }
 //      converting the date into required formate
-        String startDate = form.getStart().replace('-', '/');
-        String endDate = form.getEnd().replace('-', '/');
-        startDate += " 00:00:00";
-        endDate += " 24:00:00";
+        String startDate = correctFormat(form.getStart()) + " 00:00:00";
+        String endDate = correctFormat(form.getEnd()) + " 00:00:00";
 
         List<OrderPojo> orderPojoList = orderService.select_date_filter(startDate, endDate);
 
@@ -165,5 +163,11 @@ public class RevenueDto {
         productRevenueData.setCategory(brandPojo.getCategory());
 
         return productRevenueData;
+    }
+
+    String correctFormat(String date)
+    {
+        String res = date.replace('-', '/');
+        return res;
     }
 }

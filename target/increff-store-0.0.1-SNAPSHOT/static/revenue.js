@@ -198,6 +198,8 @@ function getBrandsList()
            newBrands["All"].push(b);
        }
 
+       newBrands["All"] = removeDuplicates(newBrands["All"]);
+
        console.log(newBrands);
 
        var $elB = $("#inputFilterBrand");
@@ -208,6 +210,8 @@ function getBrandsList()
              $elB.append($("<option></option>")
                 .attr("value", key).text(key));
            });
+
+       displayCategoryList();
    }
 
 function displayCategoryList()
@@ -247,11 +251,18 @@ console.log("this is it");
     displayRevenueProductList(data);
 }
 
+// helpers
+
 function check(a, b)
 {
     if(b=="All" || a==b)
         return true;
     return false;
+}
+
+function removeDuplicates(arr) {
+        return arr.filter((item,
+            index) => arr.indexOf(item) === index);
 }
 
 function init()

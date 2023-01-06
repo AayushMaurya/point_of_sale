@@ -4,9 +4,11 @@ import com.increff.store.model.OrderItemData;
 import com.increff.store.model.OrderItemForm;
 import com.increff.store.model.UpdateOrderItemForm;
 import com.increff.store.pojo.OrderItemPojo;
+import com.increff.store.pojo.OrderPojo;
 import com.increff.store.pojo.ProductPojo;
 import com.increff.store.service.ApiException;
 import com.increff.store.service.OrderItemService;
+import com.increff.store.service.OrderService;
 import com.increff.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class OrderItemDto {
 
     @Autowired
     private OrderItemService service;
+
+    @Autowired
+    private OrderService orderService;
 
     public void add(OrderItemForm form) throws ApiException
     {
@@ -48,6 +53,13 @@ public class OrderItemDto {
             list2.add(convert(p));
 
         return list2;
+    }
+
+    public List<OrderItemData> get_orderCode(String orderCode) {
+        OrderPojo p = orderService.get_order_orderCode(orderCode);
+        int id = p.getId();
+
+        return get_orderId(id);
     }
 
     private OrderItemPojo convert(OrderItemForm form) throws ApiException
@@ -85,4 +97,5 @@ public class OrderItemDto {
 
         return list2;
     }
+
 }

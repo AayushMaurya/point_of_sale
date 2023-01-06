@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Api
@@ -17,25 +18,19 @@ import java.util.List;
 public class BrandApiController {
 
     @Autowired
-    private BrandService service;
-
-    @Autowired
     private BrandDto dto;
 
     @ApiOperation(value = "Adds a brand")
     @RequestMapping(path = "/api/brand", method = RequestMethod.POST)
-    public String add(@RequestBody BrandForm form) throws ApiException
+    public void add(@RequestBody BrandForm form) throws ApiException
     {
-        String response;
         try {
             dto.add(form);
-            response = "successfully added";
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            response = e.getMessage();
+            throw new ApiException(e.getMessage());
         }
-        return response;
     }
 
 //    @ApiOperation(value = "Select brand by Id")
@@ -61,19 +56,9 @@ public class BrandApiController {
 
     @ApiOperation(value = "Update brand")
     @RequestMapping(path = "api/brand/{id}", method = RequestMethod.PUT)
-    public String update(@PathVariable int id, @RequestBody BrandForm form) throws ApiException
+    public void update(@PathVariable int id, @RequestBody BrandForm form) throws ApiException
     {
-        String message;
-        try {
-            dto.update(id, form);
-            message = "successfully updated";
-        }
-        catch (Exception e)
-        {
-            message = e.getMessage();
-        }
-
-        return message;
+        dto.update(id, form);
     }
 
 }

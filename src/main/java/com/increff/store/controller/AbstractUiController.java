@@ -1,6 +1,5 @@
 package com.increff.store.controller;
 
-import com.increff.store.dto.OrderDto;
 import com.increff.store.model.InfoData;
 import com.increff.store.model.OrderData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,7 @@ public abstract class AbstractUiController {
 
         mav.addObject("info", info);
         mav.addObject("orderId", orderData.getId());
+        mav.addObject("orderCode", orderData.getOrderCode());
         mav.addObject("customerName", orderData.getCustomerName());
         mav.addObject("status", orderData.getStatus());
         mav.addObject("baseUrl", baseUrl);

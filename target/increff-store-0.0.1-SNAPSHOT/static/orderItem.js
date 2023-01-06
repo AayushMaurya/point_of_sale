@@ -1,4 +1,5 @@
 var orderId;
+var orderCode
 var status;
 var customerName;
 function getStoreUrl(){
@@ -13,7 +14,7 @@ var baseUrl = $("meta[name=baseUrl]").attr("content")
 
 function getOrderItemList(){
 	var url = getStoreUrl();
-	url += "/" + orderId;
+	url += "/order-code/" + orderCode;
 	$.ajax({
 	   url: url,
 	   type: 'GET',
@@ -169,6 +170,7 @@ function downloadInvoice()
 function init()
 {
     orderId = $("meta[name=orderId]").attr("content");
+    orderCode = $("meta[name=orderCode]").attr("content");
     customerName = $("meta[name=customerName]").attr("content");
     document.getElementById("inputOrderId").value = orderId;
     document.getElementById("customer-name").innerHTML = customerName;

@@ -8,18 +8,19 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Table(name = "Order_Items_Table")
 public class OrderItemPojo extends DateAudit{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(nullable = false)
-    private int orderId;
+    private Integer orderId;
     @Column(nullable = false)
-    private int productId;
+    private Integer productId;
     @Column(nullable = false)
-    private int quantity;
+    private Integer quantity;
     @Column(nullable = false)
     private double sellingPrice;
     @Column(nullable = false)
-    private int brandCategory;
+    private Integer brandCategory;
 }

@@ -1,7 +1,6 @@
 package com.increff.store.service;
 
 import com.increff.store.dao.ProductDao;
-import com.increff.store.pojo.BrandPojo;
 import com.increff.store.pojo.ProductPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

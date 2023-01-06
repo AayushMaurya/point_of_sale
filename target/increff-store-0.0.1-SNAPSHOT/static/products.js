@@ -127,7 +127,7 @@ function displayCategoryList()
     for(var i=0; i<newBrands[a].length; i++)
     {
         $elC.append($("<option></option>")
-            .attr("value", newBrands[a]).text(newBrands[a][i]));
+            .attr("value", newBrands[a][i]).text(newBrands[a][i]));
     }
 }
 

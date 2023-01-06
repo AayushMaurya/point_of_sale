@@ -12,7 +12,7 @@ function getBrandList(){
 	   console.log(data);
 	   		displayBrandList(data);
 	   },
-//	   error: handleAjaxError
+	   error: handleAjaxError
 	});
 }
 
@@ -51,9 +51,9 @@ function addBrand(event)
     	   		getBrandList();
     	   		setStatus(response);
     	   },
-//    	   error: handleAjaxError
-//            error: setStatus(response)
-
+    	   error: function (xhr) {
+                   console.log(xhr.responseText);
+                 }
     	});
     	return false;
 }

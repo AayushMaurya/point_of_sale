@@ -47,4 +47,13 @@ public class OrderService {
         p.setCustomerName(newOrderPojo.getCustomerName());
     }
 
+    public OrderPojo get_order_orderCode(String orderCode) {
+        try{
+            OrderPojo p = dao.get_order_orderCode(orderCode);
+            return p;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
 }

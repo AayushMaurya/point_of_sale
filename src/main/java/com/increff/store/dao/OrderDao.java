@@ -14,6 +14,7 @@ public class OrderDao {
 
     private static String SELECT_ALL = "select p from OrderPojo p";
     private static String SELECT_ID = "select p from OrderPojo p where id=:id";
+    private static String SELECT_ORDERCODE = "select p from OrderPojo p where orderCode=:id";
     private static String SELECT_DATE_FILTER = "select p from OrderPojo p where placeDateTime>=:id1 and " +
             "placeDateTime<=:id2";
 
@@ -77,4 +78,10 @@ public class OrderDao {
         return em.createQuery(jpql, OrderPojo.class);
     }
 
+    public OrderPojo get_order_orderCode(String orderCode) throws ApiException {
+        TypedQuery<OrderPojo> query = getQuery(SELECT_ORDERCODE);
+        query.setParameter("id", orderCode);
+        return query.getSingleResult();
+
+    }
 }

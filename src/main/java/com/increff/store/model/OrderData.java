@@ -11,4 +11,5 @@ public class OrderData {
     private String placedDataTime;
     private String customerName;
     private String status;
+    private String orderCode;
 }

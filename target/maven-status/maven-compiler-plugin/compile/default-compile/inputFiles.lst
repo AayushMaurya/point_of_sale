@@ -3,6 +3,7 @@ D:\java projects\point-of-sale\src\main\java\com\increff\store\service\OrderServ
 D:\java projects\point-of-sale\src\main\java\com\increff\store\pojo\ProductPojo.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\OrderData.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\controller\ProductApiController.java
+D:\java projects\point-of-sale\src\main\java\com\increff\store\util\CreateRandomSequence.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\pojo\InventoryPojo.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\DateFilterForm.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\pojo\OrderPojo.java
@@ -40,7 +41,6 @@ D:\java projects\point-of-sale\src\main\java\com\increff\store\model\BrandData.j
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\OrderItemForm.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\dto\InventoryDto.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\controller\AbstractUiController.java
-D:\java projects\point-of-sale\src\main\java\com\increff\store\util\StringPrefixedSequenceGenerator.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\spring\DbConfig.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\controller\BrandApiController.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\service\OrderItemService.java

@@ -2,9 +2,7 @@ package com.increff.store.controller;
 
 import com.increff.store.dto.OrderDto;
 import com.increff.store.model.OrderData;
-import com.increff.store.pojo.OrderPojo;
 import com.increff.store.service.ApiException;
-import com.increff.store.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,8 +41,8 @@ public class AppUiController extends AbstractUiController{
 //    }
 
     @RequestMapping(value = "/ui/order-item/{id}", method = RequestMethod.GET)
-    public ModelAndView orderItemById(@PathVariable int id) throws ApiException {
-        OrderData d = orderDto.get_id(id);
+    public ModelAndView orderItemById(@PathVariable String id) throws ApiException {
+        OrderData d = orderDto.get_orderCode(id);
         return mav("orderItem.html", d);
     }
 

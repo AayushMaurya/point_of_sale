@@ -3,6 +3,11 @@ function getStoreUrl(){
  	return baseUrl + "/api/inventory";
  }
 
+function getProductUrl(){
+ 	var baseUrl = $("meta[name=baseUrl]").attr("content")
+ 	return baseUrl + "/api/product";
+ }
+
 function getInventoryList(){
 	var url = getStoreUrl();
 	$.ajax({
@@ -21,7 +26,9 @@ function displayInventoryList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="fillFields('+ e.id +')">edit</button>';
+		var buttonHtml = '<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"'
+		+ 'onclick="fillFields('
+		+ e.id +')">edit</button>';
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.quantity + '</td>'
@@ -33,7 +40,16 @@ function displayInventoryList(data){
 
 function fillFields(id)
 {
-    console.log("this will fill the fields");
+    console.log("this will fill the fields: " + id);
+    var url = getProductUrl() + "/" + id;
+    $.ajax({
+    	   url: url,
+    	   type: 'GET',
+    	   success: function(data) {
+    	   document.getElementById("inputUpdateBarcode").value = data.barcode;
+    	   },
+    //	   error: handleAjaxError
+    	});
 
 }
 
@@ -63,6 +79,54 @@ console.log("anything");
     	return false;
 }
 
+function updateInventoryAdd()
+{
+    console.log("this will update inventory Add");
+    var $form = $("#updateInventoryForm");
+    var json = toJson($form);
+    var url = getStoreUrl();
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: json,
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        success: function(response) {
+        getInventoryList()
+        setStatus(response);
+        },
+        //   error: handleAjaxError
+        //   error: setStatus(response)
+
+        });
+}
+
+function updateInventoryRemove()
+{
+    console.log("this will update inventory Remove");
+    var $form = $("#updateInventoryForm");
+    var json = toJson($form);
+    var url = getStoreUrl();
+
+    $.ajax({
+        url: url,
+        type: 'PUT',
+        data: json,
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        success: function(response) {
+        getInventoryList()
+        setStatus(response);
+        },
+        //   error: handleAjaxError
+        //   error: setStatus(response)
+
+        });
+}
+
 function setStatus(message)
 {
     document.getElementById("status").innerHTML = "status: " + message;
@@ -71,6 +135,8 @@ function setStatus(message)
 function init()
 {
     $('#add-inventory').click(addInventory);
+    $('#update-inventory-add').click(updateInventoryAdd);
+    $('#update-inventory-remove').click(updateInventoryRemove);
 }
 
 $(document).ready(getInventoryList);

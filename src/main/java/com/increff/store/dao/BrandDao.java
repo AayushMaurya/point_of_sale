@@ -64,11 +64,6 @@ public class BrandDao{
         return query.getResultList();
     }
 
-    public void update()
-    {
-
-    }
-
     TypedQuery<BrandPojo> getQuery(String jpql) {
         return em.createQuery(jpql, BrandPojo.class);
     }

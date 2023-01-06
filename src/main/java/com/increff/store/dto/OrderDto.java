@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.increff.store.util.CreateRandomSequence.createRandomOrderCode;
 import static com.increff.store.util.GetCurrentDataTime.get_current_dat_time;
 
 @Service
@@ -28,6 +29,18 @@ public class OrderDto {
         orderPojo.setStatus("pending");
         orderPojo.setPlaceDateTime("");
         normalize(orderPojo);
+
+//        creating random order code
+        String orderCode = createRandomOrderCode();
+
+        OrderPojo x = service.get_order_orderCode(orderCode);
+        while(x!=null)
+        {
+            orderCode = createRandomOrderCode();
+            x = service.get_order_orderCode(orderCode);
+        }
+
+        orderPojo.setOrderCode(orderCode);
         service.add(orderPojo);
     }
 
@@ -62,6 +75,11 @@ public class OrderDto {
         return convert(p);
     }
 
+    public OrderData get_orderCode(String id) {
+        OrderPojo p = service.get_order_orderCode(id);
+        return convert(p);
+    }
+
     public void place_order(int id) throws ApiException
     {
         OrderPojo orderPojo = service.get_id(id);
@@ -85,6 +103,7 @@ public class OrderDto {
         orderData.setPlacedDataTime(p.getPlaceDateTime());
         orderData.setCustomerName(p.getCustomerName());
         orderData.setStatus(p.getStatus());
+        orderData.setOrderCode(p.getOrderCode());
 
         return orderData;
     }
@@ -93,5 +112,4 @@ public class OrderDto {
     {
         p.setCustomerName(StringUtil.toLowerCase(p.getCustomerName()));
     }
-
 }

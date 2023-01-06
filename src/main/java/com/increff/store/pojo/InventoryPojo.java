@@ -8,10 +8,12 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Table(name = "Inventory_Table")
 public class InventoryPojo extends DateAudit{
     @Id
-    private int id;
+    @Column(name = "product_id")
+    private Integer id;
     @Column(nullable = false)
-    private int quantity;
+    private Integer quantity;
 
 }
