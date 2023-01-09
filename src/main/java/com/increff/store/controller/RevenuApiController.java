@@ -1,10 +1,7 @@
 package com.increff.store.controller;
 
 import com.increff.store.dto.RevenueDto;
-import com.increff.store.model.BrandRevenueData;
-import com.increff.store.model.CategoryRevenueData;
-import com.increff.store.model.DateFilterForm;
-import com.increff.store.model.ProductRevenueData;
+import com.increff.store.model.*;
 import com.increff.store.service.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,5 +39,12 @@ public class RevenuApiController {
     public List<CategoryRevenueData> get_revenue_category(@RequestBody DateFilterForm form) throws ApiException
     {
         return dto.get_revenue_category(form);
+    }
+
+    @ApiOperation(value = "Get Inventory Report")
+    @RequestMapping(path = "/api/inventory-report", method = RequestMethod.GET)
+    public List<InventoryReportModel> get_inventory_report() throws ApiException
+    {
+        return dto.get_inventory_report();
     }
 }

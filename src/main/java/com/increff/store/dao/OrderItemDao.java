@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public class OrderItemDao {
     private static String SELECT_ID = "select p from OrderItemPojo p where id=:id";
+    private static String SELECT_PRODUCTID_ORDERID = "select p from OrderItemPojo p where productId=:id1 and " +
+            "orderId=:id2";
     private static String SELECT_ORDER_ID = "select p from OrderItemPojo p where orderid=:id";
     private static String DELETE_ITEM_ID = "delete from OrderItemPojo p where id=:id";
     private static String SELECT_ALL = "select p from OrderItemPojo p";
@@ -65,4 +67,17 @@ public class OrderItemDao {
         return em.createQuery(jpql, OrderItemPojo.class);
     }
 
+    public OrderItemPojo get_productId_orderId(Integer productId, Integer orderId) throws ApiException {
+        try{
+            TypedQuery<OrderItemPojo> query = getQuery(SELECT_PRODUCTID_ORDERID);
+            query.setParameter("id1", productId);
+            query.setParameter("id2", orderId);
+            return query.getSingleResult();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            throw new ApiException("No order found with given id");
+        }
+    }
 }

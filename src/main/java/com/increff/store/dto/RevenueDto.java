@@ -1,13 +1,7 @@
 package com.increff.store.dto;
 
-import com.increff.store.model.BrandRevenueData;
-import com.increff.store.model.CategoryRevenueData;
-import com.increff.store.model.DateFilterForm;
-import com.increff.store.model.ProductRevenueData;
-import com.increff.store.pojo.BrandPojo;
-import com.increff.store.pojo.OrderItemPojo;
-import com.increff.store.pojo.OrderPojo;
-import com.increff.store.pojo.ProductPojo;
+import com.increff.store.model.*;
+import com.increff.store.pojo.*;
 import com.increff.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +25,8 @@ public class RevenueDto {
 
     @Autowired
     BrandService brandService;
+    @Autowired
+    InventoryService inventoryService;
 
     public List<ProductRevenueData> get_revenue_product(DateFilterForm form) throws ApiException
     {
@@ -169,5 +165,54 @@ public class RevenueDto {
     {
         String res = date.replace('-', '/');
         return res;
+    }
+
+    public List<InventoryReportModel> get_inventory_report() {
+        List<BrandPojo> brandPojoList = brandService.get_all();
+
+        HashMap<Integer, InventoryReportModel> map = new HashMap<>();
+
+        for(BrandPojo b: brandPojoList)
+            map.put(b.getId(), convert(b));
+
+        List<InventoryPojo> inventoryPojoList = inventoryService.get_all();
+
+        HashMap<Integer, Integer> inventoryMap = new HashMap<>();
+
+//        key: productId value: quantity of that product
+        for(InventoryPojo p: inventoryPojoList)
+            inventoryMap.put(p.getId(), p.getQuantity());
+
+        List<ProductPojo> productPojoList = productService.get_all();
+
+        for(ProductPojo p: productPojoList)
+        {
+            int quantity = map.get(p.getBrandCategory()).getQuantity();
+            int nquantity = inventoryMap.get(p.getId());
+            if(inventoryMap.containsKey(p.getId()))
+                nquantity = inventoryMap.get(p.getId());
+            else
+                nquantity = 0;
+            map.get(p.getBrandCategory()).setQuantity(quantity + nquantity);
+        }
+
+        List<InventoryReportModel> list = new ArrayList<>();
+
+        for(Map.Entry<Integer, InventoryReportModel> e: map.entrySet())
+            list.add(e.getValue());
+
+        return list;
+    }
+
+    private InventoryReportModel convert(BrandPojo p)
+    {
+        InventoryReportModel inventoryReportModel = new InventoryReportModel();
+
+        inventoryReportModel.setBrand(p.getBrand());
+        inventoryReportModel.setCategory(p.getCategory());
+        inventoryReportModel.setBrandCategoryId(p.getId());
+        inventoryReportModel.setQuantity(0);
+
+        return inventoryReportModel;
     }
 }

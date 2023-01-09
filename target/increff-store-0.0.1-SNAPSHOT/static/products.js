@@ -1,5 +1,7 @@
 var newBrands = {};
 
+var productData;
+
 function getStoreUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/product";
@@ -17,6 +19,12 @@ function getBrandOption() {
         return output;
 }
 
+function getBrandOption2() {
+        selectElement = document.querySelector('#inputUpdateBrand');
+        output = selectElement.options[selectElement.selectedIndex].value;
+        return output;
+}
+
 function getProductList(){
 	var url = getStoreUrl();
 	$.ajax({
@@ -25,6 +33,7 @@ function getProductList(){
 	   success: function(data) {
 	   console.log(data);
 	   		displayProductList(data);
+	   		productData = data;
 	   },
 //	   error: handleAjaxError
 	});
@@ -37,7 +46,7 @@ function displayProductList(data){
 		var e = data[i];
 //		var buttonHtml = '<button >delete</button>'
 		var buttonHtml = ' <button class="btn btn-primary" data-toggle="modal" '
-		+ 'data-target="#exampleModalCenter" onclick="fillFields('+ e.id +')">edit</button>'
+		+ 'data-target="#exampleModalCenter" onclick="fillFields('+ i +')">edit</button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
@@ -103,24 +112,32 @@ function displayBrandsList(data)
     console.log(newBrands);
 
     var $elB = $("#inputBrandName");
+    var $elB2 = $("#inputUpdateBrand");
 
     $elB.empty();
+    $elB2.empty();
 
     $.each(newBrands, function(key,value) {
           $elB.append($("<option></option>")
              .attr("value", key).text(key));
+             $elB2.append($("<option></option>")
+                          .attr("value", key).text(key));
         });
 
+    displayCategoryList();
 }
 
 function displayCategoryList()
 {
     var $elC = $("#inputBrandCategory");
+    var $elC2 = $("#inputUpdateCategory");
 
     $elC.empty();
+    $elC2.empty();
 
     console.log("this is it");
     var a = getBrandOption();
+    var b = getBrandOption2();
 
     console.log(newBrands[a]);
 
@@ -128,13 +145,16 @@ function displayCategoryList()
     {
         $elC.append($("<option></option>")
             .attr("value", newBrands[a][i]).text(newBrands[a][i]));
+        $elC2.append($("<option></option>")
+                    .attr("value", newBrands[b][i]).text(newBrands[b][i]));
     }
 }
 
-function fillFields(id)
+function fillFields(index)
 {
-    document.getElementById("inputUpdateId").value = id;
+    document.getElementById("inputUpdateId").value = productData[index].id;
     document.getElementById("updateProductForm").reset();
+    document.getElementById("inputUpdateBarcode").value = productData[index].barcode;
 }
 
 function updateProduct()
@@ -173,6 +193,7 @@ function init()
     $('#add-product').click(addBrand);
     $('#inputBrandName').change(displayCategoryList);
     $('#update-product').click(updateProduct);
+    $('#inputUpdateBrand').change(displayCategoryList);
 }
 
 $(document).ready(getProductList);

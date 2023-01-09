@@ -3,6 +3,7 @@ com\increff\store\pojo\OrderPojo.class
 com\increff\store\service\BrandService.class
 com\increff\store\service\OrderService.class
 com\increff\store\dto\RevenueDto.class
+com\increff\store\model\InventoryReportModel.class
 com\increff\store\controller\RevenuApiController.class
 com\increff\store\dao\ProductDao.class
 com\increff\store\model\BrandRevenueData.class

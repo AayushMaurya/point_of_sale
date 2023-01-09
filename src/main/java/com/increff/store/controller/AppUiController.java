@@ -50,4 +50,9 @@ public class AppUiController extends AbstractUiController{
     public ModelAndView orderItemById() throws ApiException {
         return mav("revenue.html");
     }
+
+    @RequestMapping(value = "/ui/inventory-report", method = RequestMethod.GET)
+    public ModelAndView inventoryReport() throws ApiException {
+        return mav("inventoryReport.html");
+    }
 }

@@ -87,4 +87,14 @@ public class OrderItemService {
         p.setSellingPrice(newPojo.getSellingPrice());
         p.setProductId(newPojo.getProductId());
     }
+
+    public OrderItemPojo get_productId_orderId(Integer productId, Integer orderId) {
+        try{
+            OrderItemPojo p = dao.get_productId_orderId(productId, orderId);
+            return p;
+        }
+        catch(Exception e) {
+            return null;
+        }
+    }
 }

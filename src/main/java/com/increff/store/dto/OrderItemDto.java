@@ -30,7 +30,14 @@ public class OrderItemDto {
     public void add(OrderItemForm form) throws ApiException
     {
         OrderItemPojo p = convert(form);
-        service.add(p);
+        OrderItemPojo newPojo = service.get_productId_orderId(p.getProductId(), p.getOrderId());
+        if(newPojo != null) {
+            int q = p.getQuantity();
+            p.setQuantity(newPojo.getQuantity() + q);
+            service.update(newPojo.getId(), p);
+        }
+        else
+            service.add(p);
     }
 
     public void update(UpdateOrderItemForm form) throws ApiException

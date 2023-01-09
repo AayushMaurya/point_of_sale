@@ -49,6 +49,10 @@ function displayOrderItemList(data){
 	}
 	if(status === "Placed")
 	    disableEditing();
+	if(data.length == 0)
+	    document.getElementById('place-order').disabled = true;
+	else
+	    document.getElementById('place-order').disabled = false;
 }
 
 function addOrderItem(event)
@@ -104,12 +108,11 @@ function deleteOrderItem(id)
     	   type: 'DELETE',
     	   success: function(data) {
     	   		getOrderItemList();
-    	   		setStatus(response);
     	   },
 //    	   error: handleAjaxError
     	});
 }
-//
+
 function fillFields(id, orderId, productId, quantity, sellingPrice)
 {
 console.log("filling the update order item form fields");
@@ -126,7 +129,12 @@ function updateOrderItem()
     var $form = $("#editOrderItemForm");
     var json = toJson($form);
     var url = getStoreUrl();
-    console.log(json);
+
+    if((JSON.parse(json).quantity) == 0)
+    {
+        deleteOrderItem(JSON.parse(json).id);
+        return;
+    }
 
     $.ajax({
         	   url: url,
@@ -140,10 +148,8 @@ function updateOrderItem()
         	   		setStatus(response);
         	   },
     //    	   error: handleAjaxError
-                error: setStatus(response)
 
         	});
-        	return false;
 }
 
 function disableEditing()

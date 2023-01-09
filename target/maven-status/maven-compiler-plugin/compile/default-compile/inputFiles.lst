@@ -22,6 +22,7 @@ D:\java projects\point-of-sale\src\main\java\com\increff\store\service\ProductSe
 D:\java projects\point-of-sale\src\main\java\com\increff\store\dao\ProductDao.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\ProductRevenueData.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\CategoryRevenueData.java
+D:\java projects\point-of-sale\src\main\java\com\increff\store\model\InventoryReportModel.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\OrderForm.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\model\InventoryData.java
 D:\java projects\point-of-sale\src\main\java\com\increff\store\dto\BrandDto.java
