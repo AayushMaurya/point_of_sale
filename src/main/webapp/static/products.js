@@ -188,6 +188,13 @@ function setStatus(message)
     document.getElementById("status").innerHTML = "status: " + message;
 }
 
+function pagination(){
+  $('#product-table').DataTable({
+    "pagingType": "simple" // false to disable pagination (or any other option)
+  });
+  $('.dataTables_length').addClass('bs-select');
+}
+
 function init()
 {
     $('#add-product').click(addBrand);

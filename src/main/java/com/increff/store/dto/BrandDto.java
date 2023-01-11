@@ -20,6 +20,7 @@ public class BrandDto {
 
     public void add(BrandForm form) throws ApiException
     {
+        isOk(form);
         BrandPojo p = convert(form);
         normalize(p);
         service.add(p);
@@ -44,6 +45,7 @@ public class BrandDto {
 
     public void update (int id, BrandForm form) throws ApiException
     {
+        isOk(form);
         BrandPojo p = convert(form);
         normalize(p);
         service.update(id, p);
@@ -71,5 +73,13 @@ public class BrandDto {
 
         p.setCategory(StringUtil.toLowerCase(p.getCategory()));
         p.setBrand(StringUtil.toLowerCase(p.getBrand()));
+    }
+
+    protected void isOk(BrandForm form) throws ApiException
+    {
+        if(StringUtil.isEmpty(form.getBrand()))
+            throw new ApiException("Brand name cannot be empty");
+        if(StringUtil.isEmpty(form.getCategory()))
+            throw new ApiException("Category cannot be empty");
     }
 }

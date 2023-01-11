@@ -32,6 +32,7 @@ function displayBrandList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
+	pagination();
 }
 
 function addBrand(event)
@@ -91,6 +92,13 @@ function updateBrand()
 function setStatus(message)
 {
     document.getElementById("status").innerHTML = "status: " + message;
+}
+
+function pagination(){
+  $('#brand-table').DataTable({
+    "pagingType": "simple" // false to disable pagination (or any other option)
+  });
+  $('.dataTables_length').addClass('bs-select');
 }
 
 function init()

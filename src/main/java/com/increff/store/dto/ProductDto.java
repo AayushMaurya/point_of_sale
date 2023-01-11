@@ -24,6 +24,7 @@ public class ProductDto {
 
     public void add(ProductForm form) throws ApiException
     {
+        isOk(form);
         ProductPojo p = convert(form);
         normalize(p);
         service.add(p);
@@ -88,6 +89,18 @@ public class ProductDto {
 
     protected static void normalize(ProductPojo p) {
         p.setName(StringUtil.toLowerCase(p.getName()));
+    }
+
+    protected void isOk(ProductForm form) throws ApiException
+    {
+        if(StringUtil.isEmpty(form.getName()))
+            throw new ApiException("Product name cannot be empty");
+        if(StringUtil.isEmpty(form.getBarcode()))
+            throw new ApiException("barcode cannot be empty");
+        if(StringUtil.isEmpty(form.getBrandName()))
+            throw new ApiException("Brand name cannot be empty");
+        if(StringUtil.isEmpty(form.getBrandCategory()))
+            throw new ApiException("Category cannot be empty");
     }
 
 }

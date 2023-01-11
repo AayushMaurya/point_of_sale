@@ -1,13 +1,11 @@
 package com.increff.store.pojo;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @MappedSuperclass
 //@EntityListeners(AuditingEntityListener.class)
