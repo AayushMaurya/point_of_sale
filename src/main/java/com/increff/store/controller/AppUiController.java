@@ -35,11 +35,6 @@ public class AppUiController extends AbstractUiController{
         return mav("orders.html");
     }
 
-//    @RequestMapping(value = "/ui/order-item", method = RequestMethod.GET)
-//    public ModelAndView orderItem() {
-//        return mav("orderItem.html");
-//    }
-
     @RequestMapping(value = "/ui/order-item/{id}", method = RequestMethod.GET)
     public ModelAndView orderItemById(@PathVariable String id) throws ApiException {
         OrderData d = orderDto.get_orderCode(id);

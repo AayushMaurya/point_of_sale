@@ -53,6 +53,8 @@ function displayOrderList(data){
  		+ '</tr>';
          $tbody.append(row);
  	}
+
+ 	pagination();
  }
 
 function redirect(id)
@@ -75,7 +77,8 @@ function redirect(id)
             },
      	   success: function(response) {
      	   		getOrderList();
-     	   		setStatus(response);
+     	   		console.log("this should be order id: " + response);
+     	   		redirect(response);
      	   },
  //    	   error: handleAjaxError
  //            error: setStatus(response)
@@ -87,6 +90,11 @@ function redirect(id)
  function setStatus(message)
  {
      document.getElementById("status").innerHTML = "status: " + message;
+ }
+
+ function pagination(){
+   $('#order-table').DataTable();
+   $('.dataTables_length').addClass('bs-select');
  }
 
  function init()

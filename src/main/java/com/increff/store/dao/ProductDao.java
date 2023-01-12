@@ -14,10 +14,10 @@ import java.util.List;
 @Repository
 public class ProductDao {
 
-    private static String DELETE_ID = "delete from ProductPojo p where id=:id";
-    private static String SELECT_ID = "select p from ProductPojo p where id=:id";
+    private static String DELETE_BY_ID = "delete from ProductPojo p where id=:id";
+    private static String SELECT_BY_ID = "select p from ProductPojo p where id=:id";
     private static String SELECT_ALL = "select p from ProductPojo p";
-    private static String SELECT_CODE = "select p from ProductPojo p where barcode=:id";
+    private static String SELECT_BY_BARCODE = "select p from ProductPojo p where barcode=:id";
 
     @PersistenceContext
     private EntityManager em;
@@ -27,16 +27,10 @@ public class ProductDao {
         em.persist(p);
     }
 
-    public void delete(int id) {
-        Query query = em.createQuery(DELETE_ID);
+    public ProductPojo selectById(int id) {
+        TypedQuery<ProductPojo> query = getQuery(SELECT_BY_ID);
         query.setParameter("id", id);
-        query.executeUpdate();
-    }
-
-    public ProductPojo select(int id) {
-        TypedQuery<ProductPojo> query = getQuery(SELECT_ID);
-        query.setParameter("id", id);
-        return query.getSingleResult();
+        return query.getResultStream().findFirst().orElse(null);
     }
 
     public List<ProductPojo> selectAll() {
@@ -44,18 +38,10 @@ public class ProductDao {
         return query.getResultList();
     }
 
-    public ProductPojo select_code(String barcode)
-    {
-        try{
-            TypedQuery<ProductPojo> query = getQuery(SELECT_CODE);
-            query.setParameter("id", barcode);
-            return query.getSingleResult();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-            return null;
-        }
+    public ProductPojo selectByBarcode(String barcode) {
+        TypedQuery<ProductPojo> query = getQuery(SELECT_BY_BARCODE);
+        query.setParameter("id", barcode);
+        return query.getResultStream().findFirst().orElse(null);
     }
 
     TypedQuery<ProductPojo> getQuery(String jpql) {

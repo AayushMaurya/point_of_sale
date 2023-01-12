@@ -39,8 +39,7 @@ function displayOrderItemList(data){
 		+ 'data-target="#exampleModalCenter">edit</button>';
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
-		+ '<td>' + e.orderId + '</td>'
-		+ '<td>' + e.productId + '</td>'
+		+ '<td>' + e.productName + '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + e.sellingPrice + '</td>'
 		+ '<td>' + buttonHtml + '</td>'

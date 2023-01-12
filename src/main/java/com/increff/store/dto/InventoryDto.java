@@ -24,7 +24,7 @@ public class InventoryDto {
 
     public List<InventoryData> get_all()
     {
-        List<InventoryPojo> list1 = service.get_all();
+        List<InventoryPojo> list1 = service.getAllInventory();
         List<InventoryData> list2 = new ArrayList<InventoryData>();
         for(InventoryPojo p: list1)
             list2.add(convert(p));
@@ -32,16 +32,16 @@ public class InventoryDto {
         return list2;
     }
 
-    public void remove(InventoryForm form) throws ApiException
+    public void reduceInventory(InventoryForm form) throws ApiException
     {
         InventoryPojo p = convert(form);
-        service.remove(p);
+        service.reduceInventory(p);
     }
 
-    public void add(InventoryForm form) throws ApiException
+    public void addInventory(InventoryForm form) throws ApiException
     {
         InventoryPojo p = convert(form);
-        service.add(p);
+        service.addInventory(p);
     }
 
     private InventoryPojo convert(InventoryForm form) throws ApiException
@@ -49,9 +49,7 @@ public class InventoryDto {
         InventoryPojo p = new InventoryPojo();
 //        converting the barcode into product id
         String barcode = form.getBarcode();
-        ProductPojo productPojo = productService.get_barcode(barcode);
-        if(productPojo == null)
-            throw new ApiException("no product found with given bar code");
+        ProductPojo productPojo = productService.getProductByBarcode(barcode);
         p.setQuantity(form.getQuantity());
         p.setId(productPojo.getId());
         return p;

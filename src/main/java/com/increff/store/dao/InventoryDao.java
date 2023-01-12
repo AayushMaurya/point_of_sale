@@ -12,8 +12,8 @@ import java.util.List;
 
 @Repository
 public class InventoryDao {
-    private static String DELETE_ID = "delete from InventoryPojo p where id=:id";
-    private static String SELECT_ID = "select p from InventoryPojo p where id=:id";
+    private static String DELETE_BY_ID = "delete from InventoryPojo p where id=:id";
+    private static String SELECT_BY_ID = "select p from InventoryPojo p where id=:id";
     private static String SELECT_ALL = "select p from InventoryPojo p";
 
     @PersistenceContext
@@ -25,15 +25,15 @@ public class InventoryDao {
     }
 
     public void delete(int id) {
-        Query query = em.createQuery(DELETE_ID);
+        Query query = em.createQuery(DELETE_BY_ID);
         query.setParameter("id", id);
         query.executeUpdate();
     }
 
-    public InventoryPojo select(int id) {
-        TypedQuery<InventoryPojo> query = getQuery(SELECT_ID);
+    public InventoryPojo selectById(int id) {
+        TypedQuery<InventoryPojo> query = getQuery(SELECT_BY_ID);
         query.setParameter("id", id);
-        return query.getSingleResult();
+        return query.getResultStream().findFirst().orElse(null);
     }
 
     public List<InventoryPojo> selectAll() {

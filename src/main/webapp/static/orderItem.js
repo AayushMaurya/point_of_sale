@@ -39,8 +39,7 @@ function displayOrderItemList(data){
 		+ 'data-target="#exampleModalCenter">edit</button>';
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
-		+ '<td>' + e.orderId + '</td>'
-		+ '<td>' + e.productId + '</td>'
+		+ '<td>' + e.productName + '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + e.sellingPrice + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
@@ -72,8 +71,7 @@ function addOrderItem(event)
     	   		getOrderItemList();
     	   		setStatus(response);
     	   },
-//    	   error: handleAjaxError
-//            error: setStatus(response)
+    	   error: handleAjaxError
 
     	});
     	return false;
@@ -93,8 +91,7 @@ function placeOrder()
         	   		alert(response);
         	   		location.reload();
         	   },
-    //    	   error: handleAjaxError
-//                error: setStatus(response)
+        	   error: handleAjaxError
 
         	});
 }
@@ -109,7 +106,7 @@ function deleteOrderItem(id)
     	   success: function(data) {
     	   		getOrderItemList();
     	   },
-//    	   error: handleAjaxError
+    	   error: handleAjaxError
     	});
 }
 
@@ -147,7 +144,7 @@ function updateOrderItem()
         	   		getOrderItemList();
         	   		setStatus(response);
         	   },
-    //    	   error: handleAjaxError
+        	   error: handleAjaxError
 
         	});
 }

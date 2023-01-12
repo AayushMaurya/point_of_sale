@@ -36,6 +36,8 @@ function displayInventoryList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
+
+	pagination();
 }
 
 function fillFields(id)
@@ -130,6 +132,11 @@ function updateInventoryRemove()
 function setStatus(message)
 {
     document.getElementById("status").innerHTML = "status: " + message;
+}
+
+function pagination(){
+  $('#inventory-table').DataTable();
+  $('.dataTables_length').addClass('bs-select');
 }
 
 function init()

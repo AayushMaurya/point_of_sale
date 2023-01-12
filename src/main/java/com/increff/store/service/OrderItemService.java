@@ -22,52 +22,54 @@ public class OrderItemService {
     private OrderItemDao dao;
 
     @Transactional(rollbackOn = ApiException.class)
-    public void add(OrderItemPojo p) throws ApiException
-    {
+    public void addOrderItem(OrderItemPojo p) throws ApiException {
         int orderId = p.getOrderId();
         OrderPojo orderPojo = orderService.get_id(orderId);
-        if(orderPojo == null)
+        if (orderPojo == null)
             throw new ApiException("No order found with given order id");
 
         dao.insert(p);
         InventoryPojo inventoryPojo = new InventoryPojo();
         inventoryPojo.setQuantity(p.getQuantity());
         inventoryPojo.setId(p.getProductId());
-        inventoryService.remove(inventoryPojo);
+        inventoryService.reduceInventory(inventoryPojo);
     }
 
     @Transactional
-    public List<OrderItemPojo> get_order(int id)
-    {
-        return dao.select_order(id);
+    public List<OrderItemPojo> get_order(int id) {
+        return dao.selectById(id);
     }
 
     @Transactional
-    public List<OrderItemPojo> get_all()
-    {
-        return dao.get_all();
+    public List<OrderItemPojo> get_all() {
+        return dao.selectAll();
     }
 
     @Transactional
-    public OrderItemPojo get_id(int id) throws ApiException
-    {
-        return dao.select_ItemId(id);
+    public OrderItemPojo get_id(int id) throws ApiException {
+        OrderItemPojo orderItemPojo = dao.selectByItemId(id);
+        if (orderItemPojo == null)
+            throw new ApiException("Cannot find an order with given order item id");
+        return orderItemPojo;
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void delete_ItemId(int id) throws ApiException
-    {
-        OrderItemPojo orderItemPojo = dao.select_ItemId(id);
+    public void delete_ItemId(int id) throws ApiException {
+        OrderItemPojo orderItemPojo = dao.selectByItemId(id);
+        if (orderItemPojo == null)
+            throw new ApiException("Cannot find an order item with given id");
+
+//        updating the inventory
         InventoryPojo inventoryPojo = new InventoryPojo();
         inventoryPojo.setId(orderItemPojo.getProductId());
         inventoryPojo.setQuantity(orderItemPojo.getQuantity());
-        inventoryService.add(inventoryPojo);
-        dao.delete_ItemId(id);
+        inventoryService.addInventory(inventoryPojo);
+
+        dao.deleteById(id);
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(int id, OrderItemPojo newPojo) throws ApiException
-    {
+    public void update(int id, OrderItemPojo newPojo) throws ApiException {
         OrderItemPojo p = get_id(id);
         int oldQuantity = p.getQuantity();
         int newQuantity = newPojo.getQuantity();
@@ -76,11 +78,11 @@ public class OrderItemService {
 //        removing old quantity from old inventory
         inventoryPojo.setId(p.getProductId());
         inventoryPojo.setQuantity(oldQuantity);
-        inventoryService.add(inventoryPojo);
+        inventoryService.addInventory(inventoryPojo);
 //        adding new quantity to new inventory
         inventoryPojo.setId(newPojo.getProductId());
         inventoryPojo.setQuantity(newQuantity);
-        inventoryService.remove(inventoryPojo);
+        inventoryService.reduceInventory(inventoryPojo);
 
         p.setQuantity(newPojo.getQuantity());
         p.setOrderId(newPojo.getOrderId());
@@ -88,13 +90,10 @@ public class OrderItemService {
         p.setProductId(newPojo.getProductId());
     }
 
-    public OrderItemPojo get_productId_orderId(Integer productId, Integer orderId) {
-        try{
-            OrderItemPojo p = dao.get_productId_orderId(productId, orderId);
-            return p;
-        }
-        catch(Exception e) {
-            return null;
-        }
+    public OrderItemPojo get_productId_orderId(Integer productId, Integer orderId) throws ApiException {
+        OrderItemPojo p = dao.selectByProductIdOrderId(productId, orderId);
+        if (p == null)
+            throw new ApiException("No product found with given combination of product id and order id");
+        return p;
     }
 }

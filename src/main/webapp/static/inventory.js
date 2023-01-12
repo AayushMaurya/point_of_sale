@@ -17,7 +17,7 @@ function getInventoryList(){
 	   console.log(data);
 	   		displayInventoryList(data);
 	   },
-//	   error: handleAjaxError
+	   error: handleAjaxError
 	});
 }
 
@@ -36,6 +36,8 @@ function displayInventoryList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
+
+	pagination();
 }
 
 function fillFields(id)
@@ -48,7 +50,7 @@ function fillFields(id)
     	   success: function(data) {
     	   document.getElementById("inputUpdateBarcode").value = data.barcode;
     	   },
-    //	   error: handleAjaxError
+    	   error: handleAjaxError
     	});
 
 }
@@ -72,8 +74,7 @@ console.log("anything");
     	   		getInventoryList();
     	   		setStatus(response);
     	   },
-//    	   error: handleAjaxError
-//            error: setStatus(response)
+    	   error: handleAjaxError
 
     	});
     	return false;
@@ -97,8 +98,7 @@ function updateInventoryAdd()
         getInventoryList()
         setStatus(response);
         },
-        //   error: handleAjaxError
-        //   error: setStatus(response)
+           error: handleAjaxError
 
         });
 }
@@ -121,8 +121,7 @@ function updateInventoryRemove()
         getInventoryList()
         setStatus(response);
         },
-        //   error: handleAjaxError
-        //   error: setStatus(response)
+        error: handleAjaxError
 
         });
 }
@@ -130,6 +129,11 @@ function updateInventoryRemove()
 function setStatus(message)
 {
     document.getElementById("status").innerHTML = "status: " + message;
+}
+
+function pagination(){
+  $('#inventory-table').DataTable();
+  $('.dataTables_length').addClass('bs-select');
 }
 
 function init()

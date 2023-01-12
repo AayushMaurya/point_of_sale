@@ -58,6 +58,8 @@ function displayProductList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
+
+	pagination();
 }
 
 function addBrand(event)
@@ -189,9 +191,7 @@ function setStatus(message)
 }
 
 function pagination(){
-  $('#product-table').DataTable({
-    "pagingType": "simple" // false to disable pagination (or any other option)
-  });
+  $('#product-table').DataTable();
   $('.dataTables_length').addClass('bs-select');
 }
 

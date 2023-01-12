@@ -1,7 +1,6 @@
 package com.increff.store.dao;
 
 import com.increff.store.pojo.OrderItemPojo;
-import com.increff.store.service.ApiException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -13,11 +12,11 @@ import java.util.List;
 
 @Repository
 public class OrderItemDao {
-    private static String SELECT_ID = "select p from OrderItemPojo p where id=:id";
-    private static String SELECT_PRODUCTID_ORDERID = "select p from OrderItemPojo p where productId=:id1 and " +
+    private static String SELECT_BY_ID = "select p from OrderItemPojo p where id=:id";
+    private static String SELECT_BY_PRODUCTID_ORDERID = "select p from OrderItemPojo p where productId=:id1 and " +
             "orderId=:id2";
-    private static String SELECT_ORDER_ID = "select p from OrderItemPojo p where orderid=:id";
-    private static String DELETE_ITEM_ID = "delete from OrderItemPojo p where id=:id";
+    private static String SELECT_BY_ORDER_ID = "select p from OrderItemPojo p where orderid=:id";
+    private static String DELETE_ITEM_BY_ID = "delete from OrderItemPojo p where id=:id";
     private static String SELECT_ALL = "select p from OrderItemPojo p";
 
     @PersistenceContext
@@ -29,36 +28,26 @@ public class OrderItemDao {
     }
 
     @Transactional
-    public OrderItemPojo select_ItemId(int id) throws ApiException
-    {
-        try{
-            TypedQuery<OrderItemPojo> query = getQuery(SELECT_ID);
-            query.setParameter("id", id);
-            return query.getSingleResult();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-            throw new ApiException("No order found with given id");
-        }
+    public OrderItemPojo selectByItemId(int id) {
+        TypedQuery<OrderItemPojo> query = getQuery(SELECT_BY_ID);
+        query.setParameter("id", id);
+        return query.getResultStream().findFirst().orElse(null);
+
     }
 
-    public List<OrderItemPojo> select_order(int orderId)
-    {
-        TypedQuery<OrderItemPojo> query = getQuery(SELECT_ORDER_ID);
+    public List<OrderItemPojo> selectById(int orderId) {
+        TypedQuery<OrderItemPojo> query = getQuery(SELECT_BY_ORDER_ID);
         query.setParameter("id", orderId);
         return query.getResultList();
     }
 
-    public void delete_ItemId(int id)
-    {
-        Query query = em.createQuery(DELETE_ITEM_ID);
+    public void deleteById(int id) {
+        Query query = em.createQuery(DELETE_ITEM_BY_ID);
         query.setParameter("id", id);
         query.executeUpdate();
     }
 
-    public List<OrderItemPojo> get_all()
-    {
+    public List<OrderItemPojo> selectAll() {
         TypedQuery<OrderItemPojo> query = getQuery(SELECT_ALL);
         return query.getResultList();
     }
@@ -67,17 +56,12 @@ public class OrderItemDao {
         return em.createQuery(jpql, OrderItemPojo.class);
     }
 
-    public OrderItemPojo get_productId_orderId(Integer productId, Integer orderId) throws ApiException {
-        try{
-            TypedQuery<OrderItemPojo> query = getQuery(SELECT_PRODUCTID_ORDERID);
-            query.setParameter("id1", productId);
-            query.setParameter("id2", orderId);
-            return query.getSingleResult();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-            throw new ApiException("No order found with given id");
-        }
+    public OrderItemPojo selectByProductIdOrderId(Integer productId, Integer orderId) {
+
+        TypedQuery<OrderItemPojo> query = getQuery(SELECT_BY_PRODUCTID_ORDERID);
+        query.setParameter("id1", productId);
+        query.setParameter("id2", orderId);
+        return query.getResultStream().findFirst().orElse(null);
+
     }
 }

@@ -18,41 +18,31 @@ public class BrandDto {
     @Autowired
     BrandService service;
 
-    public void add(BrandForm form) throws ApiException
-    {
+    public void add(BrandForm form) throws ApiException {
         isOk(form);
         BrandPojo p = convert(form);
         normalize(p);
         service.add(p);
     }
 
-    public BrandData get(int id) throws ApiException
-    {
-        BrandPojo p = service.get(id);
-        return convert(p);
-    }
-
-    public List<BrandData> get_all()
-    {
-        List<BrandPojo> list = service.get_all();
+    public List<BrandData> getAll() {
+        List<BrandPojo> list = service.getAllBrands();
         List<BrandData> list2 = new ArrayList<BrandData>();
 
-        for(BrandPojo p: list)
+        for (BrandPojo p : list)
             list2.add(convert(p));
 
         return list2;
     }
 
-    public void update (int id, BrandForm form) throws ApiException
-    {
+    public void update(int id, BrandForm form) throws ApiException {
         isOk(form);
         BrandPojo p = convert(form);
         normalize(p);
         service.update(id, p);
     }
 
-    private BrandPojo convert(BrandForm form)
-    {
+    private BrandPojo convert(BrandForm form) {
         BrandPojo p = new BrandPojo();
         p.setBrand(form.getBrand());
         p.setCategory(form.getCategory());
@@ -60,8 +50,7 @@ public class BrandDto {
         return p;
     }
 
-    private BrandData convert(BrandPojo p)
-    {
+    private BrandData convert(BrandPojo p) {
         BrandData brandData = new BrandData();
         brandData.setId(p.getId());
         brandData.setCategory(p.getCategory());
@@ -70,16 +59,12 @@ public class BrandDto {
     }
 
     protected static void normalize(BrandPojo p) {
-
         p.setCategory(StringUtil.toLowerCase(p.getCategory()));
         p.setBrand(StringUtil.toLowerCase(p.getBrand()));
     }
 
-    protected void isOk(BrandForm form) throws ApiException
-    {
-        if(StringUtil.isEmpty(form.getBrand()))
-            throw new ApiException("Brand name cannot be empty");
-        if(StringUtil.isEmpty(form.getCategory()))
-            throw new ApiException("Category cannot be empty");
+    protected void isOk(BrandForm form) throws ApiException {
+        if (StringUtil.isEmpty(form.getBrand())) throw new ApiException("Brand name cannot be empty");
+        if (StringUtil.isEmpty(form.getCategory())) throw new ApiException("Category cannot be empty");
     }
 }

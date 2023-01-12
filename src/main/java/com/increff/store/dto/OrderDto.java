@@ -22,7 +22,7 @@ public class OrderDto {
     @Autowired
     private OrderService service;
 
-    public void insert(OrderForm form) throws ApiException
+    public String insert(OrderForm form) throws ApiException
     {
         OrderPojo orderPojo = convert(form);
         orderPojo.setCreatedDateTime(get_current_dat_time());
@@ -42,6 +42,8 @@ public class OrderDto {
 
         orderPojo.setOrderCode(orderCode);
         service.add(orderPojo);
+
+        return orderCode;
     }
 
     public List<OrderData> get_all() throws ApiException
@@ -75,7 +77,7 @@ public class OrderDto {
         return convert(p);
     }
 
-    public OrderData get_orderCode(String id) {
+    public OrderData get_orderCode(String id) throws ApiException {
         OrderPojo p = service.get_order_orderCode(id);
         return convert(p);
     }

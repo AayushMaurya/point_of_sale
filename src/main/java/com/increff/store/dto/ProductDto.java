@@ -27,18 +27,18 @@ public class ProductDto {
         isOk(form);
         ProductPojo p = convert(form);
         normalize(p);
-        service.add(p);
+        service.addProduct(p);
     }
 
     public ProductData get(int id) throws ApiException
     {
-        ProductPojo p = service.get(id);
-        return  convert(p);
+        ProductPojo p = service.getProductById(id);
+        return convert(p);
     }
 
     public List<ProductData> get_all() throws ApiException
     {
-        List<ProductPojo> list1 = service.get_all();
+        List<ProductPojo> list1 = service.getAllProducts();
         List<ProductData> list2 = new ArrayList<ProductData>();
         for(ProductPojo p: list1)
             list2.add(convert(p));
@@ -60,7 +60,7 @@ public class ProductDto {
 //        converting the unique brand category combination to brand category id
         String brandName = form.getBrandName();
         String brandCategory = form.getBrandCategory();
-        BrandPojo brandPojo = brandService.get_brand_category(brandName, brandCategory);
+        BrandPojo brandPojo = brandService.getByBrandCategory(brandName, brandCategory);
         if(brandPojo == null)
             throw new ApiException("no such brand category combination found");
 
@@ -76,7 +76,7 @@ public class ProductDto {
     {
         ProductData productData = new ProductData();
         productData.setBrandCategory(p.getBrandCategory());
-        BrandPojo brandPojo = brandService.get(p.getBrandCategory());
+        BrandPojo brandPojo = brandService.getByBrandId(p.getBrandCategory());
         productData.setBrand(brandPojo.getBrand());
         productData.setCategory(brandPojo.getCategory());
         productData.setName(p.getName());

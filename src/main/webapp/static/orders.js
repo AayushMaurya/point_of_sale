@@ -12,7 +12,7 @@ function getOrderList(){
 	   console.log(data);
 	   		displayOrderList(data);
 	   },
-//	   error: handleAjaxError
+	   error: handleAjaxError
 	});
 }
 
@@ -33,7 +33,7 @@ console.log("filtered orders");
     	   console.log(data);
     	   		displayOrderList(data);
     	   },
-    //	   error: handleAjaxError
+    	   error: handleAjaxError
     	});
 }
 
@@ -53,6 +53,8 @@ function displayOrderList(data){
  		+ '</tr>';
          $tbody.append(row);
  	}
+
+ 	pagination();
  }
 
 function redirect(id)
@@ -75,10 +77,10 @@ function redirect(id)
             },
      	   success: function(response) {
      	   		getOrderList();
-     	   		setStatus(response);
+     	   		console.log("this should be order id: " + response);
+     	   		redirect(response);
      	   },
- //    	   error: handleAjaxError
- //            error: setStatus(response)
+     	   error: handleAjaxError
 
      	});
      	return false;
@@ -87,6 +89,11 @@ function redirect(id)
  function setStatus(message)
  {
      document.getElementById("status").innerHTML = "status: " + message;
+ }
+
+ function pagination(){
+   $('#order-table').DataTable();
+   $('.dataTables_length').addClass('bs-select');
  }
 
  function init()

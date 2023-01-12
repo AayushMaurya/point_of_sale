@@ -47,7 +47,7 @@ function getProductRevenueList(){
 	   productRevenueData = data;
 	   		displayRevenueProductList(data);
 	   },
-//	   error: handleAjaxError
+	   error: handleAjaxError
 	});
 }
 
@@ -67,7 +67,7 @@ function getBrandRevenueList()
     	   console.log(data);
     	   		displayRevenueBrandList(data);
     	   },
-    //	   error: handleAjaxError
+    	   error: handleAjaxError
     	});
 }
 
@@ -87,7 +87,7 @@ function getCategoryRevenueList()
     	   console.log(data);
     	   		displayRevenueCategoryList(data);
     	   },
-    //	   error: handleAjaxError
+    	   error: handleAjaxError
     	});
 }
 

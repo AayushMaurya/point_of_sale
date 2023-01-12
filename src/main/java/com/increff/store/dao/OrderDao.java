@@ -13,18 +13,20 @@ import java.util.List;
 public class OrderDao {
 
     private static String SELECT_ALL = "select p from OrderPojo p";
-    private static String SELECT_ID = "select p from OrderPojo p where id=:id";
-    private static String SELECT_ORDERCODE = "select p from OrderPojo p where orderCode=:id";
-    private static String SELECT_DATE_FILTER = "select p from OrderPojo p where placeDateTime>=:id1 and " +
+    private static String SELECT_BY_ID = "select p from OrderPojo p where id=:id";
+    private static String SELECT_BY_ORDERCODE = "select p from OrderPojo p where orderCode=:id";
+    private static String SELECT_BY_DATE_FILTER = "select p from OrderPojo p where placeDateTime>=:id1 and " +
             "placeDateTime<=:id2";
 
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(OrderPojo p) throws ApiException
+    public Integer insert(OrderPojo p) throws ApiException
     {
         try {
             em.persist(p);
+            em.flush();
+            return p.getId();
         }
         catch(Exception e)
         {
@@ -33,21 +35,14 @@ public class OrderDao {
         }
     }
 
-    public OrderPojo get_id(int id) throws ApiException
-    {
-        try
-        {
-            TypedQuery<OrderPojo> query = getQuery(SELECT_ID);
+    public OrderPojo selectById(int id){
+            TypedQuery<OrderPojo> query = getQuery(SELECT_BY_ID);
             query.setParameter("id", id);
-            return query.getSingleResult();
-        }
-        catch(Exception e)
-        {
-            throw new ApiException("No OrderPojo found with given id");
-        }
+            return query.getResultStream().findFirst().orElse(null);
+
     }
 
-    public List<OrderPojo> select_all() throws ApiException
+    public List<OrderPojo> selectAll() throws ApiException
     {
         try{
             TypedQuery<OrderPojo> query = getQuery(SELECT_ALL);
@@ -60,10 +55,10 @@ public class OrderDao {
         }
     }
 
-    public List<OrderPojo> select_date_filter(String start, String end) throws ApiException
+    public List<OrderPojo> selectByDateFilter(String start, String end) throws ApiException
     {
         try{
-            TypedQuery<OrderPojo> query = getQuery(SELECT_DATE_FILTER);
+            TypedQuery<OrderPojo> query = getQuery(SELECT_BY_DATE_FILTER);
             query.setParameter("id1", start);
             query.setParameter("id2", end);
             return query.getResultList();
@@ -78,10 +73,10 @@ public class OrderDao {
         return em.createQuery(jpql, OrderPojo.class);
     }
 
-    public OrderPojo get_order_orderCode(String orderCode) throws ApiException {
-        TypedQuery<OrderPojo> query = getQuery(SELECT_ORDERCODE);
+    public OrderPojo selectByOrderCode(String orderCode){
+        TypedQuery<OrderPojo> query = getQuery(SELECT_BY_ORDERCODE);
         query.setParameter("id", orderCode);
-        return query.getSingleResult();
+        return query.getResultStream().findFirst().orElse(null);
 
     }
 }

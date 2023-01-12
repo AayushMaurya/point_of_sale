@@ -30,7 +30,7 @@ function getInventoryReportList(){
     	   		displayInventoryReport(data);
     	   		displayBrandList(data);
     	   },
-    //	   error: handleAjaxError
+    	   error: handleAjaxError
     	});
 }
 
@@ -86,16 +86,28 @@ function displayInventoryReport(data)
 {
     var $tbody = $('#inventory-report-table').find('tbody');
     $tbody.empty();
+    var total_quantity = 0;
     for(var i in data)
     {
         var e = data[i];
         var row = '<tr>'
+                + '<td>' + i + '</td>'
         		+ '<td>' + e.brand + '</td>'
         		+ '<td>' + e.category + '</td>'
         		+ '<td>' + e.quantity + '</td>'
         		+ '</tr>';
                 $tbody.append(row);
+        total_quantity = total_quantity + e.quantity;
     }
+    var row = '<tr>'
+            + '<td></td>'
+            + '<td></td>'
+            + '<td>Total</td>'
+            + '<td>' + total_quantity + '</td>'
+            + '</tr>';
+            $tbody.append(row);
+
+    pagination();
 }
 
 function applyBrandCategoryFilter()
@@ -121,6 +133,11 @@ function check(a, b)
 function removeDuplicates(arr) {
         return arr.filter((item,
             index) => arr.indexOf(item) === index);
+}
+
+function pagination(){
+  $('#inventory-report-table').DataTable();
+  $('.dataTables_length').addClass('bs-select');
 }
 
 function init()

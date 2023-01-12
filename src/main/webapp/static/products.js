@@ -35,7 +35,7 @@ function getProductList(){
 	   		displayProductList(data);
 	   		productData = data;
 	   },
-//	   error: handleAjaxError
+	   error: handleAjaxError
 	});
 }
 
@@ -58,6 +58,8 @@ function displayProductList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
+
+	pagination();
 }
 
 function addBrand(event)
@@ -77,8 +79,7 @@ function addBrand(event)
     	   		getProductList();
     	   		setStatus(response);
     	   },
-//    	   error: handleAjaxError
-//            error: setStatus(response)
+    	   error: handleAjaxError
 
     	});
     	return false;
@@ -175,8 +176,7 @@ function updateProduct()
             	   		getProductList();
             	   		setStatus(response);
             	   },
-        //    	   error: handleAjaxError
-        //            error: setStatus(response)
+            	   error: handleAjaxError
 
             	});
             	return false;
@@ -189,9 +189,7 @@ function setStatus(message)
 }
 
 function pagination(){
-  $('#product-table').DataTable({
-    "pagingType": "simple" // false to disable pagination (or any other option)
-  });
+  $('#product-table').DataTable();
   $('.dataTables_length').addClass('bs-select');
 }
 

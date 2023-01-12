@@ -32,7 +32,7 @@ public class RevenueDto {
     {
         List<ProductRevenueData> list1 = new ArrayList<ProductRevenueData>();
 
-        List<ProductPojo> productPojoList = productService.get_all();
+        List<ProductPojo> productPojoList = productService.getAllProducts();
 
 //        key: productId
         HashMap<Integer, ProductRevenueData> map = new HashMap<>();
@@ -44,7 +44,7 @@ public class RevenueDto {
         }
 //      converting the date into required formate
         String startDate = correctFormat(form.getStart()) + " 00:00:00";
-        String endDate = correctFormat(form.getEnd()) + " 00:00:00";
+        String endDate = correctFormat(form.getEnd()) + " 23:59:59";
 
         List<OrderPojo> orderPojoList = orderService.select_date_filter(startDate, endDate);
 
@@ -153,7 +153,7 @@ public class RevenueDto {
         productRevenueData.setTotal(0);
 
         int brandCategoryId = p.getBrandCategory();
-        BrandPojo brandPojo = brandService.get(brandCategoryId);
+        BrandPojo brandPojo = brandService.getByBrandId(brandCategoryId);
 
         productRevenueData.setBrand(brandPojo.getBrand());
         productRevenueData.setCategory(brandPojo.getCategory());
@@ -168,14 +168,14 @@ public class RevenueDto {
     }
 
     public List<InventoryReportModel> get_inventory_report() {
-        List<BrandPojo> brandPojoList = brandService.get_all();
+        List<BrandPojo> brandPojoList = brandService.getAllBrands();
 
         HashMap<Integer, InventoryReportModel> map = new HashMap<>();
 
         for(BrandPojo b: brandPojoList)
             map.put(b.getId(), convert(b));
 
-        List<InventoryPojo> inventoryPojoList = inventoryService.get_all();
+        List<InventoryPojo> inventoryPojoList = inventoryService.getAllInventory();
 
         HashMap<Integer, Integer> inventoryMap = new HashMap<>();
 
@@ -183,16 +183,15 @@ public class RevenueDto {
         for(InventoryPojo p: inventoryPojoList)
             inventoryMap.put(p.getId(), p.getQuantity());
 
-        List<ProductPojo> productPojoList = productService.get_all();
+        List<ProductPojo> productPojoList = productService.getAllProducts();
 
         for(ProductPojo p: productPojoList)
         {
             int quantity = map.get(p.getBrandCategory()).getQuantity();
-            int nquantity = inventoryMap.get(p.getId());
+            int nquantity = 0;
             if(inventoryMap.containsKey(p.getId()))
                 nquantity = inventoryMap.get(p.getId());
-            else
-                nquantity = 0;
+
             map.get(p.getBrandCategory()).setQuantity(quantity + nquantity);
         }
 

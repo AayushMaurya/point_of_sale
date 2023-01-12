@@ -14,33 +14,36 @@ public class OrderService {
     private OrderDao dao;
 
     @Transactional
-    public void add(OrderPojo p) throws ApiException
+    public Integer add(OrderPojo p) throws ApiException
     {
-        dao.insert(p);
+        return dao.insert(p);
     }
 
     @Transactional
     public List<OrderPojo> select_all() throws ApiException
     {
-        return dao.select_all();
+        return dao.selectAll();
     }
 
     @Transactional
     public List<OrderPojo> select_date_filter(String start, String end) throws ApiException
     {
-        return dao.select_date_filter(start, end);
+        return dao.selectByDateFilter(start, end);
     }
 
     @Transactional
     public OrderPojo get_id(int id) throws ApiException
     {
-        return dao.get_id(id);
+        OrderPojo orderPojo = dao.selectById(id);
+        if(orderPojo == null)
+            throw new ApiException("No order found with given order id");
+        return orderPojo;
     }
 
     @Transactional
     public void update(int id, OrderPojo newOrderPojo) throws ApiException
     {
-        OrderPojo p = dao.get_id(id);
+        OrderPojo p = dao.selectById(id);
         p.setStatus(newOrderPojo.getStatus());
         p.setPlaceDateTime(newOrderPojo.getPlaceDateTime());
         p.setCreatedDateTime(newOrderPojo.getCreatedDateTime());
@@ -48,12 +51,6 @@ public class OrderService {
     }
 
     public OrderPojo get_order_orderCode(String orderCode) {
-        try{
-            OrderPojo p = dao.get_order_orderCode(orderCode);
-            return p;
-        }
-        catch (Exception e) {
-            return null;
-        }
+        return dao.selectByOrderCode(orderCode);
     }
 }

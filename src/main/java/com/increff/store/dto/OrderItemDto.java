@@ -30,14 +30,16 @@ public class OrderItemDto {
     public void add(OrderItemForm form) throws ApiException
     {
         OrderItemPojo p = convert(form);
-        OrderItemPojo newPojo = service.get_productId_orderId(p.getProductId(), p.getOrderId());
-        if(newPojo != null) {
+        try {
+            OrderItemPojo newPojo = service.get_productId_orderId(p.getProductId(), p.getOrderId());
+
             int q = p.getQuantity();
             p.setQuantity(newPojo.getQuantity() + q);
             service.update(newPojo.getId(), p);
         }
-        else
-            service.add(p);
+        catch(Exception e) {
+            service.addOrderItem(p);
+        }
     }
 
     public void update(UpdateOrderItemForm form) throws ApiException
@@ -51,7 +53,7 @@ public class OrderItemDto {
         service.update(form.getId(), newPojo);
     }
 
-    public List<OrderItemData> get_orderId(int id)
+    public List<OrderItemData> get_orderId(int id) throws ApiException
     {
         List<OrderItemPojo> list1 = service.get_order(id);
         List<OrderItemData> list2 = new ArrayList<OrderItemData>();
@@ -62,7 +64,7 @@ public class OrderItemDto {
         return list2;
     }
 
-    public List<OrderItemData> get_orderCode(String orderCode) {
+    public List<OrderItemData> get_orderCode(String orderCode) throws ApiException {
         OrderPojo p = orderService.get_order_orderCode(orderCode);
         int id = p.getId();
 
@@ -76,26 +78,26 @@ public class OrderItemDto {
        p.setQuantity(form.getQuantity());
        p.setSellingPrice(form.getSellingPrice());
        String code = form.getBarCode();
-       ProductPojo productPojo = productService.get_barcode(code);
-       if(productPojo == null)
-           throw new ApiException("No product in productPojo exist with given bar code: " + code);
+       ProductPojo productPojo = productService.getProductByBarcode(code);
        p.setProductId(productPojo.getId());
        p.setBrandCategory(productPojo.getBrandCategory());
        return p;
     }
 
-    private OrderItemData convert(OrderItemPojo p)
+    private OrderItemData convert(OrderItemPojo p) throws ApiException
     {
         OrderItemData d = new OrderItemData();
         d.setId(p.getId());;
         d.setOrderId(p.getOrderId());
         d.setQuantity(p.getQuantity());
         d.setSellingPrice(p.getSellingPrice());
+        String productName = productService.getProductById(p.getProductId()).getName();
+        d.setProductName(productName);
         d.setProductId(p.getProductId());
         return d;
     }
 
-    public List<OrderItemData> get_all() {
+    public List<OrderItemData> get_all() throws ApiException{
         List<OrderItemPojo> list1 = service.get_all();
         List<OrderItemData> list2 = new ArrayList<>();
 

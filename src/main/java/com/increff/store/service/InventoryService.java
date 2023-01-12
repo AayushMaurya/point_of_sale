@@ -15,68 +15,37 @@ public class InventoryService {
     private InventoryDao dao;
 
     @Transactional
-    public void add(InventoryPojo newPojo)
-    {
-        InventoryPojo p=null;
-        try{
-            p = dao.select(newPojo.getId());
-        }
-        catch(Exception e)
-        {
-
-        }
-        if(p==null)
-        {
+    public void addInventory(InventoryPojo newPojo) {
+        InventoryPojo p = dao.selectById(newPojo.getId());
+        if (p == null) {
             dao.insert(newPojo);
-        }
-        else{
+        } else {
             update(newPojo);
         }
     }
 
     @Transactional
-    public void remove(InventoryPojo newPojo) throws ApiException
-    {
-        InventoryPojo p = null;
-        try{
-            p = dao.select(newPojo.getId());
-        }
-        catch(Exception e)
-        {
+    public void reduceInventory(InventoryPojo newPojo) throws ApiException {
+        InventoryPojo p = dao.selectById(newPojo.getId());
 
-        }
-        if(p!=null && p.getQuantity() >= newPojo.getQuantity())
-        {
-            newPojo.setQuantity(newPojo.getQuantity() * -1);
-            update(newPojo);
-        }
-        else{
-            throw new ApiException("inventory cannot be reduced");
-        }
+        if (p == null)
+            throw new ApiException("No inventory found with given Id");
+
+        if (p.getQuantity() < newPojo.getQuantity())
+            throw new ApiException("Inventory has only " + p.getQuantity() + " quantity left");
+
+        newPojo.setQuantity(newPojo.getQuantity() * -1);
+        update(newPojo);
     }
 
     @Transactional
-    public void delete_id(int id)
-    {
-        dao.delete(id);
-    }
-
-    @Transactional
-    public InventoryPojo get(int id)
-    {
-        return dao.select(id);
-    }
-
-    @Transactional
-    public List<InventoryPojo> get_all()
-    {
+    public List<InventoryPojo> getAllInventory() {
         return dao.selectAll();
     }
 
     @Transactional
-    private void update(InventoryPojo newPojo)
-    {
-        InventoryPojo p = dao.select(newPojo.getId());
+    private void update(InventoryPojo newPojo) {
+        InventoryPojo p = dao.selectById(newPojo.getId());
         p.setQuantity(p.getQuantity() + newPojo.getQuantity());
     }
 

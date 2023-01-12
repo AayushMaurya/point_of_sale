@@ -20,7 +20,7 @@ public class OrderItemPojo extends DateAudit{
     @Column(nullable = false)
     private Integer quantity;
     @Column(nullable = false)
-    private double sellingPrice;
+    private Double sellingPrice;
     @Column(nullable = false)
     private Integer brandCategory;
 }

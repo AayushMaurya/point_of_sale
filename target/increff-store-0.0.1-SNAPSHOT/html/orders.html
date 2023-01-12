@@ -4,8 +4,10 @@
 <body>
 <nav th:replace="snippets.html :: name_app_navbar"></nav>
 <h3>this page will show order details </h3>
+<div class="container">
 
-<div>
+<div class="row">
+  <div class="col-12">
   <form class="form-inline" id="order-form">
     <div class="form-group">
       <label for="inputCustomerName" class="col-sm-2 col-form-label">Customer Name</label>
@@ -13,7 +15,7 @@
         <input type="text" class="form-control" name="customerName" id="inputCustomerName" placeholder="Aayush Maurya">
       </div>
     </div>
-
+  </div>
     <button type="button" class="btn btn-primary" id="create-order">Create</button>
     &nbsp;
     <!--      <button type="button" class="btn btn-primary" id="refresh-data">Refresh</button>-->
@@ -22,7 +24,8 @@
   </form>
   <h5 id="status" style="color:red;"></h5>
 </div>
-<div>
+<div class="row">
+  <div class="col-12">
   <h3>Apply filter</h3>
   <form class="form-inline" id="date-filter-form">
     <div class="form-group">
@@ -43,10 +46,12 @@
     &nbsp;
     <!--      <button type="button" class="btn btn-primary" id="upload-data">Upload</button>-->
   </form>
+  </div>
 </div>
 
-<div>
-  <table class="table table-striped table-dark" id="order-table">
+<div class="row">
+  <div class="col-12">
+  <table class="table table-striped" id="order-table">
     <thead>
     <tr>
       <th scope="col">Order_Id</th>
@@ -61,8 +66,9 @@
 
     </tbody>
   </table>
+  </div>
 </div>
-
+</div>
 
 </body>
 <footer th:replace="snippets.html :: name_footer"></footer>
