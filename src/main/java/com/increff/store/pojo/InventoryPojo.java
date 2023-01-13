@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "Inventory_Table")
-public class InventoryPojo extends DateAudit{
+public class InventoryPojo extends AbstractDateAudit {
     @Id
     @Column(name = "product_id")
     private Integer id;

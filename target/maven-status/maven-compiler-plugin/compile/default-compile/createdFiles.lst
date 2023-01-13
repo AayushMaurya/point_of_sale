@@ -19,7 +19,6 @@ com\increff\store\dao\BrandDao.class
 com\increff\store\model\OrderStatusData.class
 com\increff\store\util\GetCurrentDataTime.class
 com\increff\store\model\OrderItemData.class
-com\increff\store\pojo\DateAudit.class
 com\increff\store\util\StringUtil.class
 com\increff\store\model\MessageData.class
 com\increff\store\controller\BrandApiController.class
@@ -36,6 +35,7 @@ com\increff\store\model\OrderForm.class
 com\increff\store\model\OrderItemForm.class
 com\increff\store\spring\ControllerConfig.class
 com\increff\store\controller\AppRestControllerAdvice.class
+com\increff\store\pojo\AbstractDateAudit.class
 com\increff\store\spring\DbConfig.class
 com\increff\store\spring\WebInitializer.class
 com\increff\store\dto\OrderItemDto.class
@@ -50,6 +50,7 @@ com\increff\store\dto\OrderDto.class
 com\increff\store\model\ProductForm.class
 com\increff\store\model\OrderData.class
 com\increff\store\controller\InventoryApiController.class
+com\increff\store\dto\DtoUtils.class
 com\increff\store\pojo\InventoryPojo.class
 com\increff\store\model\BrandData.class
 com\increff\store\service\OrderItemService.class

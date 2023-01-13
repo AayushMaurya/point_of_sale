@@ -15,12 +15,12 @@ public class BrandService {
     private BrandDao dao;
 
     @Transactional
-    public void add(BrandPojo p) throws ApiException
+    public void addBrand(BrandPojo pojo) throws ApiException
     {
-        BrandPojo brandPojo = getByBrandCategory(p.getBrand(), p.getCategory());
+        BrandPojo brandPojo = getByBrandCategory(pojo.getBrand(), pojo.getCategory());
         if(brandPojo!=null)
             throw new ApiException("The given brand category combination already exists");
-        dao.insert(p);
+        dao.insert(pojo);
     }
 
     @Transactional
@@ -45,18 +45,18 @@ public class BrandService {
 
 
     @Transactional
-    public void update(int id, BrandPojo newpojo) throws ApiException
+    public void updateBrand(int id, BrandPojo newPojo) throws ApiException
     {
 //        check if given brand category combination already exists.
-        String brand = newpojo.getBrand();
-        String category = newpojo.getCategory();
+        String brand = newPojo.getBrand();
+        String category = newPojo.getCategory();
         BrandPojo b = getByBrandCategory(brand, category);
         if(b!=null)
             throw new ApiException("The brand with given brand category already exists");
 
         BrandPojo p = dao.selectByBrandId(id);
 
-        p.setBrand(newpojo.getBrand());
-        p.setCategory(newpojo.getCategory());
+        p.setBrand(newPojo.getBrand());
+        p.setCategory(newPojo.getCategory());
     }
 }

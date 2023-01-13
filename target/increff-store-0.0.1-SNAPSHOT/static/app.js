@@ -12,6 +12,50 @@ function toJson($form){
 }
 
 function handleAjaxError(response){
-	var response = JSON.parse(response.responseText);
-	alert(response.message);
+	var message = JSON.parse(response.responseText);
+	document.getElementById('status-message').innerHTML = message.message;
+	console.log(message);
+	$('.toast').toast('show');
+}
+
+function handleSuccess(message)
+{
+    document.getElementById('status-message').innerHTML = message.message;
+    console.log(message);
+   	$('.toast').toast('show');
+}
+
+function readFileData(file, callback){
+	var config = {
+		header: true,
+		delimiter: "\t",
+		skipEmptyLines: "greedy",
+		complete: function(results) {
+			callback(results);
+	  	}
+	}
+	Papa.parse(file, config);
+}
+
+
+function writeFileData(arr){
+	var config = {
+		quoteChar: '',
+		escapeChar: '',
+		delimiter: "\t"
+	};
+
+	var data = Papa.unparse(arr, config);
+    var blob = new Blob([data], {type: 'text/tsv;charset=utf-8;'});
+    var fileUrl =  null;
+
+    if (navigator.msSaveBlob) {
+        fileUrl = navigator.msSaveBlob(blob, 'download.tsv');
+    } else {
+        fileUrl = window.URL.createObjectURL(blob);
+    }
+    var tempLink = document.createElement('a');
+    tempLink.href = fileUrl;
+    tempLink.setAttribute('download', 'download.tsv');
+    tempLink.click();
 }

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.increff.store.dto.DtoUtils.*;
+
 @Service
 public class InventoryDto {
 
@@ -22,29 +24,29 @@ public class InventoryDto {
     @Autowired
     ProductService productService;
 
-    public List<InventoryData> get_all()
+    public List<InventoryData> getAllInventory()
     {
         List<InventoryPojo> list1 = service.getAllInventory();
         List<InventoryData> list2 = new ArrayList<InventoryData>();
         for(InventoryPojo p: list1)
-            list2.add(convert(p));
+            list2.add(convertInventoryPojoToInventoryData(p));
 
         return list2;
     }
 
     public void reduceInventory(InventoryForm form) throws ApiException
     {
-        InventoryPojo p = convert(form);
+        InventoryPojo p = convertInventoryFormToInventoryPojo(form);
         service.reduceInventory(p);
     }
 
     public void addInventory(InventoryForm form) throws ApiException
     {
-        InventoryPojo p = convert(form);
+        InventoryPojo p = convertInventoryFormToInventoryPojo(form);
         service.addInventory(p);
     }
 
-    private InventoryPojo convert(InventoryForm form) throws ApiException
+    private InventoryPojo convertInventoryFormToInventoryPojo(InventoryForm form) throws ApiException
     {
         InventoryPojo p = new InventoryPojo();
 //        converting the barcode into product id
@@ -55,11 +57,4 @@ public class InventoryDto {
         return p;
     }
 
-    private InventoryData convert(InventoryPojo p)
-    {
-        InventoryData d =new InventoryData();
-        d.setId(p.getId());
-        d.setQuantity(p.getQuantity());
-        return d;
-    }
 }

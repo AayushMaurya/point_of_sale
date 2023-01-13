@@ -24,7 +24,7 @@ public class OrderItemService {
     @Transactional(rollbackOn = ApiException.class)
     public void addOrderItem(OrderItemPojo p) throws ApiException {
         int orderId = p.getOrderId();
-        OrderPojo orderPojo = orderService.get_id(orderId);
+        OrderPojo orderPojo = orderService.getOrderById(orderId);
         if (orderPojo == null)
             throw new ApiException("No order found with given order id");
 
@@ -36,17 +36,17 @@ public class OrderItemService {
     }
 
     @Transactional
-    public List<OrderItemPojo> get_order(int id) {
+    public List<OrderItemPojo> getOrder(int id) {
         return dao.selectById(id);
     }
 
     @Transactional
-    public List<OrderItemPojo> get_all() {
+    public List<OrderItemPojo> getAllOrderItem() {
         return dao.selectAll();
     }
 
     @Transactional
-    public OrderItemPojo get_id(int id) throws ApiException {
+    public OrderItemPojo getOrderItemById(int id) throws ApiException {
         OrderItemPojo orderItemPojo = dao.selectByItemId(id);
         if (orderItemPojo == null)
             throw new ApiException("Cannot find an order with given order item id");
@@ -54,7 +54,7 @@ public class OrderItemService {
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void delete_ItemId(int id) throws ApiException {
+    public void deleteOrderItemById(int id) throws ApiException {
         OrderItemPojo orderItemPojo = dao.selectByItemId(id);
         if (orderItemPojo == null)
             throw new ApiException("Cannot find an order item with given id");
@@ -69,8 +69,8 @@ public class OrderItemService {
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(int id, OrderItemPojo newPojo) throws ApiException {
-        OrderItemPojo p = get_id(id);
+    public void updateOrderItem(int id, OrderItemPojo newPojo) throws ApiException {
+        OrderItemPojo p = getOrderItemById(id);
         int oldQuantity = p.getQuantity();
         int newQuantity = newPojo.getQuantity();
         InventoryPojo inventoryPojo = new InventoryPojo();
@@ -91,9 +91,9 @@ public class OrderItemService {
     }
 
     public OrderItemPojo get_productId_orderId(Integer productId, Integer orderId) throws ApiException {
-        OrderItemPojo p = dao.selectByProductIdOrderId(productId, orderId);
-        if (p == null)
+        OrderItemPojo pojo = dao.selectByProductIdOrderId(productId, orderId);
+        if (pojo == null)
             throw new ApiException("No product found with given combination of product id and order id");
-        return p;
+        return pojo;
     }
 }

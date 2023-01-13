@@ -33,7 +33,7 @@ public class InventoryApiController {
     @ApiOperation(value = "Select all inventory")
     @RequestMapping(path = "api/inventory", method = RequestMethod.GET)
     public List<InventoryData> get_all() {
-        return dto.get_all();
+        return dto.getAllInventory();
     }
 
 }

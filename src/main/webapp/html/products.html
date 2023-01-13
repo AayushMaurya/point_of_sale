@@ -3,9 +3,10 @@
 <head th:replace="snippets.html :: name_head"></head>
 <body>
 <nav th:replace="snippets.html :: name_app_navbar"></nav>
-<h3>this page will show product details </h3>
 
 <div class="container">
+    <br/>
+    <h3 class="d-flex justify-content-center">Products </h3>
     <div class="row">
         <div class="col-12">
             <form class="form" id="product-form">
@@ -48,105 +49,144 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-primary" id="add-product">Add</button>
-                &nbsp;
-                <!--      <button type="button" class="btn btn-primary" id="refresh-data">Refresh</button>-->
-                &nbsp;
-                <!--      <button type="button" class="btn btn-primary" id="upload-data">Upload</button>-->
+                <button type="button" class="btn btn-warning" id="upload-data">Upload
+                </button>
             </form>
         </div>
     </div>
 
-    <h5 id="status" style="color:red;"></h5>
+<br/>
+    <br/>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped" id="product-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Barcode</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">MRP</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
 
-<div class="row">
-    <div class="col-12">
-        <table class="table table-striped" id="product-table">
-            <thead>
-            <tr>
-                <th scope="col">Id#</th>
-                <th scope="col">Barcode</th>
-                <th scope="col">Brand</th>
-                <th scope="col">Category</th>
-                <th scope="col">Name</th>
-                <th scope="col">MRP</th>
-                <th scope="col">Handel</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<!--update form html-->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            <div class="form-group">
-                <label for="inputUpdateId" class="col-sm-2 col-form-label">Id</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="id" id="inputUpdateId" readonly>
+    <!--update product popup-->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputUpdateId" class="col-sm-2 col-form-label">Id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="id" id="inputUpdateId" readonly>
+                        </div>
+                    </div>
 
-                <form class="form-inline" id="updateProductForm">
-                    <div class="form-group">
-                        <label for="inputUpdateBarcode" class="col-sm-2 col-form-label">Barcode</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" name="barcode" id="inputUpdateBarcode">
+                    <form class="form" id="updateProductForm">
+                        <div class="form-group">
+                            <label for="inputUpdateBarcode" class="col-sm-2 col-form-label">Barcode</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="barcode" id="inputUpdateBarcode">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUpdateBrand" class="col-sm-2 col-form-label">Brand</label>
-                        <div class="col-sm-10">
-                            <select type="text" class="form-control" name="brandName" id="inputUpdateBrand">
+                        <div class="form-group">
+                            <label for="inputUpdateBrand" class="col-sm-2 col-form-label">Brand</label>
+                            <div class="col-sm-10">
+                                <select type="text" class="form-control" name="brandName" id="inputUpdateBrand">
 
-                            </select>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUpdateCategory" class="col-sm-2 col-form-label">Category</label>
-                        <div class="col-sm-10">
-                            <select type="text" class="form-control" name="brandCategory" id="inputUpdateCategory">
+                        <div class="form-group">
+                            <label for="inputUpdateCategory" class="col-sm-2 col-form-label">Category</label>
+                            <div class="col-sm-10">
+                                <select type="text" class="form-control" name="brandCategory" id="inputUpdateCategory">
 
-                            </select>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUpdateName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" name="name" id="inputUpdateName">
+                        <div class="form-group">
+                            <label for="inputUpdateName" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" id="inputUpdateName">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUpdateMrp" class="col-sm-2 col-form-label">Mrp</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" name="mrp" id="inputUpdateMrp">
+                        <div class="form-group">
+                            <label for="inputUpdateMrp" class="col-sm-2 col-form-label">Mrp</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="mrp" id="inputUpdateMrp">
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="update-product">Save
-                    changes</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="update-product">Save
+                        changes
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+<!--    upload product popup-->
+
+    <div class="modal" tabindex="-1" role="dialog" id="upload-product-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="product-file">
+                        <input type="file" class="custom-file-input" id="productFile">
+                        <label class="custom-file-label" for="productFile" id="productFileName">Choose file</label>
+                    </div>
+<!--                    <a th:href="@{/sample/products.tsv}" target="_blank">Download Sample</a>-->
+                    <br>
+                    Rows: <span id="rowCount">0</span>,
+                    Processed: <span id="processCount">0</span>,
+                    Errors: <span id="errorCount">0</span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="process-data">Upload</button>
+                    <button type="button" class="btn btn-warning" id="download-errors">Download Errors</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--status popup modal-->
+    <div th:replace="snippets.html :: name_status_popup"></div>
+
 </div>
 
 </body>
 
 <footer th:replace="snippets.html :: name_footer"></footer>
-<script th:src="@{/static/products.js}"/></script>
+<script th:src="@{/static/products.js}"/>
+</script>
 
 </html>

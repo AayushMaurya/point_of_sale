@@ -1,7 +1,6 @@
 package com.increff.store.pojo;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,7 +10,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Table(name = "Brand_Table")
-public class BrandPojo extends DateAudit{
+public class BrandPojo extends AbstractDateAudit {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;

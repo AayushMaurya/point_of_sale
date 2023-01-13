@@ -31,14 +31,15 @@ function displayOrderItemList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
+		var index = i+1;
 		var buttonHtml = ' <button class="btn-disable btn btn-primary" onclick="deleteOrderItem('
 		+ e.id + ')">delete</button>'
 		+ ' <button onclick="fillFields(' + e.id + ','
 		+ e.orderId + ',' + e.productId + ',' + e.quantity + ','
 		+ e.sellingPrice + ')" class="btn-disable btn btn-primary" data-toggle="modal"'
-		+ 'data-target="#exampleModalCenter">edit</button>';
+		+ 'data-target="#exampleModalCenter">Edit</button>';
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' + index + '</td>'
 		+ '<td>' + e.productName + '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + e.sellingPrice + '</td>'
@@ -69,10 +70,9 @@ function addOrderItem(event)
            },
     	   success: function(response) {
     	   		getOrderItemList();
-    	   		setStatus(response);
+    	   		handleSuccess("Item added");
     	   },
-//    	   error: handleAjaxError
-//            error: setStatus(response)
+    	   error: handleAjaxError
 
     	});
     	return false;
@@ -91,9 +91,9 @@ function placeOrder()
         	   console.log("order placed");
         	   		alert(response);
         	   		location.reload();
+        	   		handleSuccess("Order Placed");
         	   },
-    //    	   error: handleAjaxError
-//                error: setStatus(response)
+        	   error: handleAjaxError
 
         	});
 }
@@ -107,8 +107,9 @@ function deleteOrderItem(id)
     	   type: 'DELETE',
     	   success: function(data) {
     	   		getOrderItemList();
+    	   		handleSuccess("Item deleted");
     	   },
-//    	   error: handleAjaxError
+    	   error: handleAjaxError
     	});
 }
 
@@ -144,9 +145,9 @@ function updateOrderItem()
                },
         	   success: function(response) {
         	   		getOrderItemList();
-        	   		setStatus(response);
+        	   		handleSuccess("Item Updated");
         	   },
-    //    	   error: handleAjaxError
+        	   error: handleAjaxError
 
         	});
 }
@@ -160,11 +161,6 @@ function disableEditing()
     document.getElementById('add-Item').disabled = true;
     document.getElementById('place-order').disabled = true;
     $('#download-invoice').disabled = true;
-}
-
-function setStatus(message)
-{
-    document.getElementById("status").innerHTML = "status: " + message;
 }
 
 function downloadInvoice()

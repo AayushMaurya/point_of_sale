@@ -27,67 +27,72 @@ public class OrderItemDto {
     @Autowired
     private OrderService orderService;
 
-    public void add(OrderItemForm form) throws ApiException
-    {
+    public void addOrderItem(OrderItemForm form) throws ApiException {
         OrderItemPojo p = convert(form);
         try {
             OrderItemPojo newPojo = service.get_productId_orderId(p.getProductId(), p.getOrderId());
 
             int q = p.getQuantity();
             p.setQuantity(newPojo.getQuantity() + q);
-            service.update(newPojo.getId(), p);
-        }
-        catch(Exception e) {
+            service.updateOrderItem(newPojo.getId(), p);
+        } catch (Exception e) {
             service.addOrderItem(p);
         }
     }
 
-    public void update(UpdateOrderItemForm form) throws ApiException
-    {
+    public void updateOrderItem(UpdateOrderItemForm form) throws ApiException {
         OrderItemPojo newPojo = new OrderItemPojo();
         newPojo.setId(form.getId());
         newPojo.setOrderId(form.getOrderId());
         newPojo.setProductId(form.getProductId());
         newPojo.setQuantity(form.getQuantity());
         newPojo.setSellingPrice(form.getMrp());
-        service.update(form.getId(), newPojo);
+        service.updateOrderItem(form.getId(), newPojo);
     }
 
-    public List<OrderItemData> get_orderId(int id) throws ApiException
-    {
-        List<OrderItemPojo> list1 = service.get_order(id);
+    public List<OrderItemData> getOrderItemByOrderId(int id) throws ApiException {
+        List<OrderItemPojo> list1 = service.getOrder(id);
         List<OrderItemData> list2 = new ArrayList<OrderItemData>();
 
-        for(OrderItemPojo p : list1)
+        for (OrderItemPojo p : list1)
             list2.add(convert(p));
 
         return list2;
     }
 
-    public List<OrderItemData> get_orderCode(String orderCode) throws ApiException {
-        OrderPojo p = orderService.get_order_orderCode(orderCode);
+    public List<OrderItemData> getOrderItemByOrderCode(String orderCode) throws ApiException {
+        OrderPojo p = orderService.getOrderByOrderCode(orderCode);
         int id = p.getId();
 
-        return get_orderId(id);
+        return getOrderItemByOrderId(id);
     }
 
-    private OrderItemPojo convert(OrderItemForm form) throws ApiException
-    {
-       OrderItemPojo p = new OrderItemPojo();
-       p.setOrderId(form.getOrderId());
-       p.setQuantity(form.getQuantity());
-       p.setSellingPrice(form.getSellingPrice());
-       String code = form.getBarCode();
-       ProductPojo productPojo = productService.getProductByBarcode(code);
-       p.setProductId(productPojo.getId());
-       p.setBrandCategory(productPojo.getBrandCategory());
-       return p;
+    public List<OrderItemData> getAllOrderItem() throws ApiException {
+        List<OrderItemPojo> list1 = service.getAllOrderItem();
+        List<OrderItemData> list2 = new ArrayList<>();
+
+        for (OrderItemPojo p : list1)
+            list2.add(convert(p));
+
+        return list2;
     }
 
-    private OrderItemData convert(OrderItemPojo p) throws ApiException
-    {
+    private OrderItemPojo convert(OrderItemForm form) throws ApiException {
+        OrderItemPojo p = new OrderItemPojo();
+        p.setOrderId(form.getOrderId());
+        p.setQuantity(form.getQuantity());
+        p.setSellingPrice(form.getSellingPrice());
+        String code = form.getBarCode();
+        ProductPojo productPojo = productService.getProductByBarcode(code);
+        p.setProductId(productPojo.getId());
+        p.setBrandCategory(productPojo.getBrandCategory());
+        return p;
+    }
+
+    private OrderItemData convert(OrderItemPojo p) throws ApiException {
         OrderItemData d = new OrderItemData();
-        d.setId(p.getId());;
+        d.setId(p.getId());
+        ;
         d.setOrderId(p.getOrderId());
         d.setQuantity(p.getQuantity());
         d.setSellingPrice(p.getSellingPrice());
@@ -95,16 +100,6 @@ public class OrderItemDto {
         d.setProductName(productName);
         d.setProductId(p.getProductId());
         return d;
-    }
-
-    public List<OrderItemData> get_all() throws ApiException{
-        List<OrderItemPojo> list1 = service.get_all();
-        List<OrderItemData> list2 = new ArrayList<>();
-
-        for(OrderItemPojo p :list1)
-            list2.add(convert(p));
-
-        return list2;
     }
 
 }

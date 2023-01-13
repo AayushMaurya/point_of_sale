@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.increff.store.dto.DtoUtils.*;
+
 @Service
 public class RevenueDto {
 
@@ -28,7 +30,7 @@ public class RevenueDto {
     @Autowired
     InventoryService inventoryService;
 
-    public List<ProductRevenueData> get_revenue_product(DateFilterForm form) throws ApiException
+    public List<ProductRevenueData> getProductWiseReport(DateFilterForm form) throws ApiException
     {
         List<ProductRevenueData> list1 = new ArrayList<ProductRevenueData>();
 
@@ -46,14 +48,14 @@ public class RevenueDto {
         String startDate = correctFormat(form.getStart()) + " 00:00:00";
         String endDate = correctFormat(form.getEnd()) + " 23:59:59";
 
-        List<OrderPojo> orderPojoList = orderService.select_date_filter(startDate, endDate);
+        List<OrderPojo> orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);
 
 //        setting the quantity and total
 //          -> order wise filtered on basis of date
         for(OrderPojo e: orderPojoList)
         {
             int orderId = e.getId();
-            List<OrderItemPojo> orderItemPojoList = orderItemService.get_order(orderId);
+            List<OrderItemPojo> orderItemPojoList = orderItemService.getOrder(orderId);
 
             for(OrderItemPojo p: orderItemPojoList)
             {
@@ -73,13 +75,13 @@ public class RevenueDto {
         return list1;
     }
 
-    public List<BrandRevenueData> get_revenue_brand(DateFilterForm form) throws ApiException {
+    public List<BrandRevenueData> getBrandReport(DateFilterForm form) throws ApiException {
         List<BrandRevenueData> res = new ArrayList<>();
 
 //        key: brand name
         HashMap<String, BrandRevenueData> map = new HashMap<>();
 
-        List<ProductRevenueData> list1 = get_revenue_product(form);
+        List<ProductRevenueData> list1 = getProductWiseReport(form);
 
         for(ProductRevenueData p: list1)
         {
@@ -107,12 +109,12 @@ public class RevenueDto {
         return res;
     }
 
-    public List<CategoryRevenueData> get_revenue_category(DateFilterForm form) throws ApiException {
+    public List<CategoryRevenueData> getCategoryReport(DateFilterForm form) throws ApiException {
         List<CategoryRevenueData> res = new ArrayList<>();
 
         HashMap<String, CategoryRevenueData> map = new HashMap<>();
 
-        List<ProductRevenueData> list1 = get_revenue_product(form);
+        List<ProductRevenueData> list1 = getProductWiseReport(form);
 
         for(ProductRevenueData p: list1)
         {
@@ -167,13 +169,13 @@ public class RevenueDto {
         return res;
     }
 
-    public List<InventoryReportModel> get_inventory_report() {
+    public List<InventoryReportModel> getInventoryReport() {
         List<BrandPojo> brandPojoList = brandService.getAllBrands();
 
         HashMap<Integer, InventoryReportModel> map = new HashMap<>();
 
         for(BrandPojo b: brandPojoList)
-            map.put(b.getId(), convert(b));
+            map.put(b.getId(), convertBrandPojoToInventoryReportModel(b));
 
         List<InventoryPojo> inventoryPojoList = inventoryService.getAllInventory();
 
@@ -203,15 +205,4 @@ public class RevenueDto {
         return list;
     }
 
-    private InventoryReportModel convert(BrandPojo p)
-    {
-        InventoryReportModel inventoryReportModel = new InventoryReportModel();
-
-        inventoryReportModel.setBrand(p.getBrand());
-        inventoryReportModel.setCategory(p.getCategory());
-        inventoryReportModel.setBrandCategoryId(p.getId());
-        inventoryReportModel.setQuantity(0);
-
-        return inventoryReportModel;
-    }
 }

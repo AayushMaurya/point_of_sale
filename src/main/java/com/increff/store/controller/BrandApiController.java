@@ -21,19 +21,19 @@ public class BrandApiController {
     @ApiOperation(value = "Adds a brand")
     @RequestMapping(path = "/api/brand", method = RequestMethod.POST)
     public void add(@RequestBody BrandForm form) throws ApiException {
-        dto.add(form);
+        dto.addBrand(form);
     }
 
     @ApiOperation(value = "Select all brands")
     @RequestMapping(path = "api/brand", method = RequestMethod.GET)
     public List<BrandData> getAll() {
-        return dto.getAll();
+        return dto.getAllBrands();
     }
 
     @ApiOperation(value = "Update brand")
     @RequestMapping(path = "api/brand/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable int id, @RequestBody BrandForm form) throws ApiException {
-        dto.update(id, form);
+        dto.updateBrand(id, form);
     }
 
 }

@@ -16,26 +16,26 @@ public class InventoryService {
 
     @Transactional
     public void addInventory(InventoryPojo newPojo) {
-        InventoryPojo p = dao.selectById(newPojo.getId());
-        if (p == null) {
+        InventoryPojo pojo = dao.selectById(newPojo.getId());
+        if (pojo == null) {
             dao.insert(newPojo);
         } else {
-            update(newPojo);
+            updateInventory(newPojo);
         }
     }
 
     @Transactional
     public void reduceInventory(InventoryPojo newPojo) throws ApiException {
-        InventoryPojo p = dao.selectById(newPojo.getId());
+        InventoryPojo pojo = dao.selectById(newPojo.getId());
 
-        if (p == null)
+        if (pojo == null)
             throw new ApiException("No inventory found with given Id");
 
-        if (p.getQuantity() < newPojo.getQuantity())
-            throw new ApiException("Inventory has only " + p.getQuantity() + " quantity left");
+        if (pojo.getQuantity() < newPojo.getQuantity())
+            throw new ApiException("Inventory has only " + pojo.getQuantity() + " quantity left");
 
         newPojo.setQuantity(newPojo.getQuantity() * -1);
-        update(newPojo);
+        updateInventory(newPojo);
     }
 
     @Transactional
@@ -44,9 +44,9 @@ public class InventoryService {
     }
 
     @Transactional
-    private void update(InventoryPojo newPojo) {
-        InventoryPojo p = dao.selectById(newPojo.getId());
-        p.setQuantity(p.getQuantity() + newPojo.getQuantity());
+    private void updateInventory(InventoryPojo newPojo) {
+        InventoryPojo pojo = dao.selectById(newPojo.getId());
+        pojo.setQuantity(pojo.getQuantity() + newPojo.getQuantity());
     }
 
 }

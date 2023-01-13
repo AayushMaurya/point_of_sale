@@ -25,44 +25,37 @@ public class OrderItemApiController {
 
     @ApiOperation(value = "Adds an orderItem")
     @RequestMapping(path = "/api/order-item", method = RequestMethod.POST)
-    public String add(@RequestBody OrderItemForm form) throws ApiException {
-        String message;
-        try {
-            dto.add(form);
-            message = "Successfully added order item";
-        } catch (Exception e) {
-            message = e.getMessage();
-        }
-        return message;
+    public void add(@RequestBody OrderItemForm form) throws ApiException {
+        dto.addOrderItem(form);
     }
 
     @ApiOperation(value = "Gets an order by orderId")
     @RequestMapping(path = "/api/order-item/{id}", method = RequestMethod.GET)
     public List<OrderItemData> get_orderId(@PathVariable int id) throws ApiException {
-        return dto.get_orderId(id);
+        return dto.getOrderItemByOrderId(id);
     }
 
     @ApiOperation(value = "Gets an order by orderCode")
     @RequestMapping(path = "/api/order-item/order-code/{id}", method = RequestMethod.GET)
     public List<OrderItemData> get_orderId(@PathVariable String id) throws ApiException {
-        return dto.get_orderCode(id);
+        return dto.getOrderItemByOrderCode(id);
     }
 
     @ApiOperation(value = "Gets an order by orderId")
     @RequestMapping(path = "/api/order-item", method = RequestMethod.GET)
     public List<OrderItemData> get_all() throws ApiException {
-        return dto.get_all();
+        return dto.getAllOrderItem();
     }
 
     @ApiOperation(value = "Delete an item by item id")
     @RequestMapping(path = "api/order-item/{id}", method = RequestMethod.DELETE)
     public void delete_ItemId(@PathVariable int id) throws ApiException {
-        service.delete_ItemId(id);
+        service.deleteOrderItemById(id);
     }
 
     @ApiOperation(value = "Update Order Item")
     @RequestMapping(path = "/api/order-item", method = RequestMethod.PUT)
     public void update(@RequestBody UpdateOrderItemForm form) throws ApiException {
-        dto.update(form);
+        dto.updateOrderItem(form);
     }
 }

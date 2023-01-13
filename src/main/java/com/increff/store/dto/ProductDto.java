@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.increff.store.dto.DtoUtils.checkProductForm;
+
 @Service
 public class ProductDto {
     @Autowired
@@ -22,21 +24,21 @@ public class ProductDto {
     @Autowired
     private BrandService brandService;
 
-    public void add(ProductForm form) throws ApiException
+    public void addProduct(ProductForm form) throws ApiException
     {
-        isOk(form);
+        checkProductForm(form);
         ProductPojo p = convert(form);
         normalize(p);
         service.addProduct(p);
     }
 
-    public ProductData get(int id) throws ApiException
+    public ProductData getProductById(int id) throws ApiException
     {
         ProductPojo p = service.getProductById(id);
         return convert(p);
     }
 
-    public List<ProductData> get_all() throws ApiException
+    public List<ProductData> getAllProducts() throws ApiException
     {
         List<ProductPojo> list1 = service.getAllProducts();
         List<ProductData> list2 = new ArrayList<ProductData>();
@@ -46,11 +48,11 @@ public class ProductDto {
         return list2;
     }
 
-    public void update(int id, ProductForm form) throws ApiException
+    public void updateProduct(int id, ProductForm form) throws ApiException
     {
         ProductPojo p = convert(form);
         normalize(p);
-        service.update(id, p);
+        service.updateProduct(id, p);
     }
 
     private ProductPojo convert(ProductForm form) throws  ApiException
@@ -89,18 +91,6 @@ public class ProductDto {
 
     protected static void normalize(ProductPojo p) {
         p.setName(StringUtil.toLowerCase(p.getName()));
-    }
-
-    protected void isOk(ProductForm form) throws ApiException
-    {
-        if(StringUtil.isEmpty(form.getName()))
-            throw new ApiException("Product name cannot be empty");
-        if(StringUtil.isEmpty(form.getBarcode()))
-            throw new ApiException("barcode cannot be empty");
-        if(StringUtil.isEmpty(form.getBrandName()))
-            throw new ApiException("Brand name cannot be empty");
-        if(StringUtil.isEmpty(form.getBrandCategory()))
-            throw new ApiException("Category cannot be empty");
     }
 
 }

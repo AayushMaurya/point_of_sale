@@ -15,12 +15,12 @@ public class ProductService {
     private ProductDao dao;
 
     @Transactional
-    public void addProduct(ProductPojo p) throws ApiException {
-        ProductPojo productPojo = dao.selectByBarcode(p.getBarcode());
+    public void addProduct(ProductPojo pojo) throws ApiException {
+        ProductPojo productPojo = dao.selectByBarcode(pojo.getBarcode());
         if (productPojo != null)
             throw new ApiException("Product with given barcode already exists");
 
-        dao.insert(p);
+        dao.insert(pojo);
     }
 
     @Transactional
@@ -37,12 +37,12 @@ public class ProductService {
     }
 
     @Transactional
-    public void update(int id, ProductPojo newpojo) {
+    public void updateProduct(int id, ProductPojo newPojo) {
         ProductPojo p = dao.selectById(id);
-        p.setBarcode(newpojo.getBarcode());
-        p.setBrandCategory(newpojo.getBrandCategory());
-        p.setName(newpojo.getName());
-        p.setMrp(newpojo.getMrp());
+        p.setBarcode(newPojo.getBarcode());
+        p.setBrandCategory(newPojo.getBrandCategory());
+        p.setName(newPojo.getName());
+        p.setMrp(newPojo.getMrp());
     }
 
     @Transactional
@@ -52,5 +52,4 @@ public class ProductService {
             throw new ApiException("Cannot find product with given bar code");
         return productPojo;
     }
-
 }

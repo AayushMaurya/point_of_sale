@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @Api
@@ -23,31 +22,31 @@ public class OrderApiController {
     @ApiOperation(value = "Adds order to order table")
     @RequestMapping(path = "/api/order", method = RequestMethod.POST)
     public String add(@RequestBody OrderForm form) throws ApiException {
-        return dto.insert(form);
+        return dto.createOrder(form);
     }
 
     @ApiOperation(value = "Select all order")
     @RequestMapping(path = "/api/order", method = RequestMethod.GET)
     public List<OrderData> get_all() throws ApiException {
-        return dto.get_all();
+        return dto.getAllOrders();
     }
 
     @ApiOperation(value = "Select all order between given date")
     @RequestMapping(path = "/api/order/date-filter", method = RequestMethod.POST)
     public List<OrderData> get_date_filter(@RequestBody DateFilterForm form) throws ApiException {
-        return dto.get_date_filter(form);
+        return dto.getOrderByDateFilter(form);
     }
 
     @ApiOperation(value = "Select order by id")
     @RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
     public OrderData get_id(@PathVariable int id) throws ApiException {
-        return dto.get_id(id);
+        return dto.getOrderById(id);
     }
 
     @ApiOperation(value = "Mark order placed")
     @RequestMapping(path = "api/order/place/{id}", method = RequestMethod.PUT)
     public void mark_order_placed(@PathVariable int id) throws ApiException {
-        dto.place_order(id);
+        dto.placeOrder(id);
     }
 
 

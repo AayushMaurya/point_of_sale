@@ -14,7 +14,8 @@ public class BrandDao {
     private static String DELETE_BY_ID = "delete from BrandPojo p where id=:id";
     private static String SELECT_BY_ID = "select p from BrandPojo p where id=:id";
     private static String SELECT_ALL = "select p from BrandPojo p";
-    private static String SELECT_BY_BRAND_CATEGORY = "select p from BrandPojo p where brand=:id1 and category=:id2";
+    private static String SELECT_BY_BRAND_CATEGORY = "select p from BrandPojo p where brand=:brand and " +
+            "category=:category";
 
     @PersistenceContext
     private EntityManager em;
@@ -34,8 +35,8 @@ public class BrandDao {
 
     public BrandPojo selectByBrandCategory(String brand, String category) {
         TypedQuery<BrandPojo> query = getQuery(SELECT_BY_BRAND_CATEGORY);
-        query.setParameter("id1", brand);
-        query.setParameter("id2", category);
+        query.setParameter("brand", brand);
+        query.setParameter("category", category);
         return query.getResultStream()
                 .findFirst()
                 .orElse(null);

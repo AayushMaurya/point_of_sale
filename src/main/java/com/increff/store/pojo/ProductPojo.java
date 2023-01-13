@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Table(name = "Product_Table")
-public class ProductPojo extends DateAudit{
+public class ProductPojo extends AbstractDateAudit {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;

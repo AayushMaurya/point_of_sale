@@ -42,9 +42,10 @@ function displayOrderList(data){
  	$tbody.empty();
  	for(var i in data){
  		var e = data[i];
- 		var buttonHtml = ' <button class="btn btn-secondary" onClick=redirect("'+ e.orderCode +'")>open</button>'
+ 		var index = i+1;
+ 		var buttonHtml = ' <button class="btn btn-secondary" onClick=redirect("'+ e.orderCode +'")>Open</button>'
  		var row = '<tr>'
- 		+ '<td>' + e.id + '</td>'
+ 		+ '<td>' + index + '</td>'
  		+ '<td>' + e.customerName + '</td>'
  		+ '<td>' + e.createdDataTime + '</td>'
  		+ '<td>' + e.status + '</td>'

@@ -4,133 +4,139 @@
 </head>
 <body>
 <nav th:replace="snippets.html :: name_app_navbar"></nav>
-<h3>this page will show all orders </h3>
 
 <div class="container">
     <h3 id="customer-name"></h3>
-<div class="row">
-    <form class="form-inline" id="orderItem-form">
-        <div class="form-group">
-            <label for="inputOrderId" class="col-sm-2 col-form-label">OrderId</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="orderId" id="inputOrderId" readonly>
+    <div class="row">
+        <form class="form-inline" id="orderItem-form">
+            <div class="form-group">
+                <label for="inputOrderId" class="col-sm-2 col-form-label">OrderId</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="orderId" id="inputOrderId" readonly>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="barCode" id="inputBarcode" placeholder="barcode">
+            <div class="form-group">
+                <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="barCode" id="inputBarcode" placeholder="barcode">
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
-            <div class="col-sm-10">
-                <input type="number" min="0" class="form-control" name="quantity" id="inputQuantity"
-                       placeholder="quantity">
+            <div class="form-group">
+                <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
+                <div class="col-sm-10">
+                    <input type="number" min="0" class="form-control" name="quantity" id="inputQuantity"
+                           placeholder="quantity">
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="inputSellingPrice" class="col-sm-2 col-form-label">Selling Price</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="sellingPrice" id="inputSellingPrice" placeholder="selling price">
+            <div class="form-group">
+                <label for="inputSellingPrice" class="col-sm-2 col-form-label">Selling Price</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="sellingPrice" id="inputSellingPrice"
+                           placeholder="selling price">
+                </div>
             </div>
-        </div>
-        <button type="button" class="btn btn-primary" id="add-Item">Add Item</button>
-        &nbsp;
-        <!--      <button type="button" class="btn btn-primary" id="refresh-data">Refresh</button>-->
-        &nbsp;
-        <!--      <button type="button" class="btn btn-primary" id="upload-data">Upload</button>-->
-    </form>
-    <h5 id="status" style="color:red;"></h5>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <table class="table table-striped table-dark" id="orderItem-table">
-            <thead>
-            <tr>
-                <th scope="col">Id#</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Selling Price</th>
-                <th scope="col">Handle</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
+            <button type="button" class="btn btn-primary" id="add-Item">Add Item</button>
+        </form>
+        <h5 id="status" style="color:red;"></h5>
     </div>
-</div>
 
-<div>
-    <!-- Button trigger modal -->
-<!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">-->
-<!--        Launch demo modal-->
-<!--    </button>-->
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped table-dark" id="orderItem-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Selling Price</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form class="form-inline" id="editOrderItemForm">
-                        <div class="form-group">
-                            <label for="inputUpdateOrderItemId" class="col-sm-2 col-form-label">Id</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="id" id="inputUpdateOrderItemId" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputUpdateOrderId" class="col-sm-2 col-form-label">Order Id</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="orderId" id="inputUpdateOrderId" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputUpdateProductId" class="col-sm-2 col-form-label">Product Id</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="productId" id="inputUpdateProductId" readonly>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputUpdateQuantity" class="col-sm-2 col-form-label">Quantity</label>
-                            <div class="col-sm-10">
-                                <input type="number" min="0" class="form-control" name="quantity"
-                                       id="inputUpdateQuantity">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputUpdateMrp" class="col-sm-2 col-form-label">Selling Price</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="mrp" id="inputUpdateMrp" readonly>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="update-orderItem">Save changes</button>
-                </div>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
 
-<div>
-    <button type="button" class="btn btn-primary" id="place-order">Place Order</button>
-    <button type="button" class="btn btn-secondary" id="download-invoice">Download Invoice</button>
-</div>
+    <div>
+        <!-- Button trigger modal -->
+        <!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">-->
+        <!--        Launch demo modal-->
+        <!--    </button>-->
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-inline" id="editOrderItemForm">
+                            <div class="form-group">
+                                <label for="inputUpdateOrderItemId" class="col-sm-2 col-form-label">Id</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="id" id="inputUpdateOrderItemId"
+                                           readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputUpdateOrderId" class="col-sm-2 col-form-label">Order Id</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="orderId" id="inputUpdateOrderId"
+                                           readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputUpdateProductId" class="col-sm-2 col-form-label">Product Id</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="productId" id="inputUpdateProductId"
+                                           readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputUpdateQuantity" class="col-sm-2 col-form-label">Quantity</label>
+                                <div class="col-sm-10">
+                                    <input type="number" min="0" class="form-control" name="quantity"
+                                           id="inputUpdateQuantity">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputUpdateMrp" class="col-sm-2 col-form-label">Selling Price</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="mrp" id="inputUpdateMrp" readonly>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="update-orderItem">Save
+                            changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button type="button" class="btn btn-primary" id="place-order">Place Order</button>
+        <button type="button" class="btn btn-secondary" id="download-invoice">Download Invoice</button>
+    </div>
+
+    <!--status popup modal-->
+    <div th:replace="snippets.html :: name_status_popup"></div>
 </div>
 </body>
 
 <footer th:replace="snippets.html :: name_footer"></footer>
-<script th:src="@{/static/orderItem.js}"/></script>
+<script th:src="@{/static/orderItem.js}"/>
+</script>
 
 </html>

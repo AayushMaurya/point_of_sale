@@ -47,7 +47,7 @@ function getProductRevenueList(){
 	   productRevenueData = data;
 	   		displayRevenueProductList(data);
 	   },
-//	   error: handleAjaxError
+	   error: handleAjaxError
 	});
 }
 
@@ -67,7 +67,7 @@ function getBrandRevenueList()
     	   console.log(data);
     	   		displayRevenueBrandList(data);
     	   },
-    //	   error: handleAjaxError
+    	   error: handleAjaxError
     	});
 }
 
@@ -87,7 +87,7 @@ function getCategoryRevenueList()
     	   console.log(data);
     	   		displayRevenueCategoryList(data);
     	   },
-    //	   error: handleAjaxError
+    	   error: handleAjaxError
     	});
 }
 
@@ -97,8 +97,9 @@ function displayRevenueProductList(data)
     $tbody.empty();
     for(var i in data){
     		var e = data[i];
+    		var index = i+1;
     		var row = '<tr>'
-    		+ '<td>' + e.id + '</td>'
+    		+ '<td>' + index + '</td>'
     		+ '<td>' + e.barcode + '</td>'
     		+ '<td>'  + e.name + '</td>'
     		+ '<td>'  + e.mrp + '</td>'
@@ -117,6 +118,7 @@ function displayRevenueBrandList(data)
         		var e = data[i];
         		var brandName = e.brand;
         		var row = '<tr onclick=displayBrandRevenue()>'
+        		+ '<td>' + i+1 + '</td>'
         		+ '<td>' + e.brand + '</td>'
         		+ '<td>'  + e.quantity + '</td>'
         		+ '<td>'  + e.total + '</td>'
@@ -133,6 +135,7 @@ function displayRevenueCategoryList(data)
         for(var i in data){
         		var e = data[i];
         		var row = '<tr onclick = "displayCategory()">'
+        		+ '<td>' + i+1 + '</td>'
         		+ '<td>' + e.category + '</td>'
         		+ '<td>'  + e.quantity + '</td>'
         		+ '<td>'  + e.total + '</td>'

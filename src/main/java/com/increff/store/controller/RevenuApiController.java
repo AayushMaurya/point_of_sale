@@ -24,27 +24,27 @@ public class RevenuApiController {
     @RequestMapping(path = "/api/revenue-product", method = RequestMethod.POST)
     public List<ProductRevenueData> get_revenue_product(@RequestBody DateFilterForm form) throws ApiException
     {
-        return dto.get_revenue_product(form);
+        return dto.getProductWiseReport(form);
     }
 
     @ApiOperation(value = "Get Revenue on product items with date as filter")
     @RequestMapping(path = "/api/revenue-brand", method = RequestMethod.POST)
     public List<BrandRevenueData> get_revenue_brand(@RequestBody DateFilterForm form) throws ApiException
     {
-        return dto.get_revenue_brand(form);
+        return dto.getBrandReport(form);
     }
 
     @ApiOperation(value = "Get Revenue on product items with date as filter")
     @RequestMapping(path = "/api/revenue-category", method = RequestMethod.POST)
     public List<CategoryRevenueData> get_revenue_category(@RequestBody DateFilterForm form) throws ApiException
     {
-        return dto.get_revenue_category(form);
+        return dto.getCategoryReport(form);
     }
 
     @ApiOperation(value = "Get Inventory Report")
     @RequestMapping(path = "/api/inventory-report", method = RequestMethod.GET)
     public List<InventoryReportModel> get_inventory_report() throws ApiException
     {
-        return dto.get_inventory_report();
+        return dto.getInventoryReport();
     }
 }

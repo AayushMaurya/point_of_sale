@@ -90,8 +90,9 @@ function displayInventoryReport(data)
     for(var i in data)
     {
         var e = data[i];
+        var index = i+1;
         var row = '<tr>'
-                + '<td>' + i + '</td>'
+                + '<td>' + index + '</td>'
         		+ '<td>' + e.brand + '</td>'
         		+ '<td>' + e.category + '</td>'
         		+ '<td>' + e.quantity + '</td>'

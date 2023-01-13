@@ -15,7 +15,7 @@ public class OrderItemDao {
     private static String SELECT_BY_ID = "select p from OrderItemPojo p where id=:id";
     private static String SELECT_BY_PRODUCTID_ORDERID = "select p from OrderItemPojo p where productId=:id1 and " +
             "orderId=:id2";
-    private static String SELECT_BY_ORDER_ID = "select p from OrderItemPojo p where orderid=:id";
+    private static String SELECT_BY_ORDER_ID = "select p from OrderItemPojo p where orderId=:id";
     private static String DELETE_ITEM_BY_ID = "delete from OrderItemPojo p where id=:id";
     private static String SELECT_ALL = "select p from OrderItemPojo p";
 

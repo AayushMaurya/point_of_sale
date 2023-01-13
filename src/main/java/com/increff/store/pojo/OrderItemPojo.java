@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "Order_Items_Table")
-public class OrderItemPojo extends DateAudit{
+public class OrderItemPojo extends AbstractDateAudit {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;

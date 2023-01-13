@@ -35,7 +35,7 @@ function getProductList(){
 	   		displayProductList(data);
 	   		productData = data;
 	   },
-//	   error: handleAjaxError
+	   error: handleAjaxError
 	});
 }
 
@@ -44,11 +44,11 @@ function displayProductList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-//		var buttonHtml = '<button >delete</button>'
+		var index = i+1;
 		var buttonHtml = ' <button class="btn btn-primary" data-toggle="modal" '
-		+ 'data-target="#exampleModalCenter" onclick="fillFields('+ i +')">edit</button>'
+		+ 'data-target="#exampleModalCenter" onclick="fillFields('+ i +')">Edit</button>'
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' + index + '</td>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>'  + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
@@ -62,7 +62,7 @@ function displayProductList(data){
 	pagination();
 }
 
-function addBrand(event)
+function addProduct(event)
 {
     var $form = $("#product-form");
     var json = toJson($form);
@@ -77,10 +77,9 @@ function addBrand(event)
            },
     	   success: function(response) {
     	   		getProductList();
-    	   		setStatus(response);
+    	   		handleSuccess("Product Added");
     	   },
-//    	   error: handleAjaxError
-//            error: setStatus(response)
+    	   error: handleAjaxError
 
     	});
     	return false;
@@ -175,19 +174,13 @@ function updateProduct()
                    },
             	   success: function(response) {
             	   		getProductList();
-            	   		setStatus(response);
+            	   		handleSuccess("Product Updated");
             	   },
-        //    	   error: handleAjaxError
-        //            error: setStatus(response)
+            	   error: handleAjaxError
 
             	});
             	return false;
 
-}
-
-function setStatus(message)
-{
-    document.getElementById("status").innerHTML = "status: " + message;
 }
 
 function pagination(){
@@ -195,12 +188,111 @@ function pagination(){
   $('.dataTables_length').addClass('bs-select');
 }
 
+// methods for upload by tsv
+
+var fileData = [];
+var errorData = [];
+var processCount = 0;
+
+
+function processData(){
+	var file = $('#productFile')[0].files[0];
+	readFileData(file, readFileDataCallback);
+}
+
+function readFileDataCallback(results){
+	fileData = results.data;
+	uploadRows();
+}
+
+function uploadRows(){
+	//Update progress
+	updateUploadDialog();
+	//If everything processed then return
+	if(processCount==fileData.length){
+		return;
+	}
+
+	//Process next row
+	var row = fileData[processCount];
+	processCount++;
+
+	var json = JSON.stringify(row);
+	console.log(json);
+
+
+	console.log(json);
+	var url = getStoreUrl();
+
+	//Make ajax call
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		uploadRows();
+	   		getProductList();
+
+	   },
+	   error: function(response){
+	   		row.error=response.responseText
+	   		errorData.push(row);
+	   		uploadRows();
+	   }
+	});
+
+	console.log("Finally uploaded");
+
+}
+
+function downloadErrors(){
+	writeFileData(errorData);
+}
+
+
+function resetUploadDialog(){
+	//Reset file name
+	var $file = $('#productFile');
+	$file.val('');
+	$('#productFileName').html("Choose File");
+	//Reset various counts
+	processCount = 0;
+	fileData = [];
+	errorData = [];
+	//Update counts
+	updateUploadDialog();
+}
+
+function updateUploadDialog(){
+	$('#rowCount').html("" + fileData.length);
+	$('#processCount').html("" + processCount);
+	$('#errorCount').html("" + errorData.length);
+}
+
+function updateFileName(){
+	var $file = $('#productFile');
+	var fileName = $file.val();
+	$('#productFileName').html(fileName);
+}
+
+function displayUploadData(){
+ 	resetUploadDialog();
+	$('#upload-product-modal').modal('toggle');
+}
+
 function init()
 {
-    $('#add-product').click(addBrand);
+    $('#add-product').click(addProduct);
     $('#inputBrandName').change(displayCategoryList);
     $('#update-product').click(updateProduct);
     $('#inputUpdateBrand').change(displayCategoryList);
+    $('#upload-data').click(displayUploadData);
+    $('#process-data').click(processData);
+    $('#download-errors').click(downloadErrors);
+    $('#productFile').on('change', updateFileName);
 }
 
 $(document).ready(getProductList);

@@ -26,11 +26,12 @@ function displayInventoryList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
+		var index = i+1;
 		var buttonHtml = '<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"'
 		+ 'onclick="fillFields('
-		+ e.id +')">edit</button>';
+		+ e.id +')">Edit</button>';
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' + index+ '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
@@ -72,7 +73,7 @@ console.log("anything");
            },
     	   success: function(response) {
     	   		getInventoryList();
-    	   		setStatus(response);
+    	   		handleSuccess("Inventory Added");
     	   },
     	   error: handleAjaxError
 
@@ -96,7 +97,7 @@ function updateInventoryAdd()
         },
         success: function(response) {
         getInventoryList()
-        setStatus(response);
+        handleSuccess("Inventory Added");
         },
            error: handleAjaxError
 
@@ -118,17 +119,12 @@ function updateInventoryRemove()
         'Content-Type': 'application/json'
         },
         success: function(response) {
-        getInventoryList()
-        setStatus(response);
+        getInventoryList();
+        handleSuccess("Inventory reduced");
         },
         error: handleAjaxError
 
         });
-}
-
-function setStatus(message)
-{
-    document.getElementById("status").innerHTML = "status: " + message;
 }
 
 function pagination(){
@@ -136,11 +132,108 @@ function pagination(){
   $('.dataTables_length').addClass('bs-select');
 }
 
+// upload by TSV methods
+
+var fileData = [];
+var errorData = [];
+var processCount = 0;
+
+
+function processData(){
+	var file = $('#inventoryFile')[0].files[0];
+	readFileData(file, readFileDataCallback);
+//	document.getElementById('logg').innerHTML = "The list has been updated";
+}
+
+function readFileDataCallback(results){
+	fileData = results.data;
+	uploadRows();
+}
+
+function uploadRows(){
+	//Update progress
+	updateUploadDialog();
+	//If everything processed then return
+	if(processCount==fileData.length){
+		return;
+	}
+
+	//Process next row
+	var row = fileData[processCount];
+	processCount++;
+
+	var json = JSON.stringify(row);
+	var url = getStoreUrl();
+
+	//Make ajax call
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },
+	   success: function(response) {
+	   		uploadRows();
+	   		getInventoryList();
+
+	   },
+	   error: function(response){
+	   		row.error=response.responseText
+	   		errorData.push(row);
+	   		uploadRows();
+	   }
+	});
+
+	console.log("Finallllyy uploaded");
+
+}
+
+function downloadErrors(){
+	writeFileData(errorData);
+}
+
+
+function resetUploadDialog(){
+	//Reset file name
+	var $file = $('#inventoryFile');
+	$file.val('');
+	$('#inventoryFileName').html("Choose File");
+	//Reset various counts
+	processCount = 0;
+	fileData = [];
+	errorData = [];
+	//Update counts
+	updateUploadDialog();
+}
+
+function updateUploadDialog(){
+	$('#rowCount').html("" + fileData.length);
+	$('#processCount').html("" + processCount);
+	$('#errorCount').html("" + errorData.length);
+}
+
+function updateFileName(){
+	var $file = $('#inventoryFile');
+	var fileName = $file.val();
+	$('#inventoryFileName').html(fileName);
+}
+
+function displayUploadData(){
+ 	resetUploadDialog();
+	$('#upload-inventory-modal').modal('toggle');
+}
+
+
 function init()
 {
     $('#add-inventory').click(addInventory);
     $('#update-inventory-add').click(updateInventoryAdd);
     $('#update-inventory-remove').click(updateInventoryRemove);
+    $('#upload-data').click(displayUploadData);
+    $('#process-data').click(processData);
+    $('#download-errors').click(downloadErrors);
+    $('#inventoryFile').on('change', updateFileName)
 }
 
 $(document).ready(getInventoryList);

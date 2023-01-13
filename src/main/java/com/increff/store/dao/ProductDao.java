@@ -17,7 +17,7 @@ public class ProductDao {
     private static String DELETE_BY_ID = "delete from ProductPojo p where id=:id";
     private static String SELECT_BY_ID = "select p from ProductPojo p where id=:id";
     private static String SELECT_ALL = "select p from ProductPojo p";
-    private static String SELECT_BY_BARCODE = "select p from ProductPojo p where barcode=:id";
+    private static String SELECT_BY_BARCODE = "select p from ProductPojo p where barcode=:barcode";
 
     @PersistenceContext
     private EntityManager em;
@@ -40,7 +40,7 @@ public class ProductDao {
 
     public ProductPojo selectByBarcode(String barcode) {
         TypedQuery<ProductPojo> query = getQuery(SELECT_BY_BARCODE);
-        query.setParameter("id", barcode);
+        query.setParameter("barcode", barcode);
         return query.getResultStream().findFirst().orElse(null);
     }
 
