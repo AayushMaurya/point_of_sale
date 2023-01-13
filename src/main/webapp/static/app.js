@@ -13,6 +13,7 @@ function toJson($form){
 
 function handleAjaxError(response){
 	var message = JSON.parse(response.responseText);
+	document.getElementById('status').style.backgroundColor = "red";
 	document.getElementById('status-message').innerHTML = message.message;
 	console.log(message);
 	$('.toast').toast('show');
@@ -20,7 +21,8 @@ function handleAjaxError(response){
 
 function handleSuccess(message)
 {
-    document.getElementById('status-message').innerHTML = message.message;
+    document.getElementById('status-message').innerHTML = message;
+    document.getElementById('status').style.backgroundColor = "green";
     console.log(message);
    	$('.toast').toast('show');
 }

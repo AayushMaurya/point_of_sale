@@ -14,8 +14,12 @@ public class OrderService {
     private OrderDao dao;
 
     @Transactional
-    public Integer addOrder(OrderPojo p) throws ApiException {
-        return dao.insert(p);
+    public void addOrder(OrderPojo p) throws ApiException {
+        try {
+            dao.insert(p);
+        } catch (Exception e) {
+            throw new ApiException(e.getMessage());
+        }
     }
 
     @Transactional

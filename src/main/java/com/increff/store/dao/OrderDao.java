@@ -21,15 +21,8 @@ public class OrderDao {
     @PersistenceContext
     private EntityManager em;
 
-    public Integer insert(OrderPojo p) throws ApiException {
-        try {
-            em.persist(p);
-            em.flush();
-            return p.getId();
-        } catch (Exception e) {
-            System.out.println(e);
-            throw new ApiException("Cannot insert the given order in order table");
-        }
+    public void insert(OrderPojo p) throws ApiException {
+        em.persist(p);
     }
 
     public OrderPojo selectById(int id) {
