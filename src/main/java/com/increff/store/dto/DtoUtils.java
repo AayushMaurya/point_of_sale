@@ -4,6 +4,7 @@ import com.increff.store.model.*;
 import com.increff.store.pojo.BrandPojo;
 import com.increff.store.pojo.InventoryPojo;
 import com.increff.store.pojo.OrderPojo;
+import com.increff.store.pojo.UserPojo;
 import com.increff.store.service.ApiException;
 import com.increff.store.util.StringUtil;
 
@@ -91,5 +92,21 @@ public class DtoUtils {
             throw new ApiException("Brand name cannot be empty");
         if(StringUtil.isEmpty(form.getBrandCategory()))
             throw new ApiException("Category cannot be empty");
+    }
+
+    protected static UserData convertUserPojoToUserData(UserPojo p) {
+        UserData d = new UserData();
+        d.setEmail(p.getEmail());
+        d.setRole(p.getRole());
+        d.setId(p.getId());
+        return d;
+    }
+
+    protected static UserPojo convertUserFormToUserPojo(UserForm f) {
+        UserPojo p = new UserPojo();
+        p.setEmail(f.getEmail());
+        p.setRole(f.getRole());
+        p.setPassword(f.getPassword());
+        return p;
     }
 }

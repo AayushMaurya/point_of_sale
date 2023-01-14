@@ -189,8 +189,7 @@ function init()
     $('#upload-data').click(displayUploadData);
     $('#process-data').click(processData);
     $('#download-errors').click(downloadErrors);
-     $('#brandFile').on('change', updateFileName);
-//     $('#status').toast('show');
+    $('#brandFile').on('change', updateFileName);
 }
 
 $(document).ready(getBrandList);
