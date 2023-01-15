@@ -12,12 +12,11 @@ import java.util.List;
 public class UserDao extends AbstractDao {
 
 	private static String DELETE_BY_ID = "delete from UserPojo p where id=:id";
-	private static String select_id = "select p from UserPojo p where id=:id";
+	private static String SELECT_BY_ID = "select p from UserPojo p where id=:id";
 	private static String SELECT_BY_EMAIL = "select p from UserPojo p where email=:email";
 	private static String SELECT_ALL = "select p from UserPojo p";
 
 
-	@Transactional
 	public void insert(UserPojo p) {
 		em().persist(p);
 	}
@@ -29,7 +28,7 @@ public class UserDao extends AbstractDao {
 	}
 
 	public UserPojo select(int id) {
-		TypedQuery<UserPojo> query = getQuery(select_id, UserPojo.class);
+		TypedQuery<UserPojo> query = getQuery(SELECT_BY_ID, UserPojo.class);
 		query.setParameter("id", id);
 		return getSingle(query);
 	}

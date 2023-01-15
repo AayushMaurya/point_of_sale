@@ -1,12 +1,13 @@
 com\increff\store\service\InventoryService.class
 com\increff\store\pojo\OrderPojo.class
+com\increff\store\scheduler\ReportScheduler.class
 com\increff\store\service\BrandService.class
 com\increff\store\service\OrderService.class
+com\increff\store\service\ReportService.class
 com\increff\store\dto\RevenueDto.class
 com\increff\store\model\LoginForm.class
 com\increff\store\dto\UserDto.class
 com\increff\store\model\InventoryReportModel.class
-com\increff\store\controller\RevenuApiController.class
 com\increff\store\dao\ProductDao.class
 com\increff\store\model\BrandRevenueData.class
 com\increff\store\model\ProductRevenueData.class
@@ -36,9 +37,11 @@ com\increff\store\model\CategoryRevenueData.class
 com\increff\store\pojo\OrderItemPojo.class
 com\increff\store\model\InfoData.class
 com\increff\store\controller\AppUiController.class
+com\increff\store\controller\RevenueApiController.class
 com\increff\store\model\DateFilterForm.class
 com\increff\store\controller\SiteUiController.class
 com\increff\store\model\InventoryForm.class
+com\increff\store\dao\ReportDao.class
 com\increff\store\model\OrderForm.class
 com\increff\store\model\OrderItemForm.class
 com\increff\store\service\UserService.class
@@ -46,6 +49,7 @@ com\increff\store\spring\ControllerConfig.class
 com\increff\store\controller\AppRestControllerAdvice.class
 com\increff\store\pojo\AbstractDateAudit.class
 com\increff\store\spring\DbConfig.class
+com\increff\store\spring\SchedulerInitializer.class
 com\increff\store\spring\WebInitializer.class
 com\increff\store\dto\OrderItemDto.class
 com\increff\store\pojo\UserPojo.class
@@ -57,7 +61,9 @@ com\increff\store\service\ProductService.class
 com\increff\store\model\ProductData.class
 com\increff\store\pojo\BrandPojo.class
 com\increff\store\model\BrandForm.class
+com\increff\store\spring\SchedulerConfig.class
 com\increff\store\dto\OrderDto.class
+com\increff\store\dto\ReportDto.class
 com\increff\store\model\ProductForm.class
 com\increff\store\model\OrderData.class
 com\increff\store\util\SecurityUtil.class
@@ -67,6 +73,7 @@ com\increff\store\dto\DtoUtils.class
 com\increff\store\pojo\InventoryPojo.class
 com\increff\store\model\BrandData.class
 com\increff\store\service\OrderItemService.class
+com\increff\store\pojo\DailyReportPojo.class
 com\increff\store\controller\OrderItemApiController.class
 com\increff\store\service\ApiException.class
 com\increff\store\model\UserData.class
