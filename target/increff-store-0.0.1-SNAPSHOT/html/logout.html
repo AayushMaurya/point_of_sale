@@ -4,18 +4,36 @@
 
 <body>
 
-<div class="container">
- <!-- Top row with form-->
- <div class="row">
-	 <div class="col-12">
-		You have been logged out successfully.
-		Login again
-	 </div>	
-</div> 
+<section class="vh-100" style="background-color: #CAE9F5;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-10">
+                <div class="card" style="border-radius: 1rem;">
+                    <div class="row g-0">
+                        <div class="col-md-6 col-lg-5 d-none d-md-block">
+                            <img th:src="@{/static/images/loginImg.jpg}"
+                                 alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;"/>
+                        </div>
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
+                                <div class="d-flex align-items-center mb-3 pb-1">
+                                    <i class="bi bi-cart2" style="font-size:35px;color: #ff6219;"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span class="h1 fw-bold mb-0">Increff POS</span>
+                                </div>
 
-</div> <!-- Container-->
+                                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">You have been logout.</h5>
 
-<footer th:replace="snippets.html :: name_footer"></footer>
+                                <a href="#!" class="small text-muted">Terms of use.</a>
+                                <a href="#!" class="small text-muted">Privacy policy</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 </body>
 

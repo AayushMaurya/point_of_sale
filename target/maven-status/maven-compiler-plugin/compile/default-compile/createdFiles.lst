@@ -35,6 +35,7 @@ com\increff\store\controller\OrderApiController.class
 com\increff\store\dao\InventoryDao.class
 com\increff\store\model\CategoryRevenueData.class
 com\increff\store\pojo\OrderItemPojo.class
+com\increff\store\controller\AdminApiController.class
 com\increff\store\model\InfoData.class
 com\increff\store\controller\AppUiController.class
 com\increff\store\controller\RevenueApiController.class

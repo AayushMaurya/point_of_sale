@@ -65,6 +65,7 @@ D:\java_projects\point-of-sale\src\main\java\com\increff\store\model\LoginForm.j
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\model\ProductForm.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\dao\OrderDao.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\dto\BrandDto.java
+D:\java_projects\point-of-sale\src\main\java\com\increff\store\controller\AdminApiController.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\controller\AppUiController.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\controller\InventoryApiController.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\service\InventoryService.java
