@@ -13,10 +13,6 @@ import org.springframework.stereotype.Component;
 public class InfoData {
     private String message;
     private String email;
+    private String role;
 
-    InfoData()
-    {
-        message = "no message";
-        email = "no email";
-    }
 }

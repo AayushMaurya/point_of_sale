@@ -98,6 +98,7 @@ function updateInventoryAdd()
         success: function(response) {
         getInventoryList()
         handleSuccess("Inventory Added");
+        $('#exampleModalCenter').modal('hide');
         },
            error: handleAjaxError
 

@@ -2,12 +2,12 @@ package com.increff.store.controller;
 
 import com.increff.store.model.InfoData;
 import com.increff.store.model.OrderData;
+import com.increff.store.util.SecurityUtil;
+import com.increff.store.util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.nio.file.attribute.UserPrincipal;
 
 @Controller
 public abstract class AbstractUiController {
@@ -20,9 +20,10 @@ public abstract class AbstractUiController {
     protected ModelAndView mav (String page)
     {
         // Get current user
-//        UserPrincipal principal = SecurityUtil.getPrincipal();
+        UserPrincipal principal = SecurityUtil.getPrincipal();
 
-//        info.setEmail(principal == null ? "" : principal.getEmail());
+        info.setEmail(principal == null ? "" : principal.getEmail());
+        info.setRole(principal == null ? "" : principal.getRole());
 
         ModelAndView mav = new ModelAndView(page);
 

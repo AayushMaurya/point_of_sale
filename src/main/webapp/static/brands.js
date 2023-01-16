@@ -1,3 +1,5 @@
+var brandData;
+
 function getStoreUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/brand";
@@ -11,6 +13,7 @@ function getBrandList(){
 	   success: function(data) {
 	   console.log(data);
 	   		displayBrandList(data);
+	   		brandData = data;
 	   },
 	   error: handleAjaxError
 	});
@@ -23,10 +26,9 @@ function displayBrandList(data){
 		var e = data[i];
 		var buttonHtml = ' <button class="btn btn-primary" data-toggle="modal"'
         + 'data-target="#exampleModalCenter" onclick="fillUpdateFields('
-		+ e.id +')" >Edit</button>';
-		var index = i+1;
+		+ i +')" >Edit</button>';
 		var row = '<tr>'
-		+ '<td>' + index + '</td>'
+		+ '<td>' + i + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
@@ -58,9 +60,11 @@ function addBrand(event)
     	return false;
 }
 
-function fillUpdateFields(id)
+function fillUpdateFields(i)
 {
-    document.getElementById("inputUpdateBrandId").value = id;
+    document.getElementById("inputUpdateBrandId").value = brandData[i].id;
+    document.getElementById("inputUpdateBrand").value = brandData[i].brand;
+    document.getElementById("inputUpdateCategory").value = brandData[i].category;
 }
 
 function updateBrand()
@@ -80,10 +84,11 @@ function updateBrand()
         	   success: function(response) {
         	   		getBrandList();
         	   		handleSuccess("Brand Updated");
+        	   		$('#exampleModalCenter').modal('hide');
         	   },
         	   error: handleAjaxError
-
         	});
+
         	return false;
 }
 

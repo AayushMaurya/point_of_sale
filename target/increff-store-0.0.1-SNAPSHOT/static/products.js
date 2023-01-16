@@ -154,8 +154,9 @@ function displayCategoryList()
 function fillFields(index)
 {
     document.getElementById("inputUpdateId").value = productData[index].id;
-    document.getElementById("updateProductForm").reset();
     document.getElementById("inputUpdateBarcode").value = productData[index].barcode;
+    document.getElementById("inputUpdateName").value = productData[index].name;
+    document.getElementById("inputUpdateMrp").value = productData[index].mrp;
 }
 
 function updateProduct()
@@ -175,6 +176,7 @@ function updateProduct()
             	   success: function(response) {
             	   		getProductList();
             	   		handleSuccess("Product Updated");
+            	   		$('#exampleModalCenter').modal('hide');
             	   },
             	   error: handleAjaxError
 
