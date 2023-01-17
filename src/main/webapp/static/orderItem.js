@@ -7,6 +7,11 @@ function getStoreUrl(){
  	return baseUrl + "/api/order-item";
  }
 
+ function getInvoiceUrl(){
+  	var baseUrl = $("meta[name=baseUrl]").attr("content")
+  	return baseUrl + "/api/invoice";
+  }
+
 function getOrderUrl(){
 var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/order/place";
@@ -165,7 +170,9 @@ function disableEditing()
 
 function downloadInvoice()
 {
-    console.log("This will start downloading invoice");
+    var url = getInvoiceUrl() + "/" + orderCode;
+    console.log(url);
+    window.location.href = url;
 }
 
 function init()
@@ -174,7 +181,6 @@ function init()
     orderCode = $("meta[name=orderCode]").attr("content");
     customerName = $("meta[name=customerName]").attr("content");
     document.getElementById("inputOrderId").value = orderId;
-    document.getElementById("customer-name").innerHTML = customerName;
 
     status = $("meta[name=status]").attr("content");
 

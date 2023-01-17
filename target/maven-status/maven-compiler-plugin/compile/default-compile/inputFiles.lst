@@ -14,6 +14,7 @@ D:\java_projects\point-of-sale\src\main\java\com\increff\store\dao\ReportDao.jav
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\model\BrandForm.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\model\BrandRevenueData.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\util\SecurityUtil.java
+D:\java_projects\point-of-sale\src\main\java\com\increff\store\model\InvoiceForm.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\controller\RevenueApiController.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\dto\DtoUtils.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\model\OrderData.java
@@ -21,6 +22,7 @@ D:\java_projects\point-of-sale\src\main\java\com\increff\store\dto\OrderDto.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\dao\BrandDao.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\spring\SchedulerInitializer.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\spring\SpringSecurityInitializer.java
+D:\java_projects\point-of-sale\src\main\java\com\increff\store\invoice\InvoiceGenerator.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\util\UserPrincipal.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\model\UpdateOrderItemForm.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\pojo\UserPojo.java
@@ -49,6 +51,7 @@ D:\java_projects\point-of-sale\src\main\java\com\increff\store\service\BrandServ
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\model\OrderItemData.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\spring\ControllerConfig.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\pojo\DailyReportPojo.java
+D:\java_projects\point-of-sale\src\main\java\com\increff\store\model\OrderItem.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\spring\DbConfig.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\controller\SiteUiController.java
 D:\java_projects\point-of-sale\src\main\java\com\increff\store\spring\SecurityConfig.java

@@ -1,5 +1,7 @@
 com\increff\store\service\InventoryService.class
 com\increff\store\pojo\OrderPojo.class
+com\increff\store\invoice\InvoiceGenerator.class
+com\increff\store\model\OrderItem.class
 com\increff\store\scheduler\ReportScheduler.class
 com\increff\store\service\BrandService.class
 com\increff\store\service\OrderService.class
@@ -27,6 +29,7 @@ com\increff\store\model\OrderStatusData.class
 com\increff\store\util\GetCurrentDataTime.class
 com\increff\store\model\OrderItemData.class
 com\increff\store\util\StringUtil.class
+com\increff\store\model\InvoiceForm.class
 com\increff\store\model\MessageData.class
 com\increff\store\controller\BrandApiController.class
 com\increff\store\controller\ProductApiController.class
