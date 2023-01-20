@@ -14,7 +14,7 @@ import java.util.List;
 
 import static com.increff.store.dto.DtoUtils.*;
 import static com.increff.store.util.CreateRandomSequence.createRandomOrderCode;
-import static com.increff.store.util.GetCurrentDataTime.get_current_dat_time;
+import static com.increff.store.util.GetCurrentDataTime.getCurrentDateTime;
 
 @Service
 public class OrderDto {
@@ -22,28 +22,26 @@ public class OrderDto {
     @Autowired
     private OrderService service;
 
-    public String createOrder(OrderForm form) throws ApiException
+    public Integer createOrder() throws ApiException
     {
-        OrderPojo orderPojo = convertOrderFormToOrderPojo(form);
-        orderPojo.setCreatedDateTime(get_current_dat_time());
+        OrderPojo orderPojo = new OrderPojo();
+        orderPojo.setCustomerName("");
+        orderPojo.setCreatedDateTime(getCurrentDateTime());
         orderPojo.setStatus("pending");
         orderPojo.setPlaceDateTime("");
-        normalize(orderPojo);
 
 //        creating random order code
         String orderCode = createRandomOrderCode();
 
-        OrderPojo x = service.getOrderByOrderCode(orderCode);
-        while(x!=null)
-        {
-            orderCode = createRandomOrderCode();
-            x = service.getOrderByOrderCode(orderCode);
-        }
+//        OrderPojo x = service.getOrderByOrderCode(orderCode);
+//        while(x!=null)
+//        {
+//            orderCode = createRandomOrderCode();
+//            x = service.getOrderByOrderCode(orderCode);
+//        }
 
         orderPojo.setOrderCode(orderCode);
-        service.addOrder(orderPojo);
-
-        return orderCode;
+        return service.addOrder(orderPojo);
     }
 
     public List<OrderData> getAllOrders() throws ApiException
@@ -71,22 +69,25 @@ public class OrderDto {
         return list1;
     }
 
-    public OrderData getOrderById(int id) throws ApiException
+    public OrderData getOrderById(Integer id) throws ApiException
     {
         OrderPojo p = service.getOrderById(id);
         return convertOrderPojoToOrderData(p);
     }
 
-    public OrderData getOrderByOrderCode(String id) throws ApiException {
-        OrderPojo p = service.getOrderByOrderCode(id);
-        return convertOrderPojoToOrderData(p);
-    }
+//    public OrderData getOrderByOrderCode(String orderCode) throws ApiException {
+//        OrderPojo p = service.getOrderByOrderCode(orderCode);
+//        return convertOrderPojoToOrderData(p);
+//    }
 
-    public void placeOrder(int id) throws ApiException
+    public void placeOrder(Integer id, OrderForm form) throws ApiException
     {
+        checkOrderForm(form);
         OrderPojo orderPojo = service.getOrderById(id);
         orderPojo.setStatus("Placed");
-        orderPojo.setPlaceDateTime(get_current_dat_time());
+        orderPojo.setCustomerName(form.getCustomerName());
+        orderPojo.setPlaceDateTime(getCurrentDateTime());
+        normalize(orderPojo);
         service.updateOrder(id, orderPojo);
     }
 }

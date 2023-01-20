@@ -1,29 +1,54 @@
 var orderId;
 var orderCode
 var status;
-var customerName;
 function getStoreUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/order-item";
  }
 
+ function getInvoiceUrl(){
+  	var baseUrl = $("meta[name=baseUrl]").attr("content")
+  	return baseUrl + "/api/invoice";
+  }
+
 function getOrderUrl(){
 var baseUrl = $("meta[name=baseUrl]").attr("content")
- 	return baseUrl + "/api/order/place";
+ 	return baseUrl + "/api/order";
+}
+
+function getOrder()
+{
+    var url = getOrderUrl() + "/" + orderId;
+    console.log(url);
+    $.ajax({
+    	   url: url,
+    	   type: 'GET',
+    	   success: function(data) {
+    	   console.log(data);
+    	   status = data.status;
+    	   console.log(status);
+    	   getOrderItemList();
+    	   },
+    	   error: handleAjaxError
+    	});
+    	return false;
 }
 
 function getOrderItemList(){
+    console.log("getting");
 	var url = getStoreUrl();
-	url += "/order-code/" + orderCode;
+	url += "/" + orderId;
+	console.log(url);
 	$.ajax({
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   console.log(data);
+	        console.log("orderItem: " + data);
 	   		displayOrderItemList(data);
 	   },
-//	   error: handleAjaxError
+	   error: handleAjaxError
 	});
+	return false;
 }
 
 function displayOrderItemList(data){
@@ -47,12 +72,14 @@ function displayOrderItemList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
-	if(status === "Placed")
-	    disableEditing();
-	if(data.length == 0)
-	    document.getElementById('place-order').disabled = true;
-	else
-	    document.getElementById('place-order').disabled = false;
+
+//	if(data.length == 0)
+//	    document.getElementById('place-order').disabled = true;
+//	else
+//	    document.getElementById('place-order').disabled = false;
+//
+//	if(status === "Placed")
+//        disableEditing();
 }
 
 function addOrderItem(event)
@@ -60,6 +87,7 @@ function addOrderItem(event)
     var $form = $("#orderItem-form");
     var json = toJson($form);
     var url = getStoreUrl();
+    console.log(url);
 
     $.ajax({
     	   url: url,
@@ -80,22 +108,25 @@ function addOrderItem(event)
 
 function placeOrder()
 {
-    var url = getOrderUrl() + "/" + orderId;
+    var $form = $("#order-form");
+    var json = toJson($form);
+    var url = getOrderUrl() + "/place/" + orderId;
     $.ajax({
         	   url: url,
         	   type: 'PUT',
+        	   data: json,
         	   headers: {
                	'Content-Type': 'application/json'
                },
         	   success: function(response) {
         	   console.log("order placed");
-        	   		alert(response);
-        	   		location.reload();
         	   		handleSuccess("Order Placed");
+        	   		status = "Placed";
+        	   		getOrderItemList();
         	   },
         	   error: handleAjaxError
-
         	});
+        	return false;
 }
 
 function deleteOrderItem(id)
@@ -111,6 +142,8 @@ function deleteOrderItem(id)
     	   },
     	   error: handleAjaxError
     	});
+
+    	return false;
 }
 
 function fillFields(id, orderId, productId, quantity, sellingPrice)
@@ -150,6 +183,8 @@ function updateOrderItem()
         	   error: handleAjaxError
 
         	});
+
+        	return false;
 }
 
 function disableEditing()
@@ -160,23 +195,25 @@ function disableEditing()
 
     document.getElementById('add-Item').disabled = true;
     document.getElementById('place-order').disabled = true;
-    $('#download-invoice').disabled = true;
+    $('#download-invoice').disabled = false;
 }
 
 function downloadInvoice()
 {
-    console.log("This will start downloading invoice");
+    var url = getInvoiceUrl() + "/" + orderId;
+    console.log(url);
+    window.location.href = url;
 }
 
 function init()
 {
+    console.log("initializing");
     orderId = $("meta[name=orderId]").attr("content");
-    orderCode = $("meta[name=orderCode]").attr("content");
-    customerName = $("meta[name=customerName]").attr("content");
-    document.getElementById("inputOrderId").value = orderId;
-    document.getElementById("customer-name").innerHTML = customerName;
+//    orderCode = $("meta[name=orderCode]").attr("content");
 
-    status = $("meta[name=status]").attr("content");
+    console.log(orderId);
+
+    document.getElementById("inputOrderId").value = orderId;
 
     $('#add-Item').click(addOrderItem);
     $('#place-order').click(placeOrder);
@@ -185,4 +222,4 @@ function init()
 }
 
 $(document).ready(init);
-$(document).ready(getOrderItemList);
+$(document).ready(getOrder);

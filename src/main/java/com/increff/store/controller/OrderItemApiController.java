@@ -31,25 +31,19 @@ public class OrderItemApiController {
 
     @ApiOperation(value = "Gets an order by orderId")
     @RequestMapping(path = "/api/order-item/{id}", method = RequestMethod.GET)
-    public List<OrderItemData> get_orderId(@PathVariable int id) throws ApiException {
+    public List<OrderItemData> getOrderByOrderId(@PathVariable Integer id) throws ApiException {
         return dto.getOrderItemByOrderId(id);
     }
 
-    @ApiOperation(value = "Gets an order by orderCode")
-    @RequestMapping(path = "/api/order-item/order-code/{id}", method = RequestMethod.GET)
-    public List<OrderItemData> get_orderId(@PathVariable String id) throws ApiException {
-        return dto.getOrderItemByOrderCode(id);
-    }
-
-    @ApiOperation(value = "Gets an order by orderId")
+    @ApiOperation(value = "Get all order items")
     @RequestMapping(path = "/api/order-item", method = RequestMethod.GET)
-    public List<OrderItemData> get_all() throws ApiException {
+    public List<OrderItemData> getAll() throws ApiException {
         return dto.getAllOrderItem();
     }
 
     @ApiOperation(value = "Delete an item by item id")
     @RequestMapping(path = "api/order-item/{id}", method = RequestMethod.DELETE)
-    public void delete_ItemId(@PathVariable int id) throws ApiException {
+    public void deleteItemId(@PathVariable Integer id) throws ApiException {
         service.deleteOrderItemById(id);
     }
 

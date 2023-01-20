@@ -32,7 +32,7 @@ public class ProductDto {
         service.addProduct(p);
     }
 
-    public ProductData getProductById(int id) throws ApiException
+    public ProductData getProductById(Integer id) throws ApiException
     {
         ProductPojo p = service.getProductById(id);
         return convert(p);
@@ -48,7 +48,7 @@ public class ProductDto {
         return list2;
     }
 
-    public void updateProduct(int id, ProductForm form) throws ApiException
+    public void updateProduct(Integer id, ProductForm form) throws ApiException
     {
         ProductPojo p = convert(form);
         normalize(p);

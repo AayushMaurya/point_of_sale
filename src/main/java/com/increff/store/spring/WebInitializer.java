@@ -2,7 +2,7 @@ package com.increff.store.spring;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-// hook for spring initialization and defines the starting point for spring configuration i.e. SpringConfig.class
+// hook for spring initialization and defines the starting poInteger for spring configuration i.e. SpringConfig.class
 
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 

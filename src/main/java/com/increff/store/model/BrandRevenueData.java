@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class BrandRevenueData {
     private String brand;
-    private int quantity;
+    private Integer quantity;
     private double total;
 }

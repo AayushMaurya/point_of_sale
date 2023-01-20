@@ -6,6 +6,7 @@ import com.increff.store.model.DateFilterForm;
 import com.increff.store.model.InvoiceForm;
 import com.increff.store.model.OrderData;
 import com.increff.store.model.OrderForm;
+import com.increff.store.pojo.OrderPojo;
 import com.increff.store.service.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Api
@@ -31,50 +35,62 @@ public class OrderApiController {
 
     @ApiOperation(value = "Adds order to order table")
     @RequestMapping(path = "/api/order", method = RequestMethod.POST)
-    public String add(@RequestBody OrderForm form) throws ApiException {
-        return dto.createOrder(form);
+    public Integer createOrder() throws ApiException {
+        return dto.createOrder();
     }
 
     @ApiOperation(value = "Select all order")
     @RequestMapping(path = "/api/order", method = RequestMethod.GET)
-    public List<OrderData> get_all() throws ApiException {
+    public List<OrderData> getAllOrders() throws ApiException {
         return dto.getAllOrders();
     }
 
     @ApiOperation(value = "Select all order between given date")
     @RequestMapping(path = "/api/order/date-filter", method = RequestMethod.POST)
-    public List<OrderData> get_date_filter(@RequestBody DateFilterForm form) throws ApiException {
+    public List<OrderData> getDateFilter(@RequestBody DateFilterForm form) throws ApiException {
         return dto.getOrderByDateFilter(form);
     }
 
     @ApiOperation(value = "Select order by id")
-    @RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
-    public OrderData get_id(@PathVariable int id) throws ApiException {
-        return dto.getOrderById(id);
+    @RequestMapping(path = "/api/order/{orderId}", method = RequestMethod.GET)
+    public OrderData getOrderById(@PathVariable Integer orderId) throws ApiException {
+        return dto.getOrderById(orderId);
     }
 
     @ApiOperation(value = "Mark order placed")
-    @RequestMapping(path = "api/order/place/{id}", method = RequestMethod.PUT)
-    public void mark_order_placed(@PathVariable int id) throws ApiException {
-        dto.placeOrder(id);
-    }
+    @RequestMapping(path = "api/order/place/{orderId}", method = RequestMethod.PUT)
+    public void markOrderPlaced(@PathVariable Integer orderId, @RequestBody OrderForm form) throws Exception {
+        dto.placeOrder(orderId, form);
 
-    @ApiOperation(value = "Download Invoice")
-    @RequestMapping(path = "/api/invoice/{orderCode}", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> getPDF(@PathVariable String orderCode) throws Exception{
-
-        InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderCode);
+//        generating invoice
+        InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderId);
 
         RestTemplate restTemplate = new RestTemplate();
 
         String url = "http://localhost:8080/fop/api/invoice";
-
+//
         byte[] contents = restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody();
+
+//        saving pdf;
+        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderId + "_invoice.pdf");
+//
+        Files.write(pdfPath, contents);
+    }
+
+    @ApiOperation(value = "Download Invoice")
+    @RequestMapping(path = "/api/invoice/{orderId}", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> getPDF(@PathVariable Integer orderId) throws Exception {
+
+        OrderData orderData = dto.getOrderById(orderId);
+
+        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderData.getId() + "_invoice.pdf");
+
+        byte[] contents = Files.readAllBytes(pdfPath);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
 
-        String filename = "invoice.pdf";
+        String filename = orderData.getCustomerName() + ".pdf";
         headers.setContentDispositionFormData(filename, filename);
 
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");

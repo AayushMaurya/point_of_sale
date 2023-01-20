@@ -25,7 +25,7 @@ public class BrandDao {
         em.persist(p);
     }
 
-    public BrandPojo selectByBrandId(int id) {
+    public BrandPojo selectByBrandId(Integer id) {
         TypedQuery<BrandPojo> query = getQuery(SELECT_BY_ID);
         query.setParameter("id", id);
         return query.getResultStream()

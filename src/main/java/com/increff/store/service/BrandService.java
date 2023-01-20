@@ -24,7 +24,7 @@ public class BrandService {
     }
 
     @Transactional
-    public BrandPojo getByBrandId(int id) throws ApiException
+    public BrandPojo getByBrandId(Integer id) throws ApiException
     {
         BrandPojo brandPojo =  dao.selectByBrandId(id);
         if(brandPojo == null)
@@ -45,7 +45,7 @@ public class BrandService {
 
 
     @Transactional
-    public void updateBrand(int id, BrandPojo newPojo) throws ApiException
+    public void updateBrand(Integer id, BrandPojo newPojo) throws ApiException
     {
 //        check if given brand category combination already exists.
         String brand = newPojo.getBrand();

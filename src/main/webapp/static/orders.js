@@ -14,6 +14,7 @@ function getOrderList(){
 	   },
 	   error: handleAjaxError
 	});
+	return false;
 }
 
 function getOrderListByDateFilter()
@@ -35,15 +36,17 @@ console.log("filtered orders");
     	   },
     	   error: handleAjaxError
     	});
+    	return false;
 }
 
 function displayOrderList(data){
  	var $tbody = $('#order-table').find('tbody');
  	$tbody.empty();
+ 	var index = 0;
  	for(var i in data){
  		var e = data[i];
- 		var index = i+1;
- 		var buttonHtml = ' <button class="btn btn-secondary" onClick=redirect("'+ e.orderCode +'")>Open</button>'
+ 		index++;
+ 		var buttonHtml = ' <button class="btn btn-secondary" onClick=redirect("'+ e.id +'")>Open</button>'
  		var row = '<tr>'
  		+ '<td>' + index + '</td>'
  		+ '<td>' + e.customerName + '</td>'
@@ -60,7 +63,9 @@ function displayOrderList(data){
 
 function redirect(id)
 {
-    window.location.href = $("meta[name=baseUrl]").attr("content") + "/ui/order-item/" + id;
+    console.log("redirecting to :" + url);
+    var url = $("meta[name=baseUrl]").attr("content") + "/ui/order-item/" + id;
+    window.location.href = url;
 }
 
  function createOrder(event)
@@ -87,11 +92,6 @@ function redirect(id)
      	return false;
  }
 
- function setStatus(message)
- {
-     document.getElementById("status").innerHTML = "status: " + message;
- }
-
  function pagination(){
    $('#order-table').DataTable();
    $('.dataTables_length').addClass('bs-select');
@@ -99,6 +99,7 @@ function redirect(id)
 
  function init()
  {
+    console.log("initializing");
     $('#create-order').click(createOrder);
     $('#apply-date-filter').click(getOrderListByDateFilter);
  }

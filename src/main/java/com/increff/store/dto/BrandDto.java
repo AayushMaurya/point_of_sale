@@ -36,7 +36,7 @@ public class BrandDto {
         return list2;
     }
 
-    public void updateBrand(int id, BrandForm form) throws ApiException {
+    public void updateBrand(Integer id, BrandForm form) throws ApiException {
         checkBrandForm(form);
         BrandPojo p = convertBrandFormToBrandPojo(form);
         normalizeBrandPojo(p);

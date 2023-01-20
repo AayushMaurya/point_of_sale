@@ -54,13 +54,13 @@ public class RevenueDto {
 //          -> order wise filtered on basis of date
         for(OrderPojo e: orderPojoList)
         {
-            int orderId = e.getId();
+            Integer orderId = e.getId();
             List<OrderItemPojo> orderItemPojoList = orderItemService.getOrder(orderId);
 
             for(OrderItemPojo p: orderItemPojoList)
             {
-                int productId = p.getProductId();
-                int quantity = map.get(productId).getQuantity();
+                Integer productId = p.getProductId();
+                Integer quantity = map.get(productId).getQuantity();
                 double total = map.get(productId).getTotal();
 
                 map.get(productId).setQuantity(quantity + p.getQuantity());
@@ -87,7 +87,7 @@ public class RevenueDto {
         {
             if(map.containsKey(p.getBrand()))
             {
-                int quantity = map.get(p.getBrand()).getQuantity();
+                Integer quantity = map.get(p.getBrand()).getQuantity();
                 double total = map.get(p.getBrand()).getTotal();
 
                 map.get(p.getBrand()).setQuantity(quantity + p.getQuantity());
@@ -121,7 +121,7 @@ public class RevenueDto {
             if(map.containsKey(p.getCategory()))
             {
                 String key = p.getCategory();
-                int quantity = map.get(key).getQuantity();
+                Integer quantity = map.get(key).getQuantity();
                 double total = map.get(key).getTotal();
 
                 map.get(key).setQuantity(quantity + p.getQuantity());
@@ -154,7 +154,7 @@ public class RevenueDto {
         productRevenueData.setQuantity(0);
         productRevenueData.setTotal(0);
 
-        int brandCategoryId = p.getBrandCategory();
+        Integer brandCategoryId = p.getBrandCategory();
         BrandPojo brandPojo = brandService.getByBrandId(brandCategoryId);
 
         productRevenueData.setBrand(brandPojo.getBrand());
@@ -189,8 +189,8 @@ public class RevenueDto {
 
         for(ProductPojo p: productPojoList)
         {
-            int quantity = map.get(p.getBrandCategory()).getQuantity();
-            int nquantity = 0;
+            Integer quantity = map.get(p.getBrandCategory()).getQuantity();
+            Integer nquantity = 0;
             if(inventoryMap.containsKey(p.getId()))
                 nquantity = inventoryMap.get(p.getId());
 

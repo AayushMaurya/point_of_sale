@@ -1,5 +1,6 @@
 package com.increff.store.service;
 
+import com.google.protobuf.Api;
 import com.increff.store.dao.OrderDao;
 import com.increff.store.pojo.OrderPojo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,8 @@ public class OrderService {
     private OrderDao dao;
 
     @Transactional
-    public void addOrder(OrderPojo p) throws ApiException {
-        try {
-            dao.insert(p);
-        } catch (Exception e) {
-            throw new ApiException(e.getMessage());
-        }
+    public Integer addOrder(OrderPojo p) throws ApiException {
+        return dao.insert(p);
     }
 
     @Transactional
@@ -37,7 +34,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderPojo getOrderById(int id) throws ApiException {
+    public OrderPojo getOrderById(Integer id) throws ApiException {
         OrderPojo orderPojo = dao.selectById(id);
         if (orderPojo == null)
             throw new ApiException("No order found with given order id");
@@ -45,7 +42,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void updateOrder(int id, OrderPojo newOrderPojo) throws ApiException {
+    public void updateOrder(Integer id, OrderPojo newOrderPojo) throws ApiException {
         OrderPojo p = dao.selectById(id);
         p.setStatus(newOrderPojo.getStatus());
         p.setPlaceDateTime(newOrderPojo.getPlaceDateTime());
@@ -53,7 +50,7 @@ public class OrderService {
         p.setCustomerName(newOrderPojo.getCustomerName());
     }
 
-    public OrderPojo getOrderByOrderCode(String orderCode) {
-        return dao.selectByOrderCode(orderCode);
-    }
+//    public OrderPojo getOrderByOrderCode(String orderCode) throws ApiException {
+//        return dao.selectByOrderCode(orderCode);
+//    }
 }

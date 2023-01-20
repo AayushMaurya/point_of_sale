@@ -8,5 +8,5 @@ import lombok.Setter;
 public class BrandData {
     private String brand;
     private String category;
-    private int id;
+    private Integer id;
 }

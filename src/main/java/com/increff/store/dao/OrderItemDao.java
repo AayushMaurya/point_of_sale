@@ -28,20 +28,20 @@ public class OrderItemDao {
     }
 
     @Transactional
-    public OrderItemPojo selectByItemId(int id) {
+    public OrderItemPojo selectByItemId(Integer id) {
         TypedQuery<OrderItemPojo> query = getQuery(SELECT_BY_ID);
         query.setParameter("id", id);
         return query.getResultStream().findFirst().orElse(null);
 
     }
 
-    public List<OrderItemPojo> selectById(int orderId) {
+    public List<OrderItemPojo> selectById(Integer orderId) {
         TypedQuery<OrderItemPojo> query = getQuery(SELECT_BY_ORDER_ID);
         query.setParameter("id", orderId);
         return query.getResultList();
     }
 
-    public void deleteById(int id) {
+    public void deleteById(Integer id) {
         Query query = em.createQuery(DELETE_ITEM_BY_ID);
         query.setParameter("id", id);
         query.executeUpdate();

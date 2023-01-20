@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderStatusData {
-    private int orderId;
+    private Integer orderId;
     private String status;
 }

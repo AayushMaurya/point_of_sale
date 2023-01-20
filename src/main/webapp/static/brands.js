@@ -5,6 +5,11 @@ function getStoreUrl(){
  	return baseUrl + "/api/brand";
  }
 
+ function getAdminBrandUrl(){
+ var baseUrl = $("meta[name=baseUrl]").attr("content")
+  	return baseUrl + "/api/admin/brand";
+ }
+
 function getBrandList(){
 	var url = getStoreUrl();
 	$.ajax({
@@ -22,13 +27,15 @@ function getBrandList(){
 function displayBrandList(data){
 	var $tbody = $('#brand-table').find('tbody');
 	$tbody.empty();
+	var index = 0;
 	for(var i in data){
 		var e = data[i];
+		index++;
 		var buttonHtml = ' <button class="btn btn-primary" data-toggle="modal"'
         + 'data-target="#exampleModalCenter" onclick="fillUpdateFields('
 		+ i +')" >Edit</button>';
 		var row = '<tr>'
-		+ '<td>' + i + '</td>'
+		+ '<td>' + index + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
@@ -42,7 +49,7 @@ function addBrand(event)
 {
     var $form = $("#brand-form");
     var json = toJson($form);
-    var url = getStoreUrl();
+    var url = getAdminBrandUrl();
 
     $.ajax({
     	   url: url,
@@ -54,6 +61,7 @@ function addBrand(event)
     	   success: function(response) {
     	   		getBrandList();
     	   		handleSuccess("Brand added successfully");
+    	   		document.getElementById("brand-form").reset();
     	   },
     	   error: handleAjaxError
     	});
@@ -72,7 +80,7 @@ function updateBrand()
     var id = document.getElementById("inputUpdateBrandId").value;
     var $form = $("#updateBrandForm");
     var json = toJson($form);
-    var url = getStoreUrl() + "/" + id ;
+    var url = getAdminBrandUrl() + "/" + id ;
 
     $.ajax({
         	   url: url,
@@ -122,7 +130,7 @@ function uploadRows(){
 	processCount++;
 
 	var json = JSON.stringify(row);
-	var url = getStoreUrl();
+	var url = getAdminBrandUrl();
 
 	//Make ajax call
 	$.ajax({
@@ -143,9 +151,6 @@ function uploadRows(){
 	   		uploadRows();
 	   }
 	});
-
-	console.log("Finallllyy uploaded");
-
 }
 
 function downloadErrors(){
@@ -173,6 +178,7 @@ function updateUploadDialog(){
 
 function updateFileName(){
 	var $file = $('#brandFile');
+	console.log($file);
 	var fileName = $file.val();
 	$('#brandFileName').html(fileName);
 }

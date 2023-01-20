@@ -1,5 +1,6 @@
 package com.increff.store.dto;
 
+import com.google.protobuf.Api;
 import com.increff.store.model.*;
 import com.increff.store.pojo.BrandPojo;
 import com.increff.store.pojo.InventoryPojo;
@@ -108,5 +109,9 @@ public class DtoUtils {
         p.setRole(f.getRole());
         p.setPassword(f.getPassword());
         return p;
+    }
+
+    protected static void checkOrderForm(OrderForm form) throws ApiException {
+        if (StringUtil.isEmpty(form.getCustomerName())) throw new ApiException("Customer name cannot be empty");
     }
 }

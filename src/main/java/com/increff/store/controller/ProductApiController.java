@@ -22,9 +22,9 @@ public class ProductApiController {
     @Autowired
     private ProductDto dto;
 
-    @ApiOperation(value = "Adds a product")
+    @ApiOperation(value = "Get a product")
     @RequestMapping(path = "api/product/{id}", method = RequestMethod.GET)
-    public ProductData get_id(@PathVariable int id) throws ApiException {
+    public ProductData get_id(@PathVariable Integer id) throws ApiException {
         return dto.getProductById(id);
     }
 
@@ -35,14 +35,14 @@ public class ProductApiController {
     }
 
     @ApiOperation(value = "Adds a product")
-    @RequestMapping(path = "/api/product", method = RequestMethod.POST)
+    @RequestMapping(path = "/api/admin/product", method = RequestMethod.POST)
     public void add(@RequestBody ProductForm form) throws ApiException {
         dto.addProduct(form);
     }
 
     @ApiOperation(value = "Update product")
-    @RequestMapping(path = "api/product/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException {
+    @RequestMapping(path = "api/admin/product/{id}", method = RequestMethod.PUT)
+    public void update(@PathVariable Integer id, @RequestBody ProductForm form) throws ApiException {
         dto.updateProduct(id, form);
     }
 

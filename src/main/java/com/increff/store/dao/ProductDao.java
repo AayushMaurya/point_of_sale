@@ -27,7 +27,7 @@ public class ProductDao {
         em.persist(p);
     }
 
-    public ProductPojo selectById(int id) {
+    public ProductPojo selectById(Integer id) {
         TypedQuery<ProductPojo> query = getQuery(SELECT_BY_ID);
         query.setParameter("id", id);
         return query.getResultStream().findFirst().orElse(null);

@@ -24,7 +24,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductPojo getProductById(int id) throws ApiException {
+    public ProductPojo getProductById(Integer id) throws ApiException {
         ProductPojo productPojo = dao.selectById(id);
         if (productPojo == null)
             throw new ApiException("Cannot select a product with given product id");
@@ -37,7 +37,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateProduct(int id, ProductPojo newPojo) {
+    public void updateProduct(Integer id, ProductPojo newPojo) {
         ProductPojo p = dao.selectById(id);
         p.setBarcode(newPojo.getBarcode());
         p.setBrandCategory(newPojo.getBrandCategory());

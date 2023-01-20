@@ -3,67 +3,72 @@
 <head th:replace="snippets.html :: name_head"></head>
 <body>
 <nav th:replace="snippets.html :: name_app_navbar"></nav>
-<h3>this page will show order details </h3>
 <div class="container">
+    <br/>
 
-<div class="row">
-  <div class="col-12">
-  <form class="form-inline" id="order-form">
-    <div class="form-group">
-      <label for="inputCustomerName" class="col-sm-2 col-form-label">Customer Name</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" name="customerName" id="inputCustomerName" placeholder="Aayush Maurya">
-      </div>
-    </div>
-  </div>
-    <button type="button" class="btn btn-primary" id="create-order">Create Order</button>
-  </form>
-  <h5 id="status" style="color:red;"></h5>
-</div>
-<div class="row">
-  <div class="col-12">
-  <h3>Apply filter</h3>
-  <form class="form-inline" id="date-filter-form">
-    <div class="form-group">
-      <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
-      <div class="col-sm-10">
-        <input type="date" class="form-control" name="start" id="inputStartDate" placeholder="2023-01-03">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEndDate" class="col-sm-2 col-form-label">End Date</label>
-      <div class="col-sm-10">
-        <input type="date" class="form-control" name="end" id="inputEndDate" placeholder="2023-01-03">
-      </div>
-    </div>
-    <button type="button" class="btn btn-primary" id="apply-date-filter">Apply Filter</button>
-  </form>
-  </div>
-</div>
+    <div class="row">
+        <div class="col-12">
+            <form class="form-inline" id="order-form">
+<!--                <div class="form-group">-->
+<!--                    <label for="inputCustomerName" class="col-sm-2 col-form-label">Customer Name</label>-->
+<!--                    <div class="col-sm-10">-->
+<!--                        <input type="text" class="form-control" name="customerName" id="inputCustomerName"-->
+<!--                               placeholder="Aayush Maurya">-->
+<!--                    </div>-->
+<!--                </div>-->
 
-<div class="row">
-  <div class="col-12">
-  <table class="table table-striped" id="order-table">
-    <thead>
-    <tr>
-      <th scope="col"#</th>
-      <th scope="col">Customer Name</th>
-      <th scope="col">Created Date</th>
-      <th scope="col">Status</th>
-      <th scope="col">Placed Date</th>
-      <th scope="col">Action</th>
-    </tr>
-    </thead>
-    <tbody>
+                <button type="button" class="btn btn-primary" id="create-order">Create Order</button>
+            </form>
+        </div>
+        <h5 id="status" style="color:red;"></h5>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h3>Apply filter</h3>
+            <form class="form-inline" id="date-filter-form">
+                <div class="form-group">
+                    <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" name="start" id="inputStartDate"
+                               placeholder="2023-01-03">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEndDate" class="col-sm-2 col-form-label">End Date</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" name="end" id="inputEndDate" placeholder="2023-01-03">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" id="apply-date-filter">Apply Filter</button>
+            </form>
+        </div>
+    </div>
 
-    </tbody>
-  </table>
-  </div>
-</div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped" id="order-table">
+                <thead>
+                <tr>
+                    <th scope="col" #
+                    </th>
+                    <th scope="col">Customer Name</th>
+                    <th scope="col">Created Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Placed Date</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 </body>
 <footer th:replace="snippets.html :: name_footer"></footer>
-<script th:src="@{/static/orders.js}"/></script>
+<script th:src="@{/static/orders.js}"/>
+</script>
 
 </html>

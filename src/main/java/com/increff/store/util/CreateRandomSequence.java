@@ -4,9 +4,9 @@ import java.util.Random;
 
 public class CreateRandomSequence {
     public static String createRandomOrderCode() {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
+        Integer leftLimit = 97; // letter 'a'
+        Integer rightLimit = 122; // letter 'z'
+        Integer targetStringLength = 10;
         Random random = new Random();
 
         String generatedString = random.ints(leftLimit, rightLimit + 1)

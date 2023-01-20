@@ -21,11 +21,13 @@ public class OrderDao {
     @PersistenceContext
     private EntityManager em;
 
-    public void insert(OrderPojo p) throws ApiException {
-        em.persist(p);
+    public Integer insert(OrderPojo pojo) throws ApiException {
+        em.persist(pojo);
+        em.flush();
+        return pojo.getId();
     }
 
-    public OrderPojo selectById(int id) {
+    public OrderPojo selectById(Integer id) {
         TypedQuery<OrderPojo> query = getQuery(SELECT_BY_ID);
         query.setParameter("id", id);
         return query.getResultStream().findFirst().orElse(null);
@@ -37,7 +39,6 @@ public class OrderDao {
             TypedQuery<OrderPojo> query = getQuery(SELECT_ALL);
             return query.getResultList();
         } catch (Exception e) {
-            System.out.println(e);
             throw new ApiException("cannot select the orders from order table");
         }
     }
@@ -57,6 +58,5 @@ public class OrderDao {
         TypedQuery<OrderPojo> query = getQuery(SELECT_BY_ORDERCODE);
         query.setParameter("orderCode", orderCode);
         return query.getResultStream().findFirst().orElse(null);
-
     }
 }

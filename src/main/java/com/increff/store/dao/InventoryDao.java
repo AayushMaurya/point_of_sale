@@ -24,13 +24,13 @@ public class InventoryDao {
         em.persist(p);
     }
 
-    public void delete(int id) {
+    public void delete(Integer id) {
         Query query = em.createQuery(DELETE_BY_ID);
         query.setParameter("id", id);
         query.executeUpdate();
     }
 
-    public InventoryPojo selectById(int id) {
+    public InventoryPojo selectById(Integer id) {
         TypedQuery<InventoryPojo> query = getQuery(SELECT_BY_ID);
         query.setParameter("id", id);
         return query.getResultStream().findFirst().orElse(null);

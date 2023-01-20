@@ -1,6 +1,8 @@
 package com.increff.store.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,4 +28,24 @@ public class AppRestControllerAdvice {
         data.setMessage("An unknown error has occurred - " + e.getMessage());
         return data;
     }
+
+//    @ExceptionHandler(AccessDeniedException.class)
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
+//    public MessageData newAccessDeniedHandle(AccessDeniedException e)
+//    {
+//        System.out.println("this");
+//        MessageData data = new MessageData();
+//        data.setMessage(" you are not authorisedAccess denied");
+//        return data;
+//    }
+//
+//    @ExceptionHandler(AuthenticationException.class)
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
+//    public MessageData newAccessDeniedHandle(AuthenticationException e)
+//    {
+//        System.out.println("this2");
+//        MessageData data = new MessageData();
+//        data.setMessage(" you are not authorisedAccess denied");
+//        return data;
+//    }
 }

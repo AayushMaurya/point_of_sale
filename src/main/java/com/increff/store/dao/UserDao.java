@@ -21,13 +21,13 @@ public class UserDao extends AbstractDao {
 		em().persist(p);
 	}
 
-	public int delete(int id) {
+	public Integer delete(Integer id) {
 		Query query = em().createQuery(DELETE_BY_ID);
 		query.setParameter("id", id);
 		return query.executeUpdate();
 	}
 
-	public UserPojo select(int id) {
+	public UserPojo select(Integer id) {
 		TypedQuery<UserPojo> query = getQuery(SELECT_BY_ID, UserPojo.class);
 		query.setParameter("id", id);
 		return getSingle(query);

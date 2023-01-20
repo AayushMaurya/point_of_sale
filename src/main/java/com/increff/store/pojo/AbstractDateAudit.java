@@ -1,5 +1,6 @@
 package com.increff.store.pojo;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
@@ -14,6 +15,11 @@ public abstract class AbstractDateAudit {
 //    @CreationTimestamp
 //    @Column(name = "created_at", nullable = false, updatable = false)
 //    private Date createdAt;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

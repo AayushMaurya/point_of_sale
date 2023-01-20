@@ -1,7 +1,6 @@
 package com.increff.store.controller;
 
 import com.increff.store.model.InfoData;
-import com.increff.store.model.OrderData;
 import com.increff.store.util.SecurityUtil;
 import com.increff.store.util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public abstract class AbstractUiController {
         return mav;
     }
 
-    protected ModelAndView mav (String page, OrderData orderData)
+    protected ModelAndView mav (String page, Integer orderId)
     {
         // Get current user
         UserPrincipal principal = SecurityUtil.getPrincipal();
@@ -43,10 +42,7 @@ public abstract class AbstractUiController {
         ModelAndView mav = new ModelAndView(page);
 
         mav.addObject("info", info);
-        mav.addObject("orderId", orderData.getId());
-        mav.addObject("orderCode", orderData.getOrderCode());
-        mav.addObject("customerName", orderData.getCustomerName());
-        mav.addObject("status", orderData.getStatus());
+        mav.addObject("orderId", orderId);
         mav.addObject("baseUrl", baseUrl);
         return mav;
     }

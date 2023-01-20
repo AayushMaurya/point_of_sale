@@ -29,13 +29,13 @@ public class OrderItemDto {
 
     public void addOrderItem(OrderItemForm form) throws ApiException {
         OrderItemPojo p = convert(form);
-        try {
-            OrderItemPojo newPojo = service.get_productId_orderId(p.getProductId(), p.getOrderId());
 
-            int q = p.getQuantity();
-            p.setQuantity(newPojo.getQuantity() + q);
-            service.updateOrderItem(newPojo.getId(), p);
-        } catch (Exception e) {
+        OrderItemPojo oldPojo = service.getProductIdOrderId(p.getProductId(), p.getOrderId());
+        if (oldPojo != null) {
+            Integer q = p.getQuantity();
+            p.setQuantity(oldPojo.getQuantity() + q);
+            service.updateOrderItem(oldPojo.getId(), p);
+        } else {
             service.addOrderItem(p);
         }
     }
@@ -50,7 +50,7 @@ public class OrderItemDto {
         service.updateOrderItem(form.getId(), newPojo);
     }
 
-    public List<OrderItemData> getOrderItemByOrderId(int id) throws ApiException {
+    public List<OrderItemData> getOrderItemByOrderId(Integer id) throws ApiException {
         List<OrderItemPojo> list1 = service.getOrder(id);
         List<OrderItemData> list2 = new ArrayList<OrderItemData>();
 
@@ -58,13 +58,6 @@ public class OrderItemDto {
             list2.add(convert(p));
 
         return list2;
-    }
-
-    public List<OrderItemData> getOrderItemByOrderCode(String orderCode) throws ApiException {
-        OrderPojo p = orderService.getOrderByOrderCode(orderCode);
-        int id = p.getId();
-
-        return getOrderItemByOrderId(id);
     }
 
     public List<OrderItemData> getAllOrderItem() throws ApiException {

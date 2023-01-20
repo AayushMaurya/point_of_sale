@@ -35,10 +35,10 @@ public class AppUiController extends AbstractUiController{
         return mav("orders.html");
     }
 
-    @RequestMapping(value = "/ui/order-item/{id}", method = RequestMethod.GET)
-    public ModelAndView orderItemById(@PathVariable String id) throws ApiException {
-        OrderData d = orderDto.getOrderByOrderCode(id);
-        return mav("orderItem.html", d);
+    @RequestMapping(value = "/ui/order-item/{orderId}", method = RequestMethod.GET)
+    public ModelAndView orderItemById(@PathVariable Integer orderId) throws ApiException {
+//        OrderData d = orderDto.getOrderById(orderId);
+        return mav("orderItem.html", orderId);
     }
 
     @RequestMapping(value = "/ui/revenue", method = RequestMethod.GET)

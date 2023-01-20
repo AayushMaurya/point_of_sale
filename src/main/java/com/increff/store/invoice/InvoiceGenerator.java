@@ -27,10 +27,10 @@ public class InvoiceGenerator {
     @Autowired
     ProductService productService;
 
-    public InvoiceForm generateInvoiceForOrder(String orderId) throws ApiException
+    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException
     {
         InvoiceForm invoiceForm = new InvoiceForm();
-        OrderPojo orderPojo = orderService.getOrderByOrderCode(orderId);
+        OrderPojo orderPojo = orderService.getOrderById(orderId);
 
         if(!Objects.equals(orderPojo.getStatus(), "Placed"))
             throw new ApiException("The order is not yet placed");

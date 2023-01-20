@@ -4,10 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="baseUrl" th:attr="content=${baseUrl}">
-    <meta name="customerName" th:attr="content=${customerName}">
     <meta name="orderId" th:attr="content=${orderId}">
-    <meta name="orderCode" th:attr="content=${orderCode}">
-    <meta name="status" th:attr="content=${status}">
+    <!--    <meta name="orderCode" th:attr="content=${orderCode}">-->
 
     <script src="https://kit.fontawesome.com/c30beb553f.js" crossorigin="anonymous"></script>
 
@@ -50,10 +48,24 @@
         </ul>
     </div>
     <div class="btn my-2 my-sm-0"><span class="nav-link"
-                                           style="text-decoration:none;color:white"> [[${info.getRole()}]]</span>
+                                        style="text-decoration:none;color:white"> [[${info.getEmail()}]]</span>
     </div>
-    <button class="btn btn-secondary btn-sm" ><a class="nav-link" th:href="@{/session/logout}"
-                                        style="text-decoration:none;color:white">Logout</a></button>
+    <div class="btn-group">
+        <button style="width: 100px" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person"
+                 viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+            </svg>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="#">[[${info.getRole()}]]</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" th:href="@{/session/logout}">Logout</a>
+        </div>
+    </div>
+
 </nav>
 
 
@@ -77,10 +89,10 @@
 
 <div th:fragment="name_status_popup" data-delay="3000" role="alert" id="status" class="toast"
      aria-live="polite" style="width:250px; top:10px; right:10px">
+    <button style="margin-left: 2px;" type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
     <div class="toast-body" id="status-message" style="padding: 5px;">
         Hello, world! This is a toast message.
     </div>
-    <!--    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">-->
-    <!--        <span aria-hidden="true">&times;</span>-->
-    <!--     </button>-->
 </div>
