@@ -51,4 +51,11 @@ public class RevenueApiController {
         return dto.getInventoryReport();
     }
 
+    @ApiOperation(value = "Get Daily Report Report")
+    @RequestMapping(path = "/api/admin/daily-report", method = RequestMethod.GET)
+    public List<DailyReportData> getDailyReport() throws ApiException
+    {
+        return reportDto.getAllDailyReport();
+    }
+
 }

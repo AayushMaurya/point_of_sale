@@ -31,3 +31,9 @@ body {
     margin-top: 70px;
 }
 
+#dropMenu a{
+color:rgba(255,255,255,.5);}
+
+#dropMenu a:hover{
+color: black;}
+

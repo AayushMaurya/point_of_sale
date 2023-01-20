@@ -6,7 +6,6 @@ import com.increff.store.model.DateFilterForm;
 import com.increff.store.model.InvoiceForm;
 import com.increff.store.model.OrderData;
 import com.increff.store.model.OrderForm;
-import com.increff.store.pojo.OrderPojo;
 import com.increff.store.service.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -62,18 +61,18 @@ public class OrderApiController {
     public void markOrderPlaced(@PathVariable Integer orderId, @RequestBody OrderForm form) throws Exception {
         dto.placeOrder(orderId, form);
 
-//        generating invoice
+//        generating invoice form
         InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderId);
 
         RestTemplate restTemplate = new RestTemplate();
 
         String url = "http://localhost:8080/fop/api/invoice";
-//
+
         byte[] contents = restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody();
 
 //        saving pdf;
         Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderId + "_invoice.pdf");
-//
+
         Files.write(pdfPath, contents);
     }
 

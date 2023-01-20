@@ -1,5 +1,7 @@
 package com.increff.store.dto;
 
+import com.google.protobuf.Api;
+import com.increff.store.model.DailyReportData;
 import com.increff.store.pojo.DailyReportPojo;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
@@ -11,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.increff.store.dto.DtoUtils.convertReportPojoToReportData;
 import static com.increff.store.util.GetCurrentDataTime.getLocalDate;
 
 @Service
@@ -63,7 +67,21 @@ public class ReportDto {
         }
     }
 
+    public List<DailyReportData> getAllDailyReport() throws ApiException
+    {
+        List<DailyReportPojo> dailyReportPojoList = service.getAllReport();
+        List<DailyReportData> dailyReportData = new ArrayList<>();
+
+        for(DailyReportPojo p: dailyReportPojoList)
+        {
+            dailyReportData.add(convertReportPojoToReportData(p));
+        }
+
+        return dailyReportData;
+    }
+
     String correctFormat(String date) {
         return date.replace('-', '/');
     }
+
 }

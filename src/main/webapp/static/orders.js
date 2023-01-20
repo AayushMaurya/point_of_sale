@@ -40,6 +40,7 @@ console.log("filtered orders");
 }
 
 function displayOrderList(data){
+    $('#order-table').DataTable().destroy();
  	var $tbody = $('#order-table').find('tbody');
  	$tbody.empty();
  	var index = 0;

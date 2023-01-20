@@ -3,7 +3,7 @@ var newBrands = {};
 
 function getRevenueUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
- 	return baseUrl + "/api/revenue";
+ 	return baseUrl + "/api/admin/revenue";
  }
 
 function getBrandUrl()
@@ -95,9 +95,10 @@ function displayRevenueProductList(data)
 {
     var $tbody = $('#product-revenue-list-table').find('tbody');
     $tbody.empty();
+    var index = 0;
     for(var i in data){
     		var e = data[i];
-    		var index = i+1;
+    		index++;
     		var row = '<tr>'
     		+ '<td>' + index + '</td>'
     		+ '<td>' + e.barcode + '</td>'
@@ -114,11 +115,13 @@ function displayRevenueBrandList(data)
 {
     var $tbody = $('#brand-revenue-list-table').find('tbody');
         $tbody.empty();
+        var index=0;
         for(var i in data){
+        index++;
         		var e = data[i];
         		var brandName = e.brand;
         		var row = '<tr onclick=displayBrandRevenue()>'
-        		+ '<td>' + i+1 + '</td>'
+        		+ '<td>' + index + '</td>'
         		+ '<td>' + e.brand + '</td>'
         		+ '<td>'  + e.quantity + '</td>'
         		+ '<td>'  + e.total + '</td>'
@@ -132,10 +135,12 @@ function displayRevenueCategoryList(data)
 {
     var $tbody = $('#category-revenue-list-table').find('tbody');
         $tbody.empty();
+        var index = 0;
         for(var i in data){
         		var e = data[i];
+        		index++;
         		var row = '<tr onclick = "displayCategory()">'
-        		+ '<td>' + i+1 + '</td>'
+        		+ '<td>' + index + '</td>'
         		+ '<td>' + e.category + '</td>'
         		+ '<td>'  + e.quantity + '</td>'
         		+ '<td>'  + e.total + '</td>'

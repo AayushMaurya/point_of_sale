@@ -35,9 +35,8 @@ public class OrderItemDto {
             Integer q = p.getQuantity();
             p.setQuantity(oldPojo.getQuantity() + q);
             service.updateOrderItem(oldPojo.getId(), p);
-        } else {
+        } else
             service.addOrderItem(p);
-        }
     }
 
     public void updateOrderItem(UpdateOrderItemForm form) throws ApiException {
@@ -77,6 +76,8 @@ public class OrderItemDto {
         p.setSellingPrice(form.getSellingPrice());
         String code = form.getBarCode();
         ProductPojo productPojo = productService.getProductByBarcode(code);
+        if(form.getSellingPrice() > productPojo.getMrp())
+            throw new ApiException("Selling price cannot be greater than mrp");
         p.setProductId(productPojo.getId());
         p.setBrandCategory(productPojo.getBrandCategory());
         return p;

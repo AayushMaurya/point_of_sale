@@ -42,9 +42,10 @@ console.log("filtered orders");
 function displayOrderList(data){
  	var $tbody = $('#order-table').find('tbody');
  	$tbody.empty();
+ 	var index = 0;
  	for(var i in data){
  		var e = data[i];
- 		var index = i+1;
+ 		index++;
  		var buttonHtml = ' <button class="btn btn-secondary" onClick=redirect("'+ e.id +'")>Open</button>'
  		var row = '<tr>'
  		+ '<td>' + index + '</td>'

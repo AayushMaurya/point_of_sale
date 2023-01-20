@@ -2,12 +2,11 @@ package com.increff.store.dto;
 
 import com.google.protobuf.Api;
 import com.increff.store.model.*;
-import com.increff.store.pojo.BrandPojo;
-import com.increff.store.pojo.InventoryPojo;
-import com.increff.store.pojo.OrderPojo;
-import com.increff.store.pojo.UserPojo;
+import com.increff.store.pojo.*;
 import com.increff.store.service.ApiException;
 import com.increff.store.util.StringUtil;
+
+import java.time.format.DateTimeFormatter;
 
 public class DtoUtils {
 
@@ -113,5 +112,17 @@ public class DtoUtils {
 
     protected static void checkOrderForm(OrderForm form) throws ApiException {
         if (StringUtil.isEmpty(form.getCustomerName())) throw new ApiException("Customer name cannot be empty");
+    }
+
+    protected static DailyReportData convertReportPojoToReportData(DailyReportPojo pojo)
+    {
+        DailyReportData dailyReportData = new DailyReportData();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDateTime = pojo.getDate().format(dateTimeFormatter);
+        dailyReportData.setDate(formattedDateTime);
+        dailyReportData.setTotalRevenue(pojo.getTotalRevenue());
+        dailyReportData.setInvoicedItemsCount(pojo.getInvoicedItemsCount());
+        dailyReportData.setInvoicedOrderCount(pojo.getInvoicedOrderCount());
+        return dailyReportData;
     }
 }

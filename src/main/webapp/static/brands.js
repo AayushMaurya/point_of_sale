@@ -25,6 +25,7 @@ function getBrandList(){
 }
 
 function displayBrandList(data){
+    $('#brand-table').DataTable().destroy();
 	var $tbody = $('#brand-table').find('tbody');
 	$tbody.empty();
 	var index = 0;

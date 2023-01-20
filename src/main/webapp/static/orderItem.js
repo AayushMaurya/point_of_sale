@@ -1,6 +1,7 @@
 var orderId;
 var orderCode
 var status;
+var customerName;
 function getStoreUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/order-item";
@@ -25,12 +26,14 @@ function getOrder()
     	   type: 'GET',
     	   success: function(data) {
     	   console.log(data);
+    	   document.getElementById("customerName").value = data.customerName;
     	   status = data.status;
     	   console.log(status);
     	   getOrderItemList();
     	   },
     	   error: handleAjaxError
     	});
+
     	return false;
 }
 
@@ -48,15 +51,18 @@ function getOrderItemList(){
 	   },
 	   error: handleAjaxError
 	});
+
 	return false;
 }
 
 function displayOrderItemList(data){
+    $('#orderItem-table').DataTable().destroy();
 	var $tbody = $('#orderItem-table').find('tbody');
 	$tbody.empty();
 	var index = 0;
 	for(var i in data){
 		var e = data[i];
+		var total = e.quantity * e.sellingPrice;
 		index++;
 		var buttonHtml = ' <button class="btn-disable btn btn-primary" onclick="deleteOrderItem('
 		+ e.id + ')">delete</button>'
@@ -69,6 +75,7 @@ function displayOrderItemList(data){
 		+ '<td>' + e.productName + '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + e.sellingPrice + '</td>'
+		+ '<td>' + total + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
@@ -196,6 +203,8 @@ function disableEditing()
     document.getElementById('add-Item').disabled = true;
     document.getElementById('place-order').disabled = true;
     $('#download-invoice').disabled = false;
+
+    document.getElementById("customerName").readOnly = true;
 }
 
 function downloadInvoice()

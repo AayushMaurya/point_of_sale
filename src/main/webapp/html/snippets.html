@@ -43,6 +43,9 @@
                 <a class="nav-link" th:href="@{/ui/revenue}">Sales Report</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" th:href="@{/ui/daily-report}">Daily Report</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" th:href="@{/ui/inventory-report}">Inventory Report</a>
             </li>
         </ul>
@@ -87,7 +90,7 @@
 
 <!--status popup modal-->
 
-<div th:fragment="name_status_popup" data-delay="3000" role="alert" id="status" class="toast"
+<div th:fragment="name_status_popup" data-delay="10000" role="alert" id="status" class="toast"
      aria-live="polite" style="width:250px; top:10px; right:10px">
     <button style="margin-left: 2px;" type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
         <span aria-hidden="true">&times;</span>

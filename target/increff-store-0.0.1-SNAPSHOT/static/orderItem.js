@@ -54,9 +54,10 @@ function getOrderItemList(){
 function displayOrderItemList(data){
 	var $tbody = $('#orderItem-table').find('tbody');
 	$tbody.empty();
+	var index = 0;
 	for(var i in data){
 		var e = data[i];
-		var index = i+1;
+		index++;
 		var buttonHtml = ' <button class="btn-disable btn btn-primary" onclick="deleteOrderItem('
 		+ e.id + ')">delete</button>'
 		+ ' <button onclick="fillFields(' + e.id + ','
@@ -73,13 +74,13 @@ function displayOrderItemList(data){
         $tbody.append(row);
 	}
 
-//	if(data.length == 0)
-//	    document.getElementById('place-order').disabled = true;
-//	else
-//	    document.getElementById('place-order').disabled = false;
-//
-//	if(status === "Placed")
-//        disableEditing();
+	if(data.length == 0)
+	    document.getElementById('place-order').disabled = true;
+	else
+	    document.getElementById('place-order').disabled = false;
+
+	if(status === "Placed")
+        disableEditing();
 }
 
 function addOrderItem(event)
@@ -119,7 +120,6 @@ function placeOrder()
                	'Content-Type': 'application/json'
                },
         	   success: function(response) {
-        	   console.log("order placed");
         	   		handleSuccess("Order Placed");
         	   		status = "Placed";
         	   		getOrderItemList();

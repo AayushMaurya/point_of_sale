@@ -55,4 +55,9 @@ public class AppUiController extends AbstractUiController{
     public ModelAndView home() throws ApiException {
         return mav("home.html");
     }
+
+    @RequestMapping(value = "/ui/daily-report", method = RequestMethod.GET)
+    public ModelAndView dailyReport() throws ApiException {
+        return mav("dailyReport.html");
+    }
 }

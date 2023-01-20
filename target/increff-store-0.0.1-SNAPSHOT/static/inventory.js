@@ -8,6 +8,12 @@ function getProductUrl(){
  	return baseUrl + "/api/product";
  }
 
+ function getAdminInventoryUrl()
+ {
+ var baseUrl = $("meta[name=baseUrl]").attr("content")
+  	return baseUrl + "/api/admin/inventory";
+ }
+
 function getInventoryList(){
 	var url = getStoreUrl();
 	$.ajax({
@@ -23,10 +29,11 @@ function getInventoryList(){
 
 function displayInventoryList(data){
 	var $tbody = $('#inventory-table').find('tbody');
+	var index = 0;
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var index = i+1;
+		index++;
 		var buttonHtml = '<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"'
 		+ 'onclick="fillFields('
 		+ e.id +')">Edit</button>';
@@ -58,11 +65,10 @@ function fillFields(id)
 
 function addInventory(event)
 {
-console.log("anything");
     var $form = $("#inventory-form");
     var json = toJson($form);
     console.log(json);
-    var url = getStoreUrl();
+    var url = getAdminInventoryUrl();
 
     $.ajax({
     	   url: url,
@@ -74,6 +80,7 @@ console.log("anything");
     	   success: function(response) {
     	   		getInventoryList();
     	   		handleSuccess("Inventory Added");
+    	   		document.getElementById("inventory-form").reset();
     	   },
     	   error: handleAjaxError
 
@@ -86,7 +93,7 @@ function updateInventoryAdd()
     console.log("this will update inventory Add");
     var $form = $("#updateInventoryForm");
     var json = toJson($form);
-    var url = getStoreUrl();
+    var url = getAdminInventoryUrl();
 
     $.ajax({
         url: url,
@@ -110,7 +117,7 @@ function updateInventoryRemove()
     console.log("this will update inventory Remove");
     var $form = $("#updateInventoryForm");
     var json = toJson($form);
-    var url = getStoreUrl();
+    var url = getAdminInventoryUrl();
 
     $.ajax({
         url: url,
@@ -164,7 +171,7 @@ function uploadRows(){
 	processCount++;
 
 	var json = JSON.stringify(row);
-	var url = getStoreUrl();
+	var url = getAdminInventoryUrl();
 
 	//Make ajax call
 	$.ajax({

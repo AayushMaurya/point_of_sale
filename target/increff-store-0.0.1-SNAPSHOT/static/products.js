@@ -7,6 +7,11 @@ function getStoreUrl(){
  	return baseUrl + "/api/product";
  }
 
+ function getAdminProductUrl(){
+ var baseUrl = $("meta[name=baseUrl]").attr("content")
+  	return baseUrl + "/api/admin/product";
+ }
+
 function getBrandUrl()
 {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -42,9 +47,10 @@ function getProductList(){
 function displayProductList(data){
 	var $tbody = $('#product-table').find('tbody');
 	$tbody.empty();
+	var index = 0;
 	for(var i in data){
 		var e = data[i];
-		var index = i+1;
+		index++;
 		var buttonHtml = ' <button class="btn btn-primary" data-toggle="modal" '
 		+ 'data-target="#exampleModalCenter" onclick="fillFields('+ i +')">Edit</button>'
 		var row = '<tr>'
@@ -66,7 +72,7 @@ function addProduct(event)
 {
     var $form = $("#product-form");
     var json = toJson($form);
-    var url = getStoreUrl();
+    var url = getAdminProductUrl();
 
     $.ajax({
     	   url: url,
@@ -78,6 +84,7 @@ function addProduct(event)
     	   success: function(response) {
     	   		getProductList();
     	   		handleSuccess("Product Added");
+    	   		document.getElementById("product-form").reset();
     	   },
     	   error: handleAjaxError
 
@@ -164,7 +171,7 @@ function updateProduct()
     var id = document.getElementById("inputUpdateId").value;
     var $form = $("#updateProductForm");
     var json = toJson($form);
-    var url = getStoreUrl() + "/" + id ;
+    var url = getAdminProductUrl() + "/" + id ;
 
     $.ajax({
             	   url: url,
@@ -224,7 +231,7 @@ function uploadRows(){
 
 
 	console.log(json);
-	var url = getStoreUrl();
+	var url = getAdminProductUrl();
 
 	//Make ajax call
 	$.ajax({

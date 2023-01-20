@@ -93,6 +93,7 @@ function getCategoryRevenueList()
 
 function displayRevenueProductList(data)
 {
+    $('#product-revenue-list-table').DataTable().destroy();
     var $tbody = $('#product-revenue-list-table').find('tbody');
     $tbody.empty();
     var index = 0;
@@ -113,6 +114,7 @@ function displayRevenueProductList(data)
 
 function displayRevenueBrandList(data)
 {
+    $('#brand-revenue-list-table').DataTable().destroy();
     var $tbody = $('#brand-revenue-list-table').find('tbody');
         $tbody.empty();
         var index=0;
@@ -133,6 +135,7 @@ function displayRevenueBrandList(data)
 
 function displayRevenueCategoryList(data)
 {
+    $('#category-revenue-list-table').DataTable().destroy();
     var $tbody = $('#category-revenue-list-table').find('tbody');
         $tbody.empty();
         var index = 0;

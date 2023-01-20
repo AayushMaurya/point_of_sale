@@ -45,6 +45,7 @@ function getProductList(){
 }
 
 function displayProductList(data){
+    $('#product-table').DataTable().destroy();
 	var $tbody = $('#product-table').find('tbody');
 	$tbody.empty();
 	var index = 0;

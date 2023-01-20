@@ -1,6 +1,7 @@
 package com.increff.store.scheduler;
 
 import com.increff.store.dto.ReportDto;
+import com.increff.store.service.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -13,15 +14,8 @@ public class ReportScheduler {
 
     @Async
     @Scheduled(cron = "${cron.expression}")
-    public void createDailyReport()
+    public void createDailyReport() throws ApiException
     {
-        System.out.println("creating report");
-        try {
-            reportDto.createDailyReport();
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
+        reportDto.createDailyReport();
     }
 }

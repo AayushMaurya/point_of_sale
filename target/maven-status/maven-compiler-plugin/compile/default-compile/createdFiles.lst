@@ -21,6 +21,7 @@ com\increff\store\dto\ProductDto.class
 com\increff\store\dto\BrandDto.class
 com\increff\store\spring\SpringConfig.class
 com\increff\store\pojo\ProductPojo.class
+com\increff\store\model\DailyReportData.class
 com\increff\store\controller\AbstractUiController.class
 com\increff\store\util\CreateRandomSequence.class
 com\increff\store\dao\BrandDao.class

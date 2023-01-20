@@ -84,6 +84,7 @@ function displayCategoryList()
 
 function displayInventoryReport(data)
 {
+    $('#inventory-report-table').DataTable().destroy();
     var $tbody = $('#inventory-report-table').find('tbody');
     $tbody.empty();
     var index = 0;

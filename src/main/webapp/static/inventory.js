@@ -28,6 +28,7 @@ function getInventoryList(){
 }
 
 function displayInventoryList(data){
+    $('#inventory-table').DataTable().destroy();
 	var $tbody = $('#inventory-table').find('tbody');
 	var index = 0;
 	$tbody.empty();

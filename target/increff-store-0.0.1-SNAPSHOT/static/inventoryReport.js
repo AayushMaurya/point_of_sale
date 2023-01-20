@@ -3,7 +3,7 @@ var newBrands = {};
 
 function getInventoryReportUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
- 	return baseUrl + "/api/inventory-report";
+ 	return baseUrl + "/api/admin/inventory-report";
  }
 
 function getBrandOption() {
@@ -86,11 +86,12 @@ function displayInventoryReport(data)
 {
     var $tbody = $('#inventory-report-table').find('tbody');
     $tbody.empty();
+    var index = 0;
     var total_quantity = 0;
     for(var i in data)
     {
         var e = data[i];
-        var index = i+1;
+        index++;
         var row = '<tr>'
                 + '<td>' + index + '</td>'
         		+ '<td>' + e.brand + '</td>'
