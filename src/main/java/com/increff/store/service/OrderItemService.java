@@ -49,7 +49,7 @@ public class OrderItemService {
     public OrderItemPojo getOrderItemById(Integer id) throws ApiException {
         OrderItemPojo orderItemPojo = dao.selectByItemId(id);
         if (orderItemPojo == null)
-            throw new ApiException("Cannot find an order with given order item id");
+            throw new ApiException("Cannot find an item with given order item id");
         return orderItemPojo;
     }
 
@@ -75,6 +75,8 @@ public class OrderItemService {
         Integer newQuantity = newPojo.getQuantity();
         InventoryPojo inventoryPojo = new InventoryPojo();
 
+//        this has to be in flow
+
 //        adding old quantity to old inventory
         inventoryPojo.setId(oldPojo.getProductId());
         inventoryPojo.setQuantity(oldQuantity);
@@ -92,7 +94,5 @@ public class OrderItemService {
 
     public OrderItemPojo getProductIdOrderId(Integer productId, Integer orderId) throws ApiException {
         return dao.selectByProductIdOrderId(productId, orderId);
-//        if (pojo == null)
-//            throw new ApiException("No product found with given combination of product id and order id");
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,9 +26,9 @@ public class OrderService {
     }
 
     @Transactional
-    public List<OrderPojo> selectOrderByDateFilter(String start, String endDate) throws ApiException {
+    public List<OrderPojo> selectOrderByDateFilter(LocalDateTime startDate, LocalDateTime endDate) throws ApiException {
         try {
-            return dao.selectByDateFilter(start, endDate);
+            return dao.selectByDateFilter(startDate, endDate);
         } catch (Exception e) {
             throw new ApiException(e.getMessage());
         }

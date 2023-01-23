@@ -1,5 +1,6 @@
 package com.increff.store.dto;
 
+import com.google.protobuf.Api;
 import com.increff.store.model.OrderItemData;
 import com.increff.store.model.OrderItemForm;
 import com.increff.store.model.UpdateOrderItemForm;
@@ -10,6 +11,7 @@ import com.increff.store.service.ApiException;
 import com.increff.store.service.OrderItemService;
 import com.increff.store.service.OrderService;
 import com.increff.store.service.ProductService;
+import com.increff.store.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,25 +30,28 @@ public class OrderItemDto {
     private OrderService orderService;
 
     public void addOrderItem(OrderItemForm form) throws ApiException {
-        OrderItemPojo p = convert(form);
+        checkOrderItemForm(form);
 
-        OrderItemPojo oldPojo = service.getProductIdOrderId(p.getProductId(), p.getOrderId());
+        OrderItemPojo pojo = convert(form);
+
+        OrderItemPojo oldPojo = service.getProductIdOrderId(pojo.getProductId(), pojo.getOrderId());
         if (oldPojo != null) {
-            Integer q = p.getQuantity();
-            p.setQuantity(oldPojo.getQuantity() + q);
-            service.updateOrderItem(oldPojo.getId(), p);
-        } else
-            service.addOrderItem(p);
+            Integer q = pojo.getQuantity();
+            pojo.setQuantity(oldPojo.getQuantity() + q);
+            service.updateOrderItem(oldPojo.getId(), pojo);
+        } else {
+            service.addOrderItem(pojo);
+        }
     }
 
     public void updateOrderItem(UpdateOrderItemForm form) throws ApiException {
-        OrderItemPojo newPojo = new OrderItemPojo();
-        newPojo.setId(form.getId());
-        newPojo.setOrderId(form.getOrderId());
-        newPojo.setProductId(form.getProductId());
+        checkUpdateOrderItemForm(form);
+        OrderItemPojo newPojo = service.getOrderItemById(form.getOrderItemId());
+        if (checkIfOrderPlaced(newPojo.getOrderId()))
+            throw new ApiException("Cannot update item in placed order");
         newPojo.setQuantity(form.getQuantity());
-        newPojo.setSellingPrice(form.getMrp());
-        service.updateOrderItem(form.getId(), newPojo);
+        newPojo.setSellingPrice(form.getSellingPrice());
+        service.updateOrderItem(form.getOrderItemId(), newPojo);
     }
 
     public List<OrderItemData> getOrderItemByOrderId(Integer id) throws ApiException {
@@ -70,17 +75,17 @@ public class OrderItemDto {
     }
 
     private OrderItemPojo convert(OrderItemForm form) throws ApiException {
-        OrderItemPojo p = new OrderItemPojo();
-        p.setOrderId(form.getOrderId());
-        p.setQuantity(form.getQuantity());
-        p.setSellingPrice(form.getSellingPrice());
+        OrderItemPojo pojo = new OrderItemPojo();
+        pojo.setOrderId(form.getOrderId());
+        pojo.setQuantity(form.getQuantity());
+        pojo.setSellingPrice(form.getSellingPrice());
         String code = form.getBarCode();
         ProductPojo productPojo = productService.getProductByBarcode(code);
-        if(form.getSellingPrice() > productPojo.getMrp())
+        if (form.getSellingPrice() > productPojo.getMrp())
             throw new ApiException("Selling price cannot be greater than mrp");
-        p.setProductId(productPojo.getId());
-        p.setBrandCategory(productPojo.getBrandCategory());
-        return p;
+        pojo.setProductId(productPojo.getId());
+        pojo.setBrandCategory(productPojo.getBrandCategory());
+        return pojo;
     }
 
     private OrderItemData convert(OrderItemPojo p) throws ApiException {
@@ -96,4 +101,32 @@ public class OrderItemDto {
         return d;
     }
 
+    private boolean checkIfOrderPlaced(Integer orderId) throws ApiException {
+        OrderPojo orderPojo = orderService.getOrderById(orderId);
+        if (Objects.equals(orderPojo.getStatus(), "Placed"))
+            return true;
+        return false;
+    }
+
+    protected static void checkUpdateOrderItemForm(UpdateOrderItemForm form) throws ApiException {
+        if (!StringUtil.isPositive(form.getSellingPrice()))
+            throw new ApiException("Input valid Selling Price");
+        if (!StringUtil.isPositive(form.getQuantity()))
+            throw new ApiException("Input valid quantity");
+        form.setSellingPrice(StringUtil.normalizeDouble(form.getSellingPrice()));
+    }
+
+    private void checkOrderItemForm(OrderItemForm form) throws ApiException
+    {
+        OrderPojo orderPojo = orderService.getOrderById(form.getOrderId());
+        if(checkIfOrderPlaced(orderPojo.getId()))
+            throw new ApiException("Cannot add item in placed order");
+
+        if (!StringUtil.isPositive(form.getSellingPrice()))
+            throw new ApiException("Input valid Selling Price");
+        if (!StringUtil.isPositive(form.getQuantity()))
+            throw new ApiException("Input valid quantity");
+
+        form.setSellingPrice(StringUtil.normalizeDouble(form.getSellingPrice()));
+    }
 }

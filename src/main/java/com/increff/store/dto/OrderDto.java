@@ -1,6 +1,7 @@
 package com.increff.store.dto;
 
 import com.increff.store.model.DateFilterForm;
+import com.increff.store.model.InvoiceForm;
 import com.increff.store.model.OrderData;
 import com.increff.store.model.OrderForm;
 import com.increff.store.pojo.OrderPojo;
@@ -8,9 +9,19 @@ import com.increff.store.service.ApiException;
 import com.increff.store.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import com.increff.store.invoice.InvoiceGenerator;
 
+import javax.transaction.Transactional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.increff.store.dto.DtoUtils.*;
 import static com.increff.store.util.CreateRandomSequence.createRandomOrderCode;
@@ -22,13 +33,15 @@ public class OrderDto {
     @Autowired
     private OrderService service;
 
-    public Integer createOrder() throws ApiException
-    {
+    @Autowired
+    private InvoiceGenerator invoiceGenerator;
+
+    public Integer createOrder() throws ApiException {
         OrderPojo orderPojo = new OrderPojo();
         orderPojo.setCustomerName("");
         orderPojo.setCreatedDateTime(getCurrentDateTime());
         orderPojo.setStatus("pending");
-        orderPojo.setPlaceDateTime("");
+        orderPojo.setPlaceDateTime(null);
 
 //        creating random order code
         String orderCode = createRandomOrderCode();
@@ -44,33 +57,32 @@ public class OrderDto {
         return service.addOrder(orderPojo);
     }
 
-    public List<OrderData> getAllOrders() throws ApiException
-    {
+    public List<OrderData> getAllOrders() throws ApiException {
         List<OrderData> list1 = new ArrayList<OrderData>();
         List<OrderPojo> list2 = service.selectAllOrders();
 
-        for(OrderPojo p: list2)
+        for (OrderPojo p : list2)
             list1.add(convertOrderPojoToOrderData(p));
 
         return list1;
     }
 
-    public List<OrderData> getOrderByDateFilter(DateFilterForm form) throws ApiException
-    {
+    public List<OrderData> getOrderByDateFilter(DateFilterForm form) throws ApiException {
         List<OrderData> list1 = new ArrayList<OrderData>();
 
-        String startDate = form.getStart().replace('-', '/');
-        String endDate = form.getEnd().replace('-', '/');
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        LocalDateTime startDate = LocalDate.parse(form.getStart(), formatter).atStartOfDay();
+        LocalDateTime endDate = LocalDate.parse(form.getEnd(), formatter).atTime(23, 59, 59);
         List<OrderPojo> list2 = service.selectOrderByDateFilter(startDate, endDate);
 
-        for(OrderPojo p: list2)
+        for (OrderPojo p : list2)
             list1.add(convertOrderPojoToOrderData(p));
 
         return list1;
     }
 
-    public OrderData getOrderById(Integer id) throws ApiException
-    {
+    public OrderData getOrderById(Integer id) throws ApiException {
         OrderPojo p = service.getOrderById(id);
         return convertOrderPojoToOrderData(p);
     }
@@ -80,14 +92,38 @@ public class OrderDto {
 //        return convertOrderPojoToOrderData(p);
 //    }
 
-    public void placeOrder(Integer id, OrderForm form) throws ApiException
-    {
+    @Transactional(rollbackOn = ApiException.class)
+    public void placeOrder(Integer id, OrderForm form) throws ApiException {
         checkOrderForm(form);
         OrderPojo orderPojo = service.getOrderById(id);
+        if(Objects.equals(orderPojo.getStatus(), "Placed"))
+            throw new ApiException("Order already placed");
         orderPojo.setStatus("Placed");
         orderPojo.setCustomerName(form.getCustomerName());
         orderPojo.setPlaceDateTime(getCurrentDateTime());
         normalize(orderPojo);
         service.updateOrder(id, orderPojo);
+        try {
+            downloadInvoice(id);
+        } catch (Exception e) {
+            throw new ApiException("Cannot create Invoice for given order");
+        }
+    }
+
+    private void downloadInvoice(Integer orderId) throws Exception {
+
+//        generating invoice form
+        InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderId);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = "http://localhost:8080/fop/api/invoice";
+
+        byte[] contents = restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody();
+
+//        saving pdf;
+        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderId + "_invoice.pdf");
+
+        Files.write(pdfPath, contents);
     }
 }

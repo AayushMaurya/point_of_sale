@@ -24,25 +24,25 @@ public class RevenueApiController {
     private ReportDto reportDto;
 
     @ApiOperation(value = "Get Revenue on product items with date as filter")
-    @RequestMapping(path = "/api/admin/revenue-product", method = RequestMethod.POST)
+    @RequestMapping(path = "/api/admin/sales-report", method = RequestMethod.POST)
     public List<ProductRevenueData> get_revenue_product(@RequestBody DateFilterForm form) throws ApiException
     {
         return dto.getProductWiseReport(form);
     }
 
-    @ApiOperation(value = "Get Revenue on product items with date as filter")
-    @RequestMapping(path = "/api/admin/revenue-brand", method = RequestMethod.POST)
-    public List<BrandRevenueData> getRevenueBrand(@RequestBody DateFilterForm form) throws ApiException
-    {
-        return dto.getBrandReport(form);
-    }
-
-    @ApiOperation(value = "Get Revenue on product items with date as filter")
-    @RequestMapping(path = "/api/admin/revenue-category", method = RequestMethod.POST)
-    public List<CategoryRevenueData> getRevenueCategory(@RequestBody DateFilterForm form) throws ApiException
-    {
-        return dto.getCategoryReport(form);
-    }
+//    @ApiOperation(value = "Get Revenue on product items with date as filter")
+//    @RequestMapping(path = "/api/admin/revenue-brand", method = RequestMethod.POST)
+//    public List<BrandRevenueData> getRevenueBrand(@RequestBody DateFilterForm form) throws ApiException
+//    {
+//        return dto.getBrandReport(form);
+//    }
+//
+//    @ApiOperation(value = "Get Revenue on product items with date as filter")
+//    @RequestMapping(path = "/api/admin/revenue-category", method = RequestMethod.POST)
+//    public List<CategoryRevenueData> getRevenueCategory(@RequestBody DateFilterForm form) throws ApiException
+//    {
+//        return dto.getCategoryReport(form);
+//    }
 
     @ApiOperation(value = "Get Inventory Report")
     @RequestMapping(path = "/api/admin/inventory-report", method = RequestMethod.GET)
@@ -52,10 +52,10 @@ public class RevenueApiController {
     }
 
     @ApiOperation(value = "Get Daily Report Report")
-    @RequestMapping(path = "/api/admin/daily-report", method = RequestMethod.GET)
-    public List<DailyReportData> getDailyReport() throws ApiException
+    @RequestMapping(path = "/api/admin/daily-report", method = RequestMethod.POST)
+    public List<DailyReportData> getDailyReport(@RequestBody DateFilterForm form) throws ApiException
     {
-        return reportDto.getAllDailyReport();
+        return reportDto.getAllDailyReport(form);
     }
 
 }

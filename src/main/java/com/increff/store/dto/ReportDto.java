@@ -1,7 +1,7 @@
 package com.increff.store.dto;
 
-import com.google.protobuf.Api;
 import com.increff.store.model.DailyReportData;
+import com.increff.store.model.DateFilterForm;
 import com.increff.store.pojo.DailyReportPojo;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +40,11 @@ public class ReportDto {
         Integer totalItems = 0;
         Double totalRevenue = 0.0;
 
-        String startDate = correctFormat(date.toString()) + " 00:00:00";
-        String endDate = correctFormat(date.toString()) + " 23:59:59";
+        String start = correctFormat(date.toString()) + " 00:00:00";
+        String end = correctFormat(date.toString()) + " 23:59:59";
+
+        LocalDateTime startDate = LocalDateTime.parse(start, DateTimeFormatter.ISO_DATE);
+        LocalDateTime endDate = LocalDateTime.parse(end, DateTimeFormatter.ISO_DATE);
 
         List<OrderPojo> orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);
 
@@ -67,13 +72,21 @@ public class ReportDto {
         }
     }
 
-    public List<DailyReportData> getAllDailyReport() throws ApiException
-    {
-        List<DailyReportPojo> dailyReportPojoList = service.getAllReport();
+    public List<DailyReportData> getAllDailyReport(DateFilterForm form) throws ApiException {
+        LocalDate startDate;
+        LocalDate endDate;
+        try {
+            startDate = LocalDate.parse(form.getStart(), DateTimeFormatter.ISO_DATE);
+            endDate = LocalDate.parse(form.getEnd(), DateTimeFormatter.ISO_DATE);
+        }
+        catch(Exception e)
+        {
+            throw new ApiException("Please put valid start and end date");
+        }
+        List<DailyReportPojo> dailyReportPojoList = service.getAllReport(startDate, endDate);
         List<DailyReportData> dailyReportData = new ArrayList<>();
 
-        for(DailyReportPojo p: dailyReportPojoList)
-        {
+        for (DailyReportPojo p : dailyReportPojoList) {
             dailyReportData.add(convertReportPojoToReportData(p));
         }
 

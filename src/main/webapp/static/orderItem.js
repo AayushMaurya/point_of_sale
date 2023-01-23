@@ -67,7 +67,7 @@ function displayOrderItemList(data){
 		var buttonHtml = ' <button class="btn-disable btn btn-primary" onclick="deleteOrderItem('
 		+ e.id + ')">delete</button>'
 		+ ' <button onclick="fillFields(' + e.id + ','
-		+ e.orderId + ',' + e.productId + ',' + e.quantity + ','
+		+ e.quantity + ','
 		+ e.sellingPrice + ')" class="btn-disable btn btn-primary" data-toggle="modal"'
 		+ 'data-target="#exampleModalCenter">Edit</button>';
 		var row = '<tr>'
@@ -153,16 +153,13 @@ function deleteOrderItem(id)
     	return false;
 }
 
-function fillFields(id, orderId, productId, quantity, sellingPrice)
+function fillFields(id, quantity, sellingPrice)
 {
-console.log("filling the update order item form fields");
     document.getElementById("inputUpdateOrderItemId").value = id;
-    document.getElementById("inputUpdateOrderId").value = orderId;
-    document.getElementById("inputUpdateProductId").value = productId;
     document.getElementById("inputUpdateQuantity").value = quantity;
     document.getElementById("inputUpdateMrp").value = sellingPrice;
 }
-//
+
 function updateOrderItem()
 {
     console.log("this function will update order item");
@@ -186,6 +183,7 @@ function updateOrderItem()
         	   success: function(response) {
         	   		getOrderItemList();
         	   		handleSuccess("Item Updated");
+        	   		$('#exampleModalCenter').modal('hide');
         	   },
         	   error: handleAjaxError
 

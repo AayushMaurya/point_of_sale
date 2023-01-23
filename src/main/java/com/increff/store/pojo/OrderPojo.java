@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -14,11 +15,11 @@ public class OrderPojo extends AbstractDateAudit {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     @Column(nullable = false, name = "created_date_time")
-    private String createdDateTime;
+    private LocalDateTime createdDateTime;
     @Column(nullable = false)
     private String customerName;
-    @Column(nullable = false, name = "placed_date_time")
-    private String placeDateTime;
+    @Column(name = "placed_date_time")
+    private LocalDateTime placeDateTime;
     @Column(nullable = false)
     private String status;
     @Column(nullable = false, name = "order_code", unique = true)

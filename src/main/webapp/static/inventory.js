@@ -40,6 +40,7 @@ function displayInventoryList(data){
 		+ e.id +')">Edit</button>';
 		var row = '<tr>'
 		+ '<td>' + index+ '</td>'
+		+ '<td>' + e.barcode+ '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';

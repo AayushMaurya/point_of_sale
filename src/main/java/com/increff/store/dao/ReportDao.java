@@ -14,6 +14,9 @@ public class ReportDao extends AbstractDao{
 
     private static String SELECT_ALL = "select p from DailyReportPojo p";
 
+    private static String SELECT_WITH_DATE_FILTER = "select p from DailyReportPojo p where date>=:startDate and " +
+            "date<=:endDate";
+
     public void insert(DailyReportPojo p) {
         em().persist(p);
     }
@@ -22,8 +25,10 @@ public class ReportDao extends AbstractDao{
         query.setParameter("date", date);
         return query.getResultStream().findFirst().orElse(null);
     }
-    public List<DailyReportPojo> selectAll() {
-        TypedQuery<DailyReportPojo> query = getQuery(SELECT_ALL, DailyReportPojo.class);
+    public List<DailyReportPojo> selectAll(LocalDate startDate, LocalDate endDate) {
+        TypedQuery<DailyReportPojo> query = getQuery(SELECT_WITH_DATE_FILTER, DailyReportPojo.class);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
         return query.getResultList();
     }
 }

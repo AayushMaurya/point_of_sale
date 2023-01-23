@@ -6,6 +6,9 @@ import com.increff.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,19 +37,20 @@ public class RevenueDto {
     {
         List<ProductRevenueData> list1 = new ArrayList<ProductRevenueData>();
 
-        List<ProductPojo> productPojoList = productService.getAllProducts();
+        List<BrandPojo> brandPojoList = brandService.getAllBrands();
 
 //        key: productId
         HashMap<Integer, ProductRevenueData> map = new HashMap<>();
 
 //        getting the list of all available products in map
-        for(ProductPojo p: productPojoList) {
-            ProductRevenueData productRevenueData = convert(p);
+        for(BrandPojo p: brandPojoList) {
+            ProductRevenueData productRevenueData = convertBrandPojoToProductRevenueData(p);
             map.put(p.getId(), productRevenueData);
         }
 //      converting the date into required formate
-        String startDate = correctFormat(form.getStart()) + " 00:00:00";
-        String endDate = correctFormat(form.getEnd()) + " 23:59:59";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime startDate = LocalDate.parse(form.getStart(), formatter).atStartOfDay();
+        LocalDateTime endDate = LocalDate.parse(form.getEnd(), formatter).atTime(23, 59, 59);
 
         List<OrderPojo> orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);
 
@@ -59,12 +63,12 @@ public class RevenueDto {
 
             for(OrderItemPojo p: orderItemPojoList)
             {
-                Integer productId = p.getProductId();
-                Integer quantity = map.get(productId).getQuantity();
-                double total = map.get(productId).getTotal();
+                Integer brandCategoryId = p.getBrandCategory();
+                Integer quantity = map.get(brandCategoryId).getQuantity();
+                double total = map.get(brandCategoryId).getTotal();
 
-                map.get(productId).setQuantity(quantity + p.getQuantity());
-                map.get(productId).setTotal(total + p.getQuantity()*p.getSellingPrice());
+                map.get(brandCategoryId).setQuantity(quantity + p.getQuantity());
+                map.get(brandCategoryId).setTotal(total + p.getQuantity()*p.getSellingPrice());
             }
         }
 
@@ -75,91 +79,14 @@ public class RevenueDto {
         return list1;
     }
 
-    public List<BrandRevenueData> getBrandReport(DateFilterForm form) throws ApiException {
-        List<BrandRevenueData> res = new ArrayList<>();
-
-//        key: brand name
-        HashMap<String, BrandRevenueData> map = new HashMap<>();
-
-        List<ProductRevenueData> list1 = getProductWiseReport(form);
-
-        for(ProductRevenueData p: list1)
-        {
-            if(map.containsKey(p.getBrand()))
-            {
-                Integer quantity = map.get(p.getBrand()).getQuantity();
-                double total = map.get(p.getBrand()).getTotal();
-
-                map.get(p.getBrand()).setQuantity(quantity + p.getQuantity());
-                map.get(p.getBrand()).setTotal(total + p.getTotal());
-            }
-            else{
-                BrandRevenueData b = new BrandRevenueData();
-                b.setBrand(p.getBrand());
-                b.setTotal(p.getTotal());
-                b.setQuantity(p.getQuantity());
-
-                map.put(p.getBrand(), b);
-            }
-        }
-
-        for(Map.Entry<String, BrandRevenueData> e: map.entrySet())
-            res.add(e.getValue());
-
-        return res;
-    }
-
-    public List<CategoryRevenueData> getCategoryReport(DateFilterForm form) throws ApiException {
-        List<CategoryRevenueData> res = new ArrayList<>();
-
-        HashMap<String, CategoryRevenueData> map = new HashMap<>();
-
-        List<ProductRevenueData> list1 = getProductWiseReport(form);
-
-        for(ProductRevenueData p: list1)
-        {
-            if(map.containsKey(p.getCategory()))
-            {
-                String key = p.getCategory();
-                Integer quantity = map.get(key).getQuantity();
-                double total = map.get(key).getTotal();
-
-                map.get(key).setQuantity(quantity + p.getQuantity());
-                map.get(key).setTotal(total + p.getTotal());
-            }
-            else{
-                CategoryRevenueData b = new CategoryRevenueData();
-                b.setCategory(p.getCategory());
-                b.setTotal(p.getTotal());
-                b.setQuantity(p.getQuantity());
-
-                map.put(p.getCategory(), b);
-            }
-        }
-
-        for(Map.Entry<String, CategoryRevenueData> e: map.entrySet())
-            res.add(e.getValue());
-
-
-        return res;
-    }
-
-    private ProductRevenueData convert(ProductPojo p) throws ApiException
+    private ProductRevenueData convertBrandPojoToProductRevenueData(BrandPojo p) throws ApiException
     {
         ProductRevenueData productRevenueData = new ProductRevenueData();
         productRevenueData.setId(p.getId());
-        productRevenueData.setBarcode(p.getBarcode());
-        productRevenueData.setMrp(p.getMrp());
-        productRevenueData.setName(p.getName());
+        productRevenueData.setBrand(p.getBrand());
+        productRevenueData.setCategory(p.getCategory());
         productRevenueData.setQuantity(0);
         productRevenueData.setTotal(0);
-
-        Integer brandCategoryId = p.getBrandCategory();
-        BrandPojo brandPojo = brandService.getByBrandId(brandCategoryId);
-
-        productRevenueData.setBrand(brandPojo.getBrand());
-        productRevenueData.setCategory(brandPojo.getCategory());
-
         return productRevenueData;
     }
 

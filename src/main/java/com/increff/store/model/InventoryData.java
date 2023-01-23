@@ -8,4 +8,5 @@ import lombok.Setter;
 public class InventoryData {
     private Integer id;
     private Integer quantity;
+    private String barcode;
 }

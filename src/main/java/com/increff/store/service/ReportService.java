@@ -24,9 +24,9 @@ public class ReportService {
     }
 
     @Transactional
-    public List<DailyReportPojo> getAllReport() throws ApiException {
+    public List<DailyReportPojo> getAllReport(LocalDate startDate, LocalDate endDate) throws ApiException {
         try {
-            return dao.selectAll();
+            return dao.selectAll(startDate, endDate);
         } catch (Exception e) {
             throw new ApiException(e.getMessage());
         }

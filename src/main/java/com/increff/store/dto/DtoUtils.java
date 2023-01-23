@@ -46,8 +46,9 @@ public class DtoUtils {
     {
         OrderData orderData = new OrderData();
         orderData.setId(p.getId());
-        orderData.setCreatedDataTime(p.getCreatedDateTime());
-        orderData.setPlacedDataTime(p.getPlaceDateTime());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        orderData.setCreatedDataTime(p.getCreatedDateTime().format(dateTimeFormatter));
+        orderData.setPlacedDataTime(p.getPlaceDateTime().format(dateTimeFormatter));
         orderData.setCustomerName(p.getCustomerName());
         orderData.setStatus(p.getStatus());
         orderData.setOrderCode(p.getOrderCode());
@@ -125,4 +126,5 @@ public class DtoUtils {
         dailyReportData.setInvoicedOrderCount(pojo.getInvoicedOrderCount());
         return dailyReportData;
     }
+
 }

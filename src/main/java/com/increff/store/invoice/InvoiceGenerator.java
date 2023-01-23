@@ -11,6 +11,7 @@ import com.increff.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +38,8 @@ public class InvoiceGenerator {
 
         invoiceForm.setOrderId(orderPojo.getId());
         invoiceForm.setCustomerName(orderPojo.getCustomerName());
-        invoiceForm.setPlaceDate(orderPojo.getPlaceDateTime());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss");
+        invoiceForm.setPlaceDate(orderPojo.getPlaceDateTime().format(dateTimeFormatter));
 
         List<OrderItemPojo> orderItemPojoList = orderItemService.getOrder(orderPojo.getId());
         List<OrderItem> orderItemList = new ArrayList<>();

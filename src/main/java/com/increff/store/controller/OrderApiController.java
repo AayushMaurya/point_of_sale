@@ -1,9 +1,7 @@
 package com.increff.store.controller;
 
 import com.increff.store.dto.OrderDto;
-import com.increff.store.invoice.InvoiceGenerator;
 import com.increff.store.model.DateFilterForm;
-import com.increff.store.model.InvoiceForm;
 import com.increff.store.model.OrderData;
 import com.increff.store.model.OrderForm;
 import com.increff.store.service.ApiException;
@@ -15,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,9 +25,6 @@ public class OrderApiController {
 
     @Autowired
     private OrderDto dto;
-
-    @Autowired
-    private InvoiceGenerator invoiceGenerator;
 
     @ApiOperation(value = "Adds order to order table")
     @RequestMapping(path = "/api/order", method = RequestMethod.POST)
@@ -60,20 +54,6 @@ public class OrderApiController {
     @RequestMapping(path = "api/order/place/{orderId}", method = RequestMethod.PUT)
     public void markOrderPlaced(@PathVariable Integer orderId, @RequestBody OrderForm form) throws Exception {
         dto.placeOrder(orderId, form);
-
-//        generating invoice form
-        InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderId);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        String url = "http://localhost:8080/fop/api/invoice";
-
-        byte[] contents = restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody();
-
-//        saving pdf;
-        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderId + "_invoice.pdf");
-
-        Files.write(pdfPath, contents);
     }
 
     @ApiOperation(value = "Download Invoice")
@@ -96,6 +76,5 @@ public class OrderApiController {
         ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
         return response;
     }
-
 
 }

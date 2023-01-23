@@ -9,12 +9,7 @@ import javax.persistence.Version;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-//@EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractDateAudit {
-//    updation time stamp lagane se creation time stamp nhi kaam kar rha hai
-//    @CreationTimestamp
-//    @Column(name = "created_at", nullable = false, updatable = false)
-//    private Date createdAt;
 
     @CreationTimestamp
     @Column(name = "created_at")

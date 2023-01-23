@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -43,7 +44,7 @@ public class OrderDao {
         }
     }
 
-    public List<OrderPojo> selectByDateFilter(String startDate, String endDate) throws ApiException {
+    public List<OrderPojo> selectByDateFilter(LocalDateTime startDate, LocalDateTime endDate) throws ApiException {
         TypedQuery<OrderPojo> query = getQuery(SELECT_BY_DATE_FILTER);
         query.setParameter("startDate", startDate);
         query.setParameter("endDate", endDate);
