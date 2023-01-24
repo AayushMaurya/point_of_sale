@@ -31,4 +31,9 @@ public class ReportDao extends AbstractDao{
         query.setParameter("endDate", endDate);
         return query.getResultList();
     }
+
+    public List<DailyReportPojo> selectAll() {
+        TypedQuery<DailyReportPojo> query = getQuery(SELECT_ALL, DailyReportPojo.class);
+        return query.getResultList();
+    }
 }

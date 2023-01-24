@@ -35,18 +35,20 @@ function displayInventoryList(data){
 	for(var i in data){
 		var e = data[i];
 		index++;
-		var buttonHtml = '<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"'
+		var buttonHtml = '<button class="btn btn-primar" data-toggle="modal"'
+		+ 'data-target="#exampleModalCenter"'
 		+ 'onclick="fillFields('
 		+ e.id +')">Edit</button>';
 		var row = '<tr>'
 		+ '<td>' + index+ '</td>'
 		+ '<td>' + e.barcode+ '</td>'
 		+ '<td>' + e.quantity + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
+		+ '<td class="supervisor-view">' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
 	}
-
+    if($("meta[name=role]").attr("content") == "operator")
+        hideSupervisorView();
 	pagination();
 }
 
@@ -195,8 +197,6 @@ function uploadRows(){
 	   }
 	});
 
-	console.log("Finallllyy uploaded");
-
 }
 
 function downloadErrors(){
@@ -234,7 +234,6 @@ function displayUploadData(){
 	$('#upload-inventory-modal').modal('toggle');
 }
 
-
 function init()
 {
     $('#add-inventory').click(addInventory);
@@ -244,6 +243,8 @@ function init()
     $('#process-data').click(processData);
     $('#download-errors').click(downloadErrors);
     $('#inventoryFile').on('change', updateFileName)
+    if($("meta[name=role]").attr("content") == "operator")
+            document.getElementById('supervisor-view').style.display = "none";
 }
 
 $(document).ready(getInventoryList);

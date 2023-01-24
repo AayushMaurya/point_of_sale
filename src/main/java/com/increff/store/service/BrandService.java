@@ -9,49 +9,40 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(rollbackOn = ApiException.class)
 public class BrandService {
 
     @Autowired
     private BrandDao dao;
 
-    @Transactional
-    public void addBrand(BrandPojo pojo) throws ApiException
-    {
+    public void addBrand(BrandPojo pojo) throws ApiException {
         BrandPojo brandPojo = getByBrandCategory(pojo.getBrand(), pojo.getCategory());
-        if(brandPojo!=null)
+        if (brandPojo != null)
             throw new ApiException("The given brand category combination already exists");
         dao.insert(pojo);
     }
 
-    @Transactional
-    public BrandPojo getByBrandId(Integer id) throws ApiException
-    {
-        BrandPojo brandPojo =  dao.selectByBrandId(id);
-        if(brandPojo == null)
+    public BrandPojo getByBrandId(Integer id) throws ApiException {
+        BrandPojo brandPojo = dao.selectByBrandId(id);
+        if (brandPojo == null)
             throw new ApiException("Cannot select a brand with given brand id");
         return brandPojo;
     }
 
-    @Transactional
-    public List<BrandPojo> getAllBrands()
-    {
+    public List<BrandPojo> getAllBrands() {
         return dao.selectAll();
     }
 
-    public BrandPojo getByBrandCategory(String brand, String category)
-    {
+    public BrandPojo getByBrandCategory(String brand, String category) {
         return dao.selectByBrandCategory(brand, category);
     }
 
-
-    @Transactional
-    public void updateBrand(Integer id, BrandPojo newPojo) throws ApiException
-    {
+    public void updateBrand(Integer id, BrandPojo newPojo) throws ApiException {
 //        check if given brand category combination already exists.
         String brand = newPojo.getBrand();
         String category = newPojo.getCategory();
         BrandPojo b = getByBrandCategory(brand, category);
-        if(b!=null)
+        if (b != null && b.getId()!=id)
             throw new ApiException("The brand with given brand category already exists");
 
         BrandPojo p = dao.selectByBrandId(id);

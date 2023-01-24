@@ -1,5 +1,6 @@
 package com.increff.store.dto;
 
+import com.google.protobuf.Api;
 import com.increff.store.model.DailyReportData;
 import com.increff.store.model.DateFilterForm;
 import com.increff.store.pojo.DailyReportPojo;
@@ -72,15 +73,25 @@ public class ReportDto {
         }
     }
 
+    public List<DailyReportData> getAllDailyReport() throws ApiException
+    {
+        List<DailyReportPojo> dailyReportPojoList = service.getAllReport();
+        List<DailyReportData> dailyReportData = new ArrayList<>();
+
+        for (DailyReportPojo p : dailyReportPojoList) {
+            dailyReportData.add(convertReportPojoToReportData(p));
+        }
+
+        return dailyReportData;
+    }
+
     public List<DailyReportData> getAllDailyReport(DateFilterForm form) throws ApiException {
         LocalDate startDate;
         LocalDate endDate;
         try {
             startDate = LocalDate.parse(form.getStart(), DateTimeFormatter.ISO_DATE);
             endDate = LocalDate.parse(form.getEnd(), DateTimeFormatter.ISO_DATE);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             throw new ApiException("Please put valid start and end date");
         }
         List<DailyReportPojo> dailyReportPojoList = service.getAllReport(startDate, endDate);

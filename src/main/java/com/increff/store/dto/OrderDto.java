@@ -1,11 +1,10 @@
 package com.increff.store.dto;
 
-import com.increff.store.model.DateFilterForm;
-import com.increff.store.model.InvoiceForm;
-import com.increff.store.model.OrderData;
-import com.increff.store.model.OrderForm;
+import com.increff.store.model.*;
+import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
 import com.increff.store.service.ApiException;
+import com.increff.store.service.OrderItemService;
 import com.increff.store.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +33,9 @@ public class OrderDto {
     private OrderService service;
 
     @Autowired
+    private OrderItemService orderItemService;
+
+    @Autowired
     private InvoiceGenerator invoiceGenerator;
 
     public Integer createOrder() throws ApiException {
@@ -60,7 +62,6 @@ public class OrderDto {
     public List<OrderData> getAllOrders() throws ApiException {
         List<OrderData> list1 = new ArrayList<OrderData>();
         List<OrderPojo> list2 = service.selectAllOrders();
-
         for (OrderPojo p : list2)
             list1.add(convertOrderPojoToOrderData(p));
 
@@ -70,10 +71,21 @@ public class OrderDto {
     public List<OrderData> getOrderByDateFilter(DateFilterForm form) throws ApiException {
         List<OrderData> list1 = new ArrayList<OrderData>();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime startDate;
+        LocalDateTime endDate;
 
-        LocalDateTime startDate = LocalDate.parse(form.getStart(), formatter).atStartOfDay();
-        LocalDateTime endDate = LocalDate.parse(form.getEnd(), formatter).atTime(23, 59, 59);
+//      converting to proper date time format
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            startDate = LocalDate.parse(form.getStart(), formatter).atStartOfDay();
+            endDate = LocalDate.parse(form.getEnd(), formatter).atTime(23, 59, 59);
+        }
+        catch (Exception e)
+        {
+            throw new ApiException("Please input valid start and end date");
+        }
+
         List<OrderPojo> list2 = service.selectOrderByDateFilter(startDate, endDate);
 
         for (OrderPojo p : list2)
@@ -96,6 +108,9 @@ public class OrderDto {
     public void placeOrder(Integer id, OrderForm form) throws ApiException {
         checkOrderForm(form);
         OrderPojo orderPojo = service.getOrderById(id);
+        List<OrderItemPojo> list = orderItemService.getOrder(id);
+        if(list.size() == 0)
+            throw new ApiException("Add at least one item");
         if(Objects.equals(orderPojo.getStatus(), "Placed"))
             throw new ApiException("Order already placed");
         orderPojo.setStatus("Placed");

@@ -33,6 +33,15 @@ public class ReportService {
     }
 
     @Transactional
+    public List<DailyReportPojo> getAllReport() throws ApiException {
+        try {
+            return dao.selectAll();
+        } catch (Exception e) {
+            throw new ApiException(e.getMessage());
+        }
+    }
+
+    @Transactional
     public DailyReportPojo getReportByDate(LocalDate date) throws ApiException {
         return dao.select(date);
     }

@@ -24,6 +24,14 @@ public class UserService {
 		dao.insert(p);
 	}
 
+	public UserPojo getById(Integer id) throws ApiException
+	{
+			UserPojo pojo = dao.select(id);
+			if(pojo == null)
+				throw new ApiException("No user found with given Id");
+			return pojo;
+	}
+
 	@Transactional(rollbackOn = ApiException.class)
 	public UserPojo get(String email) throws ApiException {
 		return dao.select(email);

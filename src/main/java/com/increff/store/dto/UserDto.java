@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.increff.store.dto.DtoUtils.convertUserFormToUserPojo;
 import static com.increff.store.dto.DtoUtils.convertUserPojoToUserData;
@@ -25,8 +26,11 @@ public class UserDto {
         service.add(p);
     }
 
-    public void deleteUser(Integer id)
+    public void deleteUser(Integer id) throws ApiException
     {
+        UserPojo pojo = service.getById(id);
+        if(Objects.equals(pojo.getRole(), "supervisor"))
+            throw new ApiException("Cannot delete a supervisor");
         service.delete(id);
     }
 

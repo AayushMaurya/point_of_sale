@@ -7,6 +7,7 @@ import com.increff.store.service.ApiException;
 import com.increff.store.util.StringUtil;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class DtoUtils {
 
@@ -18,8 +19,7 @@ public class DtoUtils {
         return p;
     }
 
-    protected static BrandData convertBrandPojoToBrandData(BrandPojo pojo)
-    {
+    protected static BrandData convertBrandPojoToBrandData(BrandPojo pojo) {
         BrandData brandData = new BrandData();
         brandData.setId(pojo.getId());
         brandData.setCategory(pojo.getCategory());
@@ -27,28 +27,27 @@ public class DtoUtils {
         return brandData;
     }
 
-    protected static InventoryData convertInventoryPojoToInventoryData(InventoryPojo p)
-    {
-        InventoryData d =new InventoryData();
+    protected static InventoryData convertInventoryPojoToInventoryData(InventoryPojo p) {
+        InventoryData d = new InventoryData();
         d.setId(p.getId());
         d.setQuantity(p.getQuantity());
         return d;
     }
 
-    protected static OrderPojo convertOrderFormToOrderPojo(OrderForm form)
-    {
+    protected static OrderPojo convertOrderFormToOrderPojo(OrderForm form) {
         OrderPojo orderPojo = new OrderPojo();
         orderPojo.setCustomerName(form.getCustomerName());
         return orderPojo;
     }
 
-    protected static OrderData convertOrderPojoToOrderData(OrderPojo p)
-    {
+    protected static OrderData convertOrderPojoToOrderData(OrderPojo p) {
         OrderData orderData = new OrderData();
         orderData.setId(p.getId());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         orderData.setCreatedDataTime(p.getCreatedDateTime().format(dateTimeFormatter));
-        orderData.setPlacedDataTime(p.getPlaceDateTime().format(dateTimeFormatter));
+        orderData.setPlacedDataTime("");
+        if(Objects.equals(p.getStatus(), "Placed"))
+            orderData.setPlacedDataTime(p.getPlaceDateTime().format(dateTimeFormatter));
         orderData.setCustomerName(p.getCustomerName());
         orderData.setStatus(p.getStatus());
         orderData.setOrderCode(p.getOrderCode());
@@ -56,8 +55,7 @@ public class DtoUtils {
         return orderData;
     }
 
-    protected static InventoryReportModel convertBrandPojoToInventoryReportModel(BrandPojo p)
-    {
+    protected static InventoryReportModel convertBrandPojoToInventoryReportModel(BrandPojo p) {
         InventoryReportModel inventoryReportModel = new InventoryReportModel();
 
         inventoryReportModel.setBrand(p.getBrand());
@@ -73,8 +71,7 @@ public class DtoUtils {
         if (StringUtil.isEmpty(form.getCategory())) throw new ApiException("Category cannot be empty");
     }
 
-    protected static void normalize(OrderPojo p)
-    {
+    protected static void normalize(OrderPojo p) {
         p.setCustomerName(StringUtil.toLowerCase(p.getCustomerName()));
     }
 
@@ -83,15 +80,14 @@ public class DtoUtils {
         p.setBrand(StringUtil.toLowerCase(p.getBrand()));
     }
 
-    protected static void checkProductForm(ProductForm form) throws ApiException
-    {
-        if(StringUtil.isEmpty(form.getName()))
+    protected static void checkProductForm(ProductForm form) throws ApiException {
+        if (StringUtil.isEmpty(form.getName()))
             throw new ApiException("Product name cannot be empty");
-        if(StringUtil.isEmpty(form.getBarcode()))
+        if (StringUtil.isEmpty(form.getBarcode()))
             throw new ApiException("barcode cannot be empty");
-        if(StringUtil.isEmpty(form.getBrandName()))
+        if (StringUtil.isEmpty(form.getBrandName()))
             throw new ApiException("Brand name cannot be empty");
-        if(StringUtil.isEmpty(form.getBrandCategory()))
+        if (StringUtil.isEmpty(form.getBrandCategory()))
             throw new ApiException("Category cannot be empty");
     }
 
@@ -106,7 +102,8 @@ public class DtoUtils {
     protected static UserPojo convertUserFormToUserPojo(UserForm f) {
         UserPojo p = new UserPojo();
         p.setEmail(f.getEmail());
-        p.setRole(f.getRole());
+
+        p.setRole("operator");
         p.setPassword(f.getPassword());
         return p;
     }
@@ -115,8 +112,7 @@ public class DtoUtils {
         if (StringUtil.isEmpty(form.getCustomerName())) throw new ApiException("Customer name cannot be empty");
     }
 
-    protected static DailyReportData convertReportPojoToReportData(DailyReportPojo pojo)
-    {
+    protected static DailyReportData convertReportPojoToReportData(DailyReportPojo pojo) {
         DailyReportData dailyReportData = new DailyReportData();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDateTime = pojo.getDate().format(dateTimeFormatter);

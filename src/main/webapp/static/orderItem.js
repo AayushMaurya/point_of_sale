@@ -214,7 +214,6 @@ function downloadInvoice()
 
 function init()
 {
-    console.log("initializing");
     orderId = $("meta[name=orderId]").attr("content");
 //    orderCode = $("meta[name=orderCode]").attr("content");
 

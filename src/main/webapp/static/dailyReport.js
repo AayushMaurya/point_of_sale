@@ -6,6 +6,7 @@ function getDailyReportUrl()
 
 function getDailyReport()
 {
+    var $form = $("#date-filter-form");
     var url = getDailyReportUrl();
     $.ajax({
     	   url: url,
@@ -36,4 +37,31 @@ function displayDailyReport(data){
 	}
 }
 
+function getDailyReportByDateFilter()
+{
+    var url = getDailyReportUrl();
+    var $form = $("#date-filter-form");
+    var json = toJson($form);
+    $.ajax({
+        	   url: url,
+        	   type: 'POST',
+        	   data: json,
+               headers: {
+                  'Content-Type': 'application/json'
+               },
+        	   success: function(data) {
+        	   console.log(data);
+        	   		displayDailyReport(data);
+        	   },
+        	   error: handleAjaxError
+        	});
+        	return false;
+}
+
+function init()
+{
+    $('#apply-date-filter').click(getDailyReportByDateFilter);
+}
+
+$(document).ready(init);
 $(document).ready(getDailyReport);

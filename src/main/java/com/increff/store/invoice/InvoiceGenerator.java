@@ -28,12 +28,11 @@ public class InvoiceGenerator {
     @Autowired
     ProductService productService;
 
-    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException
-    {
+    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException {
         InvoiceForm invoiceForm = new InvoiceForm();
         OrderPojo orderPojo = orderService.getOrderById(orderId);
 
-        if(!Objects.equals(orderPojo.getStatus(), "Placed"))
+        if (!Objects.equals(orderPojo.getStatus(), "Placed"))
             throw new ApiException("The order is not yet placed");
 
         invoiceForm.setOrderId(orderPojo.getId());
@@ -44,8 +43,7 @@ public class InvoiceGenerator {
         List<OrderItemPojo> orderItemPojoList = orderItemService.getOrder(orderPojo.getId());
         List<OrderItem> orderItemList = new ArrayList<>();
 
-        for(OrderItemPojo p: orderItemPojoList)
-        {
+        for (OrderItemPojo p : orderItemPojoList) {
             OrderItem orderItem = new OrderItem();
             orderItem.setOrderItemId(p.getId());
             String productName = productService.getProductById(p.getProductId()).getName();

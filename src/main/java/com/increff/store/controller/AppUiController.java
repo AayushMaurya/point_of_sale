@@ -41,12 +41,12 @@ public class AppUiController extends AbstractUiController{
         return mav("orderItem.html", orderId);
     }
 
-    @RequestMapping(value = "/ui/revenue", method = RequestMethod.GET)
+    @RequestMapping(value = "/ui/admin/revenue", method = RequestMethod.GET)
     public ModelAndView orderItemById() throws ApiException {
         return mav("revenue.html");
     }
 
-    @RequestMapping(value = "/ui/inventory-report", method = RequestMethod.GET)
+    @RequestMapping(value = "/ui/admin/inventory-report", method = RequestMethod.GET)
     public ModelAndView inventoryReport() throws ApiException {
         return mav("inventoryReport.html");
     }
@@ -56,8 +56,13 @@ public class AppUiController extends AbstractUiController{
         return mav("home.html");
     }
 
-    @RequestMapping(value = "/ui/daily-report", method = RequestMethod.GET)
+    @RequestMapping(value = "/ui/admin/daily-report", method = RequestMethod.GET)
     public ModelAndView dailyReport() throws ApiException {
         return mav("dailyReport.html");
+    }
+
+    @RequestMapping(value = "/ui/admin/user", method = RequestMethod.GET)
+    public ModelAndView user() throws ApiException {
+        return mav("user.html");
     }
 }

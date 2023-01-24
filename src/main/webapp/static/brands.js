@@ -39,10 +39,12 @@ function displayBrandList(data){
 		+ '<td>' + index + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
+		+ '<td class="supervisor-view">' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
 	}
+	if($("meta[name=role]").attr("content") == "operator")
+        hideSupervisorView();
 	pagination();
 }
 
@@ -202,6 +204,8 @@ function init()
     $('#process-data').click(processData);
     $('#download-errors').click(downloadErrors);
     $('#brandFile').on('change', updateFileName);
+    if($("meta[name=role]").attr("content") == "operator")
+        document.getElementById('supervisor-view').style.display = "none";
 }
 
 $(document).ready(getBrandList);

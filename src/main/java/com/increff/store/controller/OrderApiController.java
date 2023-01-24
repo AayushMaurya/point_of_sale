@@ -35,6 +35,7 @@ public class OrderApiController {
     @ApiOperation(value = "Select all order")
     @RequestMapping(path = "/api/order", method = RequestMethod.GET)
     public List<OrderData> getAllOrders() throws ApiException {
+        System.out.println("b");
         return dto.getAllOrders();
     }
 

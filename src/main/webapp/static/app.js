@@ -13,6 +13,7 @@ function toJson($form){
 
 function handleAjaxError(response){
 	var message = JSON.parse(response.responseText);
+	console.log(response);
 	document.getElementById('status').style.backgroundColor = "red";
 	document.getElementById('status-message').innerHTML = message.message;
 	console.log(message);
@@ -61,3 +62,20 @@ function writeFileData(arr){
     tempLink.setAttribute('download', 'download.tsv');
     tempLink.click();
 }
+
+function hideSupervisorView()
+{
+    var appBanners = document.getElementsByClassName('supervisor-view');
+
+    for (var i = 0; i < appBanners.length; i ++) {
+        appBanners[i].style.display = 'none';
+    }
+}
+
+function init()
+{
+    if($("meta[name=role]").attr("content") == "operator")
+        hideSupervisorView();
+}
+
+$(document).ready(init);

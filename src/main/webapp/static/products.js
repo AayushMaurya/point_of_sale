@@ -61,11 +61,12 @@ function displayProductList(data){
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>'  + e.name + '</td>'
 		+ '<td>'  + e.mrp + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
+		+ '<td class="supervisor-view">' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
 	}
-
+     if($("meta[name=role]").attr("content") == "operator")
+            hideSupervisorView();
 	pagination();
 }
 
@@ -303,6 +304,8 @@ function init()
     $('#process-data').click(processData);
     $('#download-errors').click(downloadErrors);
     $('#productFile').on('change', updateFileName);
+    if($("meta[name=role]").attr("content") == "operator")
+            document.getElementById('supervisor-view').style.display = "none";
 }
 
 $(document).ready(getProductList);
