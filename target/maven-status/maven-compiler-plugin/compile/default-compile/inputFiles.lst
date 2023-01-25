@@ -52,6 +52,7 @@ D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\spring\Schedu
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\DailyReportData.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\dto\InventoryDto.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\BrandForm.java
+D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\FilterForm.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\dao\UserDao.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\OrderItemForm.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\controller\OrderApiController.java

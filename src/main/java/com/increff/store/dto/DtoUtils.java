@@ -123,4 +123,14 @@ public class DtoUtils {
         return dailyReportData;
     }
 
+    protected static ProductRevenueData convertBrandPojoToProductRevenueData(BrandPojo p) throws ApiException {
+        ProductRevenueData productRevenueData = new ProductRevenueData();
+        productRevenueData.setId(p.getId());
+        productRevenueData.setBrand(p.getBrand());
+        productRevenueData.setCategory(p.getCategory());
+        productRevenueData.setQuantity(0);
+        productRevenueData.setTotal(0);
+        return productRevenueData;
+    }
+
 }

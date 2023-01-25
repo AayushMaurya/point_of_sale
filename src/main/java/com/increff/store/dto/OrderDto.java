@@ -38,7 +38,7 @@ public class OrderDto {
     @Autowired
     private InvoiceGenerator invoiceGenerator;
 
-    public Integer createOrder() throws ApiException {
+    public String createOrder() throws ApiException {
         OrderPojo orderPojo = new OrderPojo();
         orderPojo.setCustomerName("");
         orderPojo.setCreatedDateTime(getCurrentDateTime());
@@ -48,12 +48,11 @@ public class OrderDto {
 //        creating random order code
         String orderCode = createRandomOrderCode();
 
-//        OrderPojo x = service.getOrderByOrderCode(orderCode);
-//        while(x!=null)
-//        {
-//            orderCode = createRandomOrderCode();
-//            x = service.getOrderByOrderCode(orderCode);
-//        }
+        OrderPojo x = service.getOrderByOrderCode(orderCode);
+        while (x != null) {
+            orderCode = createRandomOrderCode();
+            x = service.getOrderByOrderCode(orderCode);
+        }
 
         orderPojo.setOrderCode(orderCode);
         return service.addOrder(orderPojo);
@@ -80,9 +79,7 @@ public class OrderDto {
 
             startDate = LocalDate.parse(form.getStart(), formatter).atStartOfDay();
             endDate = LocalDate.parse(form.getEnd(), formatter).atTime(23, 59, 59);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ApiException("Please input valid start and end date");
         }
 
@@ -99,19 +96,19 @@ public class OrderDto {
         return convertOrderPojoToOrderData(p);
     }
 
-//    public OrderData getOrderByOrderCode(String orderCode) throws ApiException {
-//        OrderPojo p = service.getOrderByOrderCode(orderCode);
-//        return convertOrderPojoToOrderData(p);
-//    }
+    public OrderData getOrderByOrderCode(String orderCode) throws ApiException {
+        OrderPojo p = service.getOrderByOrderCode(orderCode);
+        return convertOrderPojoToOrderData(p);
+    }
 
     @Transactional(rollbackOn = ApiException.class)
     public void placeOrder(Integer id, OrderForm form) throws ApiException {
         checkOrderForm(form);
         OrderPojo orderPojo = service.getOrderById(id);
         List<OrderItemPojo> list = orderItemService.getOrder(id);
-        if(list.size() == 0)
+        if (list.size() == 0)
             throw new ApiException("Add at least one item");
-        if(Objects.equals(orderPojo.getStatus(), "Placed"))
+        if (Objects.equals(orderPojo.getStatus(), "Placed"))
             throw new ApiException("Order already placed");
         orderPojo.setStatus("Placed");
         orderPojo.setCustomerName(form.getCustomerName());

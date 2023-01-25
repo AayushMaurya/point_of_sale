@@ -23,10 +23,10 @@ public class RevenueApiController {
     @Autowired
     private ReportDto reportDto;
 
-    @ApiOperation(value = "Get Revenue on product items with date as filter")
+    @ApiOperation(value = "Get Revenue on product items with all filter")
     @RequestMapping(path = "/api/admin/sales-report", method = RequestMethod.POST)
-    public List<ProductRevenueData> get_revenue_product(@RequestBody DateFilterForm form) throws ApiException {
-        return dto.getProductWiseReport(form);
+    public List<ProductRevenueData> getSalesReport(@RequestBody FilterForm form) throws ApiException {
+        return dto.getSalesReport(form);
     }
 
     @ApiOperation(value = "Get Inventory Report")

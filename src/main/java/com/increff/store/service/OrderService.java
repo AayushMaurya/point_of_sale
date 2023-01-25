@@ -16,7 +16,7 @@ public class OrderService {
     private OrderDao dao;
 
     @Transactional
-    public Integer addOrder(OrderPojo p) throws ApiException {
+    public String addOrder(OrderPojo p) throws ApiException {
         return dao.insert(p);
     }
 
@@ -51,7 +51,7 @@ public class OrderService {
         p.setCustomerName(newOrderPojo.getCustomerName());
     }
 
-//    public OrderPojo getOrderByOrderCode(String orderCode) throws ApiException {
-//        return dao.selectByOrderCode(orderCode);
-//    }
+    public OrderPojo getOrderByOrderCode(String orderCode) throws ApiException {
+        return dao.selectByOrderCode(orderCode);
+    }
 }

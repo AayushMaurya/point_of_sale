@@ -169,7 +169,7 @@ function updateOrderItem()
 
     if((JSON.parse(json).quantity) == 0)
     {
-        deleteOrderItem(JSON.parse(json).id);
+        deleteOrderItem(JSON.parse(json).orderItemId);
         return;
     }
 

@@ -9,10 +9,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.increff.store.dto.DtoUtils.*;
 
@@ -29,7 +27,7 @@ public class RevenueDto {
     @Autowired
     InventoryService inventoryService;
 
-    public List<ProductRevenueData> getProductWiseReport(DateFilterForm form) throws ApiException {
+    public List<ProductRevenueData> getBrandCategoryWiseReport(DateFilterForm form) throws ApiException {
         List<ProductRevenueData> list1 = new ArrayList<ProductRevenueData>();
 
         List<BrandPojo> brandPojoList = brandService.getAllBrands();
@@ -80,19 +78,14 @@ public class RevenueDto {
         return list1;
     }
 
-    private ProductRevenueData convertBrandPojoToProductRevenueData(BrandPojo p) throws ApiException {
-        ProductRevenueData productRevenueData = new ProductRevenueData();
-        productRevenueData.setId(p.getId());
-        productRevenueData.setBrand(p.getBrand());
-        productRevenueData.setCategory(p.getCategory());
-        productRevenueData.setQuantity(0);
-        productRevenueData.setTotal(0);
-        return productRevenueData;
-    }
-
-    String correctFormat(String date) {
-        String res = date.replace('-', '/');
-        return res;
+    public List<ProductRevenueData> getSalesReport(FilterForm form) throws ApiException
+    {
+        String brand = form.getBrand();
+        String category = form.getCategory();
+        List<ProductRevenueData> res = getBrandCategoryWiseReport(form);
+        return res.stream().filter(d -> (d.getBrand().equals(brand) || brand.equals(
+                "All")) &&
+                (d.getCategory().equals(category) || category.equals("All"))).collect(Collectors.toList());
     }
 
     public List<InventoryReportModel> getInventoryReport() {

@@ -1,4 +1,3 @@
-var productRevenueData;
 var newBrands = {};
 
 function getRevenueUrl(){
@@ -37,7 +36,6 @@ function getRevenueList(){
        },
 	   success: function(data) {
 	   console.log(data);
-	   productRevenueData = data;
 	   		displayRevenueProductList(data);
 	   },
 	   error: handleAjaxError
@@ -126,31 +124,6 @@ function displayCategoryList()
     }
 }
 
-function applyBrandCategoryFilter()
-{
-console.log("this is it");
-    var brandFilter = getBrandOption();
-    var categoryFilter = getCategoryOption();
-    console.log(brandFilter);
-    console.log(categoryFilter);
-    var data = [];
-
-    for(var i = 0; i<productRevenueData.length; i++){
-        if(check(productRevenueData[i].brand, brandFilter) && check(productRevenueData[i].category, categoryFilter))
-            data.push(productRevenueData[i]);
-    }
-    displayRevenueProductList(data);
-}
-
-// helpers
-
-function check(a, b)
-{
-    if(b=="All" || a==b)
-        return true;
-    return false;
-}
-
 function removeDuplicates(arr) {
         return arr.filter((item,
             index) => arr.indexOf(item) === index);
@@ -161,7 +134,6 @@ function init()
     $('#show-revenue').click(getRevenueList);
 
     $('#inputFilterBrand').change(displayCategoryList);
-    $('#apply-brand-category-filter').click(applyBrandCategoryFilter);
 }
 
 $(document).ready(init);

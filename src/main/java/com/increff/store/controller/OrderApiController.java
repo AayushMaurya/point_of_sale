@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.List;
 
 @Api
@@ -28,14 +29,13 @@ public class OrderApiController {
 
     @ApiOperation(value = "Adds order to order table")
     @RequestMapping(path = "/api/order", method = RequestMethod.POST)
-    public Integer createOrder() throws ApiException {
+    public String createOrder() throws ApiException {
         return dto.createOrder();
     }
 
     @ApiOperation(value = "Select all order")
     @RequestMapping(path = "/api/order", method = RequestMethod.GET)
     public List<OrderData> getAllOrders() throws ApiException {
-        System.out.println("b");
         return dto.getAllOrders();
     }
 
@@ -65,7 +65,7 @@ public class OrderApiController {
 
         Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderData.getId() + "_invoice.pdf");
 
-        byte[] contents = Files.readAllBytes(pdfPath);
+        byte[] contents = Base64.getDecoder().decode(Files.readAllBytes(pdfPath));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

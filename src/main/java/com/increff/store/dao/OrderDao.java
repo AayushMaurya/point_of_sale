@@ -22,10 +22,10 @@ public class OrderDao {
     @PersistenceContext
     private EntityManager em;
 
-    public Integer insert(OrderPojo pojo) throws ApiException {
+    public String insert(OrderPojo pojo) throws ApiException {
         em.persist(pojo);
         em.flush();
-        return pojo.getId();
+        return pojo.getOrderCode();
     }
 
     public OrderPojo selectById(Integer id) {

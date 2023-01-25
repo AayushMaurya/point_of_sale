@@ -47,7 +47,7 @@ function displayOrderList(data){
  	for(var i in data){
  		var e = data[i];
  		index++;
- 		var buttonHtml = ' <button class="btn btn-secondary" onClick=redirect("'+ e.id +'")>Open</button>'
+ 		var buttonHtml = ' <button class="btn btn-secondary" onClick=redirect("'+ e.orderCode +'")>Open</button>'
  		var row = '<tr>'
  		+ '<td>' + index + '</td>'
  		+ '<td>' + e.customerName + '</td>'
@@ -84,7 +84,6 @@ function redirect(id)
             },
      	   success: function(response) {
      	   		getOrderList();
-     	   		console.log("this should be order id: " + response);
      	   		redirect(response);
      	   },
      	   error: handleAjaxError

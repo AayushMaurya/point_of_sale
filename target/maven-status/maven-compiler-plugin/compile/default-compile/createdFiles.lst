@@ -19,6 +19,7 @@ com\increff\store\util\UserPrincipal.class
 com\increff\store\dao\AbstractDao.class
 com\increff\store\dto\ProductDto.class
 com\increff\store\dto\BrandDto.class
+com\increff\store\model\FilterForm.class
 com\increff\store\spring\SpringConfig.class
 com\increff\store\pojo\ProductPojo.class
 com\increff\store\model\DailyReportData.class
