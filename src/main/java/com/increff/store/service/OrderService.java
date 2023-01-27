@@ -1,8 +1,8 @@
 package com.increff.store.service;
 
-import com.google.protobuf.Api;
 import com.increff.store.dao.OrderDao;
 import com.increff.store.pojo.OrderPojo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,30 +11,35 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional(rollbackOn = ApiException.class)
 public class OrderService {
     @Autowired
     private OrderDao dao;
 
-    @Transactional
+    private static Logger logger = Logger.getLogger(OrderService.class);
+
     public String addOrder(OrderPojo p) throws ApiException {
-        return dao.insert(p);
+        try {
+            return dao.insert(p);
+        } catch (Exception e) {
+            logger.error(e);
+            throw new ApiException("Cannot create new order.");
+        }
     }
 
-    @Transactional
     public List<OrderPojo> selectAllOrders() throws ApiException {
         return dao.selectAll();
     }
 
-    @Transactional
     public List<OrderPojo> selectOrderByDateFilter(LocalDateTime startDate, LocalDateTime endDate) throws ApiException {
         try {
             return dao.selectByDateFilter(startDate, endDate);
         } catch (Exception e) {
-            throw new ApiException(e.getMessage());
+            logger.error(e);
+            throw new ApiException("Cannot select orders within given dates");
         }
     }
 
-    @Transactional
     public OrderPojo getOrderById(Integer id) throws ApiException {
         OrderPojo orderPojo = dao.selectById(id);
         if (orderPojo == null)
@@ -42,12 +47,15 @@ public class OrderService {
         return orderPojo;
     }
 
-    @Transactional
     public void updateOrder(Integer id, OrderPojo newOrderPojo) throws ApiException {
-        OrderPojo p = dao.selectById(id);
-        p.setStatus(newOrderPojo.getStatus());
-        p.setPlaceDateTime(newOrderPojo.getPlaceDateTime());
-        p.setCustomerName(newOrderPojo.getCustomerName());
+        OrderPojo pojo = dao.selectById(id);
+        if(pojo == null) {
+            logger.error("Order pojo to be update is null");
+            throw new ApiException("Cannot place order");
+        }
+        pojo.setStatus(newOrderPojo.getStatus());
+        pojo.setPlaceDateTime(newOrderPojo.getPlaceDateTime());
+        pojo.setCustomerName(newOrderPojo.getCustomerName());
     }
 
     public OrderPojo getOrderByOrderCode(String orderCode) throws ApiException {

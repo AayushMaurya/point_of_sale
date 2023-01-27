@@ -58,7 +58,7 @@ public class OrderItemFlow {
 
     public void deleteOrderItemById(Integer id) throws ApiException
     {
-        OrderItemPojo orderItemPojo = orderItemService.selectByItemId(id);
+        OrderItemPojo orderItemPojo = orderItemService.getOrderItemById(id);
 
 //        updating the inventory
         InventoryPojo inventoryPojo = new InventoryPojo();

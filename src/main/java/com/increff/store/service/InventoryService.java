@@ -9,13 +9,13 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(rollbackOn = ApiException.class)
 public class InventoryService {
 
     @Autowired
     private InventoryDao dao;
 
-    @Transactional
-    public void addInventory(InventoryPojo newPojo) {
+    public void addInventory(InventoryPojo newPojo) throws ApiException {
         InventoryPojo pojo = dao.selectById(newPojo.getId());
         if (pojo == null) {
             dao.insert(newPojo);
@@ -24,7 +24,6 @@ public class InventoryService {
         }
     }
 
-    @Transactional
     public void reduceInventory(InventoryPojo newPojo) throws ApiException {
         InventoryPojo pojo = dao.selectById(newPojo.getId());
 
@@ -38,15 +37,14 @@ public class InventoryService {
         updateInventory(newPojo);
     }
 
-    @Transactional
     public List<InventoryPojo> getAllInventory() {
         return dao.selectAll();
     }
 
-    @Transactional
-    private void updateInventory(InventoryPojo newPojo) {
+    private void updateInventory(InventoryPojo newPojo) throws ApiException {
         InventoryPojo pojo = dao.selectById(newPojo.getId());
+        if(pojo == null)
+            throw new ApiException("Cannot update inventory");
         pojo.setQuantity(pojo.getQuantity() + newPojo.getQuantity());
     }
-
 }

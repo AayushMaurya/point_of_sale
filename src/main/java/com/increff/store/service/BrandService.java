@@ -2,6 +2,7 @@ package com.increff.store.service;
 
 import com.increff.store.dao.BrandDao;
 import com.increff.store.pojo.BrandPojo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,18 @@ public class BrandService {
     @Autowired
     private BrandDao dao;
 
+    private static Logger logger = Logger.getLogger(BrandService.class);
+
     public void addBrand(BrandPojo pojo) throws ApiException {
         BrandPojo brandPojo = getByBrandCategory(pojo.getBrand(), pojo.getCategory());
         if (brandPojo != null)
             throw new ApiException("The given brand category combination already exists");
-        dao.insert(pojo);
+        try {
+            dao.insert(pojo);
+        } catch (Exception e) {
+            logger.error(e);
+            throw new ApiException("Cannot add given brand");
+        }
     }
 
     public BrandPojo getByBrandId(Integer id) throws ApiException {
@@ -42,12 +50,19 @@ public class BrandService {
         String brand = newPojo.getBrand();
         String category = newPojo.getCategory();
         BrandPojo b = getByBrandCategory(brand, category);
-        if (b != null && b.getId()!=id)
+        if (b != null && b.getId() != id)
             throw new ApiException("The brand with given brand category already exists");
 
-        BrandPojo p = dao.selectByBrandId(id);
+        try{
+            BrandPojo p = dao.selectByBrandId(id);
 
-        p.setBrand(newPojo.getBrand());
-        p.setCategory(newPojo.getCategory());
+            p.setBrand(newPojo.getBrand());
+            p.setCategory(newPojo.getCategory());
+        }
+        catch (Exception e)
+        {
+            logger.error(e);
+            throw new ApiException("Cannot update the given brand");
+        }
     }
 }

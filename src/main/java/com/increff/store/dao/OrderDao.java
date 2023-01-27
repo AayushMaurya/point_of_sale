@@ -22,7 +22,7 @@ public class OrderDao {
     @PersistenceContext
     private EntityManager em;
 
-    public String insert(OrderPojo pojo) throws ApiException {
+    public String insert(OrderPojo pojo){
         em.persist(pojo);
         em.flush();
         return pojo.getOrderCode();

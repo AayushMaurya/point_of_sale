@@ -2,6 +2,7 @@ package com.increff.store.service;
 
 import com.increff.store.dao.ProductDao;
 import com.increff.store.pojo.ProductPojo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,12 +10,14 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(rollbackOn = ApiException.class)
 public class ProductService {
 
     @Autowired
     private ProductDao dao;
 
-    @Transactional
+    private static Logger logger = Logger.getLogger(ProductService.class);
+
     public void addProduct(ProductPojo pojo) throws ApiException {
         ProductPojo productPojo = dao.selectByBarcode(pojo.getBarcode());
         if (productPojo != null)
@@ -23,7 +26,6 @@ public class ProductService {
         dao.insert(pojo);
     }
 
-    @Transactional
     public ProductPojo getProductById(Integer id) throws ApiException {
         ProductPojo productPojo = dao.selectById(id);
         if (productPojo == null)
@@ -31,21 +33,23 @@ public class ProductService {
         return productPojo;
     }
 
-    @Transactional
     public List<ProductPojo> getAllProducts() {
         return dao.selectAll();
     }
 
-    @Transactional
-    public void updateProduct(Integer id, ProductPojo newPojo) {
+    public void updateProduct(Integer id, ProductPojo newPojo) throws ApiException {
         ProductPojo p = dao.selectById(id);
+        if(p==null)
+        {
+            logger.error("Product pojo to be updated is null");
+            throw new ApiException("Cannot update the product");
+        }
         p.setBarcode(newPojo.getBarcode());
         p.setBrandCategory(newPojo.getBrandCategory());
         p.setName(newPojo.getName());
         p.setMrp(newPojo.getMrp());
     }
 
-    @Transactional
     public ProductPojo getProductByBarcode(String barcode) throws ApiException {
         ProductPojo productPojo = dao.selectByBarcode(barcode);
         if (productPojo == null)

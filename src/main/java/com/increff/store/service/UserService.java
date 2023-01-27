@@ -9,12 +9,12 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional(rollbackOn = ApiException.class)
 public class UserService {
 
 	@Autowired
 	private UserDao dao;
 
-	@Transactional
 	public void add(UserPojo p) throws ApiException {
 		normalize(p);
 		UserPojo existing = dao.select(p.getEmail());
@@ -32,17 +32,14 @@ public class UserService {
 			return pojo;
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
-	public UserPojo get(String email) throws ApiException {
+	public UserPojo getByEmail(String email) throws ApiException {
 		return dao.select(email);
 	}
 
-	@Transactional
 	public List<UserPojo> getAll() {
 		return dao.selectAll();
 	}
 
-	@Transactional
 	public void delete(Integer id) {
 		dao.delete(id);
 	}

@@ -1,6 +1,8 @@
 package com.increff.store.dao;
 
 import com.increff.store.pojo.BrandPojo;
+import com.increff.store.service.ApiException;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -21,8 +23,8 @@ public class BrandDao {
     private EntityManager em;
 
     @Transactional
-    public void insert(BrandPojo p) {
-        em.persist(p);
+    public void insert(BrandPojo pojo)throws ApiException{
+       em.persist(pojo);
     }
 
     public BrandPojo selectByBrandId(Integer id) {
