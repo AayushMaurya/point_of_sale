@@ -41,7 +41,6 @@ public class OrderDto {
     public String createOrder() throws ApiException {
         OrderPojo orderPojo = new OrderPojo();
         orderPojo.setCustomerName("");
-        orderPojo.setCreatedDateTime(getCurrentDateTime());
         orderPojo.setStatus("pending");
         orderPojo.setPlaceDateTime(null);
 

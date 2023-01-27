@@ -19,13 +19,13 @@ public class InventoryApiController {
     private InventoryDto dto;
 
     @ApiOperation(value = "Adds an inventory")
-    @RequestMapping(path = "/api/admin/inventory", method = RequestMethod.POST)
+    @RequestMapping(path = "/api/inventory", method = RequestMethod.POST)
     public void add(@RequestBody InventoryForm form) throws ApiException {
         dto.addInventory(form);
     }
 
     @ApiOperation(value = "Removes an inventory")
-    @RequestMapping(path = "/api/admin/inventory", method = RequestMethod.PUT)
+    @RequestMapping(path = "/api/inventory", method = RequestMethod.PUT)
     public void remove(@RequestBody InventoryForm form) throws ApiException {
         dto.reduceInventory(form);
     }

@@ -9,13 +9,11 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "Orders_Table")
+@Table(name = "orders_table")
 public class OrderPojo extends AbstractDateAudit {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false, name = "created_date_time")
-    private LocalDateTime createdDateTime;
     @Column(nullable = false)
     private String customerName;
     @Column(name = "placed_date_time")

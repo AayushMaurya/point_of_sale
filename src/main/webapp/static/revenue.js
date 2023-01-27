@@ -1,4 +1,5 @@
 var newBrands = {};
+var salesReportData;
 
 function getRevenueUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -40,10 +41,12 @@ function getRevenueList(){
 	   },
 	   error: handleAjaxError
 	});
+	return false;
 }
 
 function displayRevenueProductList(data)
 {
+    salesReportData = data;
     $('#product-revenue-list-table').DataTable().destroy();
     var $tbody = $('#product-revenue-list-table').find('tbody');
     $tbody.empty();
@@ -129,10 +132,18 @@ function removeDuplicates(arr) {
             index) => arr.indexOf(item) === index);
 }
 
+function downloadSalesReport()
+{
+    if(salesReportData.length == 0)
+        return;
+    salesReportData.forEach(function(v){ delete v.id });
+    writeFileData(salesReportData);
+}
+
 function init()
 {
     $('#show-revenue').click(getRevenueList);
-
+    $('#download-sales-report').click(downloadSalesReport);
     $('#inputFilterBrand').change(displayCategoryList);
 }
 

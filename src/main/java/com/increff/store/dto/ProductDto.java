@@ -61,7 +61,7 @@ public class ProductDto {
 
 //        converting the unique brand category combination to brand category id
         String brandName = form.getBrandName();
-        String brandCategory = form.getBrandCategory();
+        String brandCategory = form.getCategoryName();
         BrandPojo brandPojo = brandService.getByBrandCategory(brandName, brandCategory);
         if(brandPojo == null)
             throw new ApiException("no such brand category combination found");

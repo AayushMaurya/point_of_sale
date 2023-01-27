@@ -47,7 +47,6 @@ public class OrderService {
         OrderPojo p = dao.selectById(id);
         p.setStatus(newOrderPojo.getStatus());
         p.setPlaceDateTime(newOrderPojo.getPlaceDateTime());
-        p.setCreatedDateTime(newOrderPojo.getCreatedDateTime());
         p.setCustomerName(newOrderPojo.getCustomerName());
     }
 

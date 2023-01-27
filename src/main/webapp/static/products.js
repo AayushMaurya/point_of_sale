@@ -7,11 +7,6 @@ function getStoreUrl(){
  	return baseUrl + "/api/product";
  }
 
- function getAdminProductUrl(){
- var baseUrl = $("meta[name=baseUrl]").attr("content")
-  	return baseUrl + "/api/admin/product";
- }
-
 function getBrandUrl()
 {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -74,7 +69,7 @@ function addProduct(event)
 {
     var $form = $("#product-form");
     var json = toJson($form);
-    var url = getAdminProductUrl();
+    var url = getStoreUrl();
 
     $.ajax({
     	   url: url,
@@ -173,7 +168,7 @@ function updateProduct()
     var id = document.getElementById("inputUpdateId").value;
     var $form = $("#updateProductForm");
     var json = toJson($form);
-    var url = getAdminProductUrl() + "/" + id ;
+    var url = getStoreUrl() + "/" + id ;
 
     $.ajax({
             	   url: url,

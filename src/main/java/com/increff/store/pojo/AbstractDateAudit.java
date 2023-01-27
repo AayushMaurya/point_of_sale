@@ -1,5 +1,7 @@
 package com.increff.store.pojo;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,6 +14,8 @@ import java.time.LocalDateTime;
 public abstract class AbstractDateAudit {
 
     @CreationTimestamp
+    @Getter
+    @Setter
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

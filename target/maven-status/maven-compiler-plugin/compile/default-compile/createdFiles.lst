@@ -65,6 +65,7 @@ com\increff\store\dto\InventoryDto.class
 com\increff\store\spring\SpringSecurityInitializer.class
 com\increff\store\service\ProductService.class
 com\increff\store\model\ProductData.class
+com\increff\store\model\BrandCategoryFilterForm.class
 com\increff\store\pojo\BrandPojo.class
 com\increff\store\model\BrandForm.class
 com\increff\store\spring\SchedulerConfig.class

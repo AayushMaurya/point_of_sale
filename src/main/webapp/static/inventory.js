@@ -8,12 +8,6 @@ function getProductUrl(){
  	return baseUrl + "/api/product";
  }
 
- function getAdminInventoryUrl()
- {
- var baseUrl = $("meta[name=baseUrl]").attr("content")
-  	return baseUrl + "/api/admin/inventory";
- }
-
 function getInventoryList(){
 	var url = getStoreUrl();
 	$.ajax({
@@ -35,7 +29,7 @@ function displayInventoryList(data){
 	for(var i in data){
 		var e = data[i];
 		index++;
-		var buttonHtml = '<button class="btn btn-primar" data-toggle="modal"'
+		var buttonHtml = '<button class="btn btn-primary" data-toggle="modal"'
 		+ 'data-target="#exampleModalCenter"'
 		+ 'onclick="fillFields('
 		+ e.id +')">Edit</button>';
@@ -72,7 +66,7 @@ function addInventory(event)
     var $form = $("#inventory-form");
     var json = toJson($form);
     console.log(json);
-    var url = getAdminInventoryUrl();
+    var url = getStoreUrl();
 
     $.ajax({
     	   url: url,
@@ -97,7 +91,7 @@ function updateInventoryAdd()
     console.log("this will update inventory Add");
     var $form = $("#updateInventoryForm");
     var json = toJson($form);
-    var url = getAdminInventoryUrl();
+    var url = getStoreUrl();
 
     $.ajax({
         url: url,

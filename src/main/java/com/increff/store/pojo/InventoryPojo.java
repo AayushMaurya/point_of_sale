@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "Inventory_Table")
+@Table(name = "inventory_table")
 public class InventoryPojo extends AbstractDateAudit {
     @Id
     @Column(name = "product_id")

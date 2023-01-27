@@ -78,8 +78,7 @@ public class RevenueDto {
         return list1;
     }
 
-    public List<ProductRevenueData> getSalesReport(FilterForm form) throws ApiException
-    {
+    public List<ProductRevenueData> getSalesReport(FilterForm form) throws ApiException {
         String brand = form.getBrand();
         String category = form.getCategory();
         List<ProductRevenueData> res = getBrandCategoryWiseReport(form);
@@ -123,4 +122,12 @@ public class RevenueDto {
         return list;
     }
 
+    public List<InventoryReportModel> getInventoryReportWitDateFilter(BrandCategoryFilterForm form) {
+        List<InventoryReportModel> list = getInventoryReport();
+        String brand = form.getBrand();
+        String category = form.getCategory();
+        return list.stream().filter(d -> (d.getBrand().equals(brand) || brand.equals(
+                "All")) &&
+                (d.getCategory().equals(category) || category.equals("All"))).collect(Collectors.toList());
+    }
 }

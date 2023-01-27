@@ -26,7 +26,6 @@ function getInventoryReportList(){
     	   type: 'GET',
     	   success: function(data) {
     	   console.log(data);
-    	   inventoryData = data;
     	   		displayInventoryReport(data);
     	   		displayBrandList(data);
     	   },
@@ -84,6 +83,7 @@ function displayCategoryList()
 
 function displayInventoryReport(data)
 {
+    inventoryData = data;
     $('#inventory-report-table').DataTable().destroy();
     var $tbody = $('#inventory-report-table').find('tbody');
     $tbody.empty();
@@ -115,22 +115,22 @@ function displayInventoryReport(data)
 
 function applyBrandCategoryFilter()
 {
-    var brandFilter = getBrandOption();
-    var categoryFilter = getCategoryOption();
-    var data = [];
-
-    for(var i = 0; i<inventoryData.length; i++){
-            if(check(inventoryData[i].brand, brandFilter) && check(inventoryData[i].category, categoryFilter))
-                data.push(inventoryData[i]);
-    }
-    displayInventoryReport(data);
-}
-
-function check(a, b)
-{
-    if(b=="All" || a==b)
-        return true;
-    return false;
+    var url = getInventoryReportUrl();
+    var $form = $("#filter-brand-category-form");
+    var json = toJson($form);
+        $.ajax({
+        	   url: url,
+        	   type: 'POST',
+        	   data: json,
+        	   headers: {
+                    'Content-Type': 'application/json'
+                    },
+        	   success: function(data) {
+        	   console.log(data);
+        	   		displayInventoryReport(data);
+        	   },
+        	   error: handleAjaxError
+        	});
 }
 
 function removeDuplicates(arr) {
@@ -143,10 +143,17 @@ function pagination(){
   $('.dataTables_length').addClass('bs-select');
 }
 
+function downloadReport()
+{
+    inventoryData.forEach(function(v){ delete v.brandCategoryId });
+    writeFileData(inventoryData);
+}
+
 function init()
 {
     $('#inputFilterBrand').change(displayCategoryList);
     $('#apply-brand-category-filter').click(applyBrandCategoryFilter);
+    $('#download-inventory-report').click(downloadReport);
 }
 
 $(document).ready(getInventoryReportList);

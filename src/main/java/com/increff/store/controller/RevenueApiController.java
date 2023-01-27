@@ -35,6 +35,12 @@ public class RevenueApiController {
         return dto.getInventoryReport();
     }
 
+    @ApiOperation(value = "Get Inventory Report by brand category filter")
+    @RequestMapping(path = "/api/admin/inventory-report", method = RequestMethod.POST)
+    public List<InventoryReportModel> getInventoryReport(@RequestBody BrandCategoryFilterForm form) throws ApiException {
+        return dto.getInventoryReportWitDateFilter(form);
+    }
+
     @ApiOperation(value = "Get Daily Report between given dated")
     @RequestMapping(path = "/api/admin/daily-report", method = RequestMethod.POST)
     public List<DailyReportData> getDailyReport(@RequestBody DateFilterForm form) throws ApiException {

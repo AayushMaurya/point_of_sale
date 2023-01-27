@@ -1,6 +1,7 @@
 package com.increff.store.dto;
 
 import com.google.protobuf.Api;
+import com.increff.store.flow.OrderItemFlow;
 import com.increff.store.model.OrderItemData;
 import com.increff.store.model.OrderItemForm;
 import com.increff.store.model.UpdateOrderItemForm;
@@ -29,6 +30,9 @@ public class OrderItemDto {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private OrderItemFlow orderItemFlow;
+
     public void addOrderItem(OrderItemForm form) throws ApiException {
         checkOrderItemForm(form);
 
@@ -40,7 +44,7 @@ public class OrderItemDto {
             pojo.setQuantity(oldPojo.getQuantity() + q);
             service.updateOrderItem(oldPojo.getId(), pojo);
         } else {
-            service.addOrderItem(pojo);
+            orderItemFlow.addOrderItem(pojo);
         }
     }
 

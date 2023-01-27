@@ -20,7 +20,7 @@ public class BrandApiController {
     private BrandDto dto;
 
     @ApiOperation(value = "Adds a brand")
-    @RequestMapping(path = "/api/admin/brand", method = RequestMethod.POST)
+    @RequestMapping(path = "/api/brand", method = RequestMethod.POST)
     public void add(@RequestBody BrandForm form) throws ApiException {
         dto.addBrand(form);
     }
@@ -32,7 +32,7 @@ public class BrandApiController {
     }
 
     @ApiOperation(value = "Update brand")
-    @RequestMapping(path = "api/admin/brand/{id}", method = RequestMethod.PUT)
+    @RequestMapping(path = "api/brand/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable Integer id, @RequestBody BrandForm form) throws ApiException {
         dto.updateBrand(id, form);
     }

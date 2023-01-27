@@ -1,11 +1,11 @@
 package com.increff.store.controller;
 
 import com.increff.store.dto.OrderItemDto;
+import com.increff.store.flow.OrderItemFlow;
 import com.increff.store.model.OrderItemData;
 import com.increff.store.model.OrderItemForm;
 import com.increff.store.model.UpdateOrderItemForm;
 import com.increff.store.service.ApiException;
-import com.increff.store.service.OrderItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class OrderItemApiController {
     private OrderItemDto dto;
 
     @Autowired
-    private OrderItemService service;
+    private OrderItemFlow flow;
 
     @ApiOperation(value = "Adds an orderItem")
     @RequestMapping(path = "/api/order-item", method = RequestMethod.POST)
@@ -44,7 +44,7 @@ public class OrderItemApiController {
     @ApiOperation(value = "Delete an item by item id")
     @RequestMapping(path = "api/order-item/{id}", method = RequestMethod.DELETE)
     public void deleteItemId(@PathVariable Integer id) throws ApiException {
-        service.deleteOrderItemById(id);
+        flow.deleteOrderItemById(id);
     }
 
     @ApiOperation(value = "Update Order Item")

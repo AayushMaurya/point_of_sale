@@ -1,3 +1,5 @@
+var dailyReportDate;
+
 function getDailyReportUrl()
 {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -12,7 +14,6 @@ function getDailyReport()
     	   url: url,
     	   type: 'GET',
     	   success: function(data) {
-    	   console.log(data);
     	   		displayDailyReport(data);
     	   },
     	   error: handleAjaxError
@@ -20,6 +21,7 @@ function getDailyReport()
 }
 
 function displayDailyReport(data){
+    dailyReportDate = data;
 	var $tbody = $('#daily-report-table').find('tbody');
 	var index = 0;
 	$tbody.empty();
@@ -50,7 +52,6 @@ function getDailyReportByDateFilter()
                   'Content-Type': 'application/json'
                },
         	   success: function(data) {
-        	   console.log(data);
         	   		displayDailyReport(data);
         	   },
         	   error: handleAjaxError
@@ -58,9 +59,16 @@ function getDailyReportByDateFilter()
         	return false;
 }
 
+function downloadDailyReport()
+{
+
+    writeFileData(dailyReportDate);
+}
+
 function init()
 {
     $('#apply-date-filter').click(getDailyReportByDateFilter);
+    $('#download-daily-report').click(downloadDailyReport);
 }
 
 $(document).ready(init);

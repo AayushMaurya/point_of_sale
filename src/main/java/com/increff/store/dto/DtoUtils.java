@@ -1,6 +1,5 @@
 package com.increff.store.dto;
 
-import com.google.protobuf.Api;
 import com.increff.store.model.*;
 import com.increff.store.pojo.*;
 import com.increff.store.service.ApiException;
@@ -44,7 +43,7 @@ public class DtoUtils {
         OrderData orderData = new OrderData();
         orderData.setId(p.getId());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-        orderData.setCreatedDataTime(p.getCreatedDateTime().format(dateTimeFormatter));
+        orderData.setCreatedDataTime(p.getCreatedAt().format(dateTimeFormatter));
         orderData.setPlacedDataTime("");
         if(Objects.equals(p.getStatus(), "Placed"))
             orderData.setPlacedDataTime(p.getPlaceDateTime().format(dateTimeFormatter));
@@ -87,7 +86,7 @@ public class DtoUtils {
             throw new ApiException("barcode cannot be empty");
         if (StringUtil.isEmpty(form.getBrandName()))
             throw new ApiException("Brand name cannot be empty");
-        if (StringUtil.isEmpty(form.getBrandCategory()))
+        if (StringUtil.isEmpty(form.getCategoryName()))
             throw new ApiException("Category cannot be empty");
     }
 
