@@ -18,16 +18,11 @@ public class BrandService {
 
     private static Logger logger = Logger.getLogger(BrandService.class);
 
-    public void addBrand(BrandPojo pojo) throws ApiException {
+    public Integer addBrand(BrandPojo pojo) throws ApiException {
         BrandPojo brandPojo = getByBrandCategory(pojo.getBrand(), pojo.getCategory());
         if (brandPojo != null)
             throw new ApiException("The given brand category combination already exists");
-        try {
-            dao.insert(pojo);
-        } catch (Exception e) {
-            logger.error(e);
-            throw new ApiException("Cannot add given brand");
-        }
+        return dao.insert(pojo);
     }
 
     public BrandPojo getByBrandId(Integer id) throws ApiException {
@@ -53,16 +48,10 @@ public class BrandService {
         if (b != null && b.getId() != id)
             throw new ApiException("The brand with given brand category already exists");
 
-        try{
-            BrandPojo p = dao.selectByBrandId(id);
+        BrandPojo p = dao.selectByBrandId(id);
 
-            p.setBrand(newPojo.getBrand());
-            p.setCategory(newPojo.getCategory());
-        }
-        catch (Exception e)
-        {
-            logger.error(e);
-            throw new ApiException("Cannot update the given brand");
-        }
+        p.setBrand(newPojo.getBrand());
+        p.setCategory(newPojo.getCategory());
+
     }
 }

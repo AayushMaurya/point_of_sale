@@ -19,11 +19,11 @@ public class BrandDto {
     @Autowired
     BrandService service;
 
-    public void addBrand(BrandForm form) throws ApiException {
+    public Integer addBrand(BrandForm form) throws ApiException {
         checkBrandForm(form);
         BrandPojo p = convertBrandFormToBrandPojo(form);
         normalizeBrandPojo(p);
-        service.addBrand(p);
+        return service.addBrand(p);
     }
 
     public List<BrandData> getAllBrands() {

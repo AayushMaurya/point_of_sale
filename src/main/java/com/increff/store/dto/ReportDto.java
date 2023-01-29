@@ -1,6 +1,5 @@
 package com.increff.store.dto;
 
-import com.google.protobuf.Api;
 import com.increff.store.model.DailyReportData;
 import com.increff.store.model.DateFilterForm;
 import com.increff.store.pojo.DailyReportPojo;
@@ -10,7 +9,9 @@ import com.increff.store.service.ApiException;
 import com.increff.store.service.OrderItemService;
 import com.increff.store.service.OrderService;
 import com.increff.store.service.ReportService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,7 +34,11 @@ public class ReportDto {
     @Autowired
     OrderItemService orderItemService;
 
+    private static Logger logger = Logger.getLogger(ReportDto.class);
+
+    @Scheduled(fixedDelay = 1000)
     public void createDailyReport() throws ApiException {
+
         DailyReportPojo reportPojo = new DailyReportPojo();
 
         LocalDate date = getLocalDate();
@@ -41,12 +46,19 @@ public class ReportDto {
         Integer totalItems = 0;
         Double totalRevenue = 0.0;
 
-        String start = correctFormat(date.toString()) + " 00:00:00";
-        String end = correctFormat(date.toString()) + " 23:59:59";
+        LocalDateTime startDate = null;
+        LocalDateTime endDate = null;
 
-        LocalDateTime startDate = LocalDateTime.parse(start, DateTimeFormatter.ISO_DATE);
-        LocalDateTime endDate = LocalDateTime.parse(end, DateTimeFormatter.ISO_DATE);
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+            startDate = LocalDate.parse(date.toString(), formatter).atStartOfDay();
+            endDate = LocalDate.parse(date.toString(), formatter).atTime(23, 59, 59);
+        }
+        catch(Exception e)
+        {
+            logger.error(e);
+        }
         List<OrderPojo> orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);
 
         Integer totalOrders = orderPojoList.size();
@@ -67,8 +79,10 @@ public class ReportDto {
 
         DailyReportPojo pojo = service.getReportByDate(date);
         if (pojo == null) {
+            logger.info("Creating report for : " + date);
             service.addReport(reportPojo);
         } else {
+            logger.info("Updating report");
             service.update(date, reportPojo);
         }
     }
@@ -102,10 +116,6 @@ public class ReportDto {
         }
 
         return dailyReportData;
-    }
-
-    String correctFormat(String date) {
-        return date.replace('-', '/');
     }
 
 }

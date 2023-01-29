@@ -23,8 +23,10 @@ public class BrandDao {
     private EntityManager em;
 
     @Transactional
-    public void insert(BrandPojo pojo)throws ApiException{
+    public Integer insert(BrandPojo pojo)throws ApiException{
        em.persist(pojo);
+       em.flush();
+       return pojo.getId();
     }
 
     public BrandPojo selectByBrandId(Integer id) {

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderItemService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.service</a> &gt; <span class="el_source">OrderItemService.java</span></div><h1>OrderItemService.java</h1><pre class="source lang-java linenums">package com.increff.store.service;
+
+import com.increff.store.dao.OrderItemDao;
+import com.increff.store.pojo.OrderItemPojo;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+
+@Service
+@Transactional(rollbackOn = ApiException.class)
+<span class="fc" id="L14">public class OrderItemService {</span>
+
+    @Autowired
+    private OrderItemDao dao;
+
+<span class="fc" id="L19">    private static Logger logger = Logger.getLogger(OrderItemService.class);</span>
+
+    public void addOrderItem(OrderItemPojo pojo) throws ApiException {
+<span class="nc" id="L22">        dao.insert(pojo);</span>
+<span class="nc" id="L23">    }</span>
+
+    public List&lt;OrderItemPojo&gt; getOrder(Integer id) {
+<span class="fc" id="L26">        return dao.selectById(id);</span>
+    }
+
+    public List&lt;OrderItemPojo&gt; getAllOrderItem() {
+<span class="nc" id="L30">        return dao.selectAll();</span>
+    }
+
+    public OrderItemPojo getOrderItemById(Integer id) throws ApiException {
+<span class="nc" id="L34">        OrderItemPojo orderItemPojo = dao.selectByItemId(id);</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (orderItemPojo == null)</span>
+<span class="nc" id="L36">            throw new ApiException(&quot;Cannot find an item with given order item id&quot;);</span>
+<span class="nc" id="L37">        return orderItemPojo;</span>
+    }
+
+    public void deleteOrderItemById(Integer id) throws ApiException {
+<span class="nc" id="L41">        OrderItemPojo orderItemPojo = getOrderItemById(id);</span>
+<span class="nc" id="L42">        dao.deleteById(id);</span>
+<span class="nc" id="L43">    }</span>
+
+    public void updateOrderItem(Integer id, OrderItemPojo newPojo) throws ApiException {
+<span class="nc" id="L46">        OrderItemPojo oldPojo = getOrderItemById(id);</span>
+<span class="nc" id="L47">        oldPojo.setQuantity(newPojo.getQuantity());</span>
+<span class="nc" id="L48">        oldPojo.setOrderId(newPojo.getOrderId());</span>
+<span class="nc" id="L49">        oldPojo.setSellingPrice(newPojo.getSellingPrice());</span>
+<span class="nc" id="L50">        oldPojo.setProductId(newPojo.getProductId());</span>
+<span class="nc" id="L51">    }</span>
+
+    public OrderItemPojo getProductIdOrderId(Integer productId, Integer orderId) throws ApiException {
+<span class="nc" id="L54">        return dao.selectByProductIdOrderId(productId, orderId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

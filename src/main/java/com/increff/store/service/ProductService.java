@@ -18,12 +18,12 @@ public class ProductService {
 
     private static Logger logger = Logger.getLogger(ProductService.class);
 
-    public void addProduct(ProductPojo pojo) throws ApiException {
+    public Integer addProduct(ProductPojo pojo) throws ApiException {
         ProductPojo productPojo = dao.selectByBarcode(pojo.getBarcode());
         if (productPojo != null)
             throw new ApiException("Product with given barcode already exists");
 
-        dao.insert(pojo);
+        return dao.insert(pojo);
     }
 
     public ProductPojo getProductById(Integer id) throws ApiException {
@@ -38,16 +38,14 @@ public class ProductService {
     }
 
     public void updateProduct(Integer id, ProductPojo newPojo) throws ApiException {
-        ProductPojo p = dao.selectById(id);
-        if(p==null)
+        ProductPojo pojo = dao.selectById(id);
+        if(pojo==null)
         {
             logger.error("Product pojo to be updated is null");
             throw new ApiException("Cannot update the product");
         }
-        p.setBarcode(newPojo.getBarcode());
-        p.setBrandCategory(newPojo.getBrandCategory());
-        p.setName(newPojo.getName());
-        p.setMrp(newPojo.getMrp());
+        pojo.setName(newPojo.getName());
+        pojo.setMrp(newPojo.getMrp());
     }
 
     public ProductPojo getProductByBarcode(String barcode) throws ApiException {

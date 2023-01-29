@@ -33,7 +33,6 @@ public class InventoryDto {
             list2.add(convertInventoryPojoToInventoryData(p));
 
 //        setting the barcode;
-//        needed in flow layer
         List<ProductPojo> productPojoList = productService.getAllProducts();
 
         HashMap<Integer, String> map = new HashMap<>();
@@ -58,7 +57,7 @@ public class InventoryDto {
         service.addInventory(p);
     }
 
-    private InventoryPojo convertInventoryFormToInventoryPojo(InventoryForm form) throws ApiException
+    public InventoryPojo convertInventoryFormToInventoryPojo(InventoryForm form) throws ApiException
     {
         InventoryPojo p = new InventoryPojo();
 //        converting the barcode into product id

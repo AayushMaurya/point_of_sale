@@ -47,4 +47,12 @@ public class InventoryService {
             throw new ApiException("Cannot update inventory");
         pojo.setQuantity(pojo.getQuantity() + newPojo.getQuantity());
     }
+
+    public InventoryPojo getInventoryById(Integer id) throws ApiException
+    {
+        InventoryPojo pojo = dao.selectById(id);
+        if(pojo == null)
+            throw new ApiException("Inventory with given id does not exist ");
+        return pojo;
+    }
 }

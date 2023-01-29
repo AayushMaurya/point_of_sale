@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.service</a> &gt; <span class="el_source">OrderService.java</span></div><h1>OrderService.java</h1><pre class="source lang-java linenums">package com.increff.store.service;
+
+import com.increff.store.dao.OrderDao;
+import com.increff.store.pojo.OrderPojo;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+@Transactional(rollbackOn = ApiException.class)
+<span class="fc" id="L15">public class OrderService {</span>
+    @Autowired
+    private OrderDao dao;
+
+<span class="fc" id="L19">    private static Logger logger = Logger.getLogger(OrderService.class);</span>
+
+    public String addOrder(OrderPojo p) throws ApiException {
+<span class="fc" id="L22">        return dao.insert(p);</span>
+    }
+
+    public List&lt;OrderPojo&gt; selectAllOrders() throws ApiException {
+<span class="fc" id="L26">        return dao.selectAll();</span>
+    }
+
+    public List&lt;OrderPojo&gt; selectOrderByDateFilter(LocalDateTime startDate, LocalDateTime endDate) throws ApiException {
+<span class="nc" id="L30">        return dao.selectByDateFilter(startDate, endDate);</span>
+    }
+
+    public OrderPojo getOrderById(Integer id) throws ApiException {
+<span class="fc" id="L34">        OrderPojo orderPojo = dao.selectById(id);</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (orderPojo == null)</span>
+<span class="nc" id="L36">            throw new ApiException(&quot;No order found with given order id&quot;);</span>
+<span class="fc" id="L37">        return orderPojo;</span>
+    }
+
+    public void updateOrder(Integer id, OrderPojo newOrderPojo) throws ApiException {
+<span class="nc" id="L41">        OrderPojo pojo = dao.selectById(id);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (pojo == null) {</span>
+<span class="nc" id="L43">            logger.error(&quot;Order pojo to be update is null&quot;);</span>
+<span class="nc" id="L44">            throw new ApiException(&quot;Cannot place order&quot;);</span>
+        }
+<span class="nc" id="L46">        pojo.setStatus(newOrderPojo.getStatus());</span>
+<span class="nc" id="L47">        pojo.setPlaceDateTime(newOrderPojo.getPlaceDateTime());</span>
+<span class="nc" id="L48">        pojo.setCustomerName(newOrderPojo.getCustomerName());</span>
+<span class="nc" id="L49">    }</span>
+
+    public OrderPojo getOrderByOrderCode(String orderCode) throws ApiException {
+<span class="fc" id="L52">        return dao.selectByOrderCode(orderCode);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

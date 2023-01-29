@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.dto</a> &gt; <span class="el_source">OrderDto.java</span></div><h1>OrderDto.java</h1><pre class="source lang-java linenums">package com.increff.store.dto;
+
+import com.increff.store.model.*;
+import com.increff.store.pojo.OrderItemPojo;
+import com.increff.store.pojo.OrderPojo;
+import com.increff.store.service.ApiException;
+import com.increff.store.service.OrderItemService;
+import com.increff.store.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import com.increff.store.invoice.InvoiceGenerator;
+
+import javax.transaction.Transactional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static com.increff.store.dto.DtoUtils.*;
+import static com.increff.store.util.CreateRandomSequence.createRandomOrderCode;
+import static com.increff.store.util.GetCurrentDataTime.getCurrentDateTime;
+
+@Service
+<span class="fc" id="L30">public class OrderDto {</span>
+
+    @Autowired
+    private OrderService service;
+
+    @Autowired
+    private OrderItemService orderItemService;
+
+    @Autowired
+    private InvoiceGenerator invoiceGenerator;
+
+    public String createOrder() throws ApiException {
+<span class="fc" id="L42">        OrderPojo orderPojo = new OrderPojo();</span>
+<span class="fc" id="L43">        orderPojo.setCustomerName(&quot;&quot;);</span>
+<span class="fc" id="L44">        orderPojo.setStatus(&quot;pending&quot;);</span>
+<span class="fc" id="L45">        orderPojo.setPlaceDateTime(null);</span>
+
+//        creating random order code
+<span class="fc" id="L48">        String orderCode = createRandomOrderCode();</span>
+
+<span class="fc" id="L50">        OrderPojo x = service.getOrderByOrderCode(orderCode);</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        while (x != null) {</span>
+<span class="nc" id="L52">            orderCode = createRandomOrderCode();</span>
+<span class="nc" id="L53">            x = service.getOrderByOrderCode(orderCode);</span>
+        }
+
+<span class="fc" id="L56">        orderPojo.setOrderCode(orderCode);</span>
+<span class="fc" id="L57">        return service.addOrder(orderPojo);</span>
+    }
+
+    public List&lt;OrderData&gt; getAllOrders() throws ApiException {
+<span class="fc" id="L61">        List&lt;OrderData&gt; list1 = new ArrayList&lt;OrderData&gt;();</span>
+<span class="fc" id="L62">        List&lt;OrderPojo&gt; list2 = service.selectAllOrders();</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        for (OrderPojo p : list2)</span>
+<span class="fc" id="L64">            list1.add(convertOrderPojoToOrderData(p));</span>
+
+<span class="fc" id="L66">        return list1;</span>
+    }
+
+    public List&lt;OrderData&gt; getOrderByDateFilter(DateFilterForm form) throws ApiException {
+<span class="nc" id="L70">        List&lt;OrderData&gt; list1 = new ArrayList&lt;OrderData&gt;();</span>
+
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+
+//      converting to proper date time format
+        try {
+<span class="nc" id="L77">            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+
+<span class="nc" id="L79">            startDate = LocalDate.parse(form.getStart(), formatter).atStartOfDay();</span>
+<span class="nc" id="L80">            endDate = LocalDate.parse(form.getEnd(), formatter).atTime(23, 59, 59);</span>
+<span class="nc" id="L81">        } catch (Exception e) {</span>
+<span class="nc" id="L82">            throw new ApiException(&quot;Please input valid start and end date&quot;);</span>
+<span class="nc" id="L83">        }</span>
+
+<span class="nc" id="L85">        List&lt;OrderPojo&gt; list2 = service.selectOrderByDateFilter(startDate, endDate);</span>
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        for (OrderPojo p : list2)</span>
+<span class="nc" id="L88">            list1.add(convertOrderPojoToOrderData(p));</span>
+
+<span class="nc" id="L90">        return list1;</span>
+    }
+
+    public OrderData getOrderById(Integer id) throws ApiException {
+<span class="fc" id="L94">        OrderPojo p = service.getOrderById(id);</span>
+<span class="fc" id="L95">        return convertOrderPojoToOrderData(p);</span>
+    }
+
+    public OrderData getOrderByOrderCode(String orderCode) throws ApiException {
+<span class="fc" id="L99">        OrderPojo p = service.getOrderByOrderCode(orderCode);</span>
+<span class="fc" id="L100">        return convertOrderPojoToOrderData(p);</span>
+    }
+
+    @Transactional(rollbackOn = ApiException.class)
+    public void placeOrder(Integer id, OrderForm form) throws ApiException {
+<span class="fc" id="L105">        checkOrderForm(form);</span>
+<span class="fc" id="L106">        OrderPojo orderPojo = service.getOrderById(id);</span>
+<span class="fc" id="L107">        List&lt;OrderItemPojo&gt; list = orderItemService.getOrder(id);</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (list.size() == 0)</span>
+<span class="fc" id="L109">            throw new ApiException(&quot;Add at least one item&quot;);</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (Objects.equals(orderPojo.getStatus(), &quot;Placed&quot;))</span>
+<span class="nc" id="L111">            throw new ApiException(&quot;Order already placed&quot;);</span>
+<span class="nc" id="L112">        orderPojo.setStatus(&quot;Placed&quot;);</span>
+<span class="nc" id="L113">        orderPojo.setCustomerName(form.getCustomerName());</span>
+<span class="nc" id="L114">        orderPojo.setPlaceDateTime(getCurrentDateTime());</span>
+<span class="nc" id="L115">        normalizeOrderPojo(orderPojo);</span>
+<span class="nc" id="L116">        service.updateOrder(id, orderPojo);</span>
+        try {
+<span class="nc" id="L118">            downloadInvoice(id);</span>
+<span class="nc" id="L119">        } catch (Exception e) {</span>
+<span class="nc" id="L120">            throw new ApiException(&quot;Cannot create Invoice for given order&quot;);</span>
+<span class="nc" id="L121">        }</span>
+<span class="nc" id="L122">    }</span>
+
+    private void downloadInvoice(Integer orderId) throws Exception {
+
+//        generating invoice form
+<span class="nc" id="L127">        InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderId);</span>
+
+<span class="nc" id="L129">        RestTemplate restTemplate = new RestTemplate();</span>
+
+<span class="nc" id="L131">        String url = &quot;http://localhost:8080/fop/api/invoice&quot;;</span>
+
+<span class="nc" id="L133">        byte[] contents = restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody();</span>
+
+//        saving pdf;
+<span class="nc" id="L136">        Path pdfPath = Paths.get(&quot;./src/main/resources/pdf/&quot; + orderId + &quot;_invoice.pdf&quot;);</span>
+
+<span class="nc" id="L138">        Files.write(pdfPath, contents);</span>
+<span class="nc" id="L139">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

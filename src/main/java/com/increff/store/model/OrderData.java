@@ -5,11 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OrderData {
+public class OrderData extends OrderForm {
     private Integer id;
     private String createdDataTime;
     private String placedDataTime;
-    private String customerName;
     private String status;
     private String orderCode;
 }

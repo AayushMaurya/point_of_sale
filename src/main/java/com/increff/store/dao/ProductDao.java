@@ -23,8 +23,10 @@ public class ProductDao {
     private EntityManager em;
 
     @Transactional
-    public void insert(ProductPojo p) {
+    public Integer insert(ProductPojo p) {
         em.persist(p);
+        em.flush();
+        return p.getId();
     }
 
     public ProductPojo selectById(Integer id) {

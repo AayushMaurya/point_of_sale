@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderItemFlow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.flow</a> &gt; <span class="el_source">OrderItemFlow.java</span></div><h1>OrderItemFlow.java</h1><pre class="source lang-java linenums">package com.increff.store.flow;
+
+import com.increff.store.pojo.InventoryPojo;
+import com.increff.store.pojo.OrderItemPojo;
+import com.increff.store.pojo.OrderPojo;
+import com.increff.store.service.ApiException;
+import com.increff.store.service.InventoryService;
+import com.increff.store.service.OrderItemService;
+import com.increff.store.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+@Service
+@Transactional(rollbackOn = ApiException.class)
+<span class="fc" id="L17">public class OrderItemFlow {</span>
+    @Autowired
+    private InventoryService inventoryService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private OrderItemService orderItemService;
+
+    public void addOrderItem(OrderItemPojo pojo) throws ApiException
+    {
+<span class="nc" id="L29">        OrderPojo orderPojo = orderService.getOrderById(pojo.getOrderId());</span>
+
+<span class="nc" id="L31">        orderItemService.addOrderItem(pojo);</span>
+
+//        reducing inventory
+<span class="nc" id="L34">        InventoryPojo inventoryPojo = new InventoryPojo();</span>
+<span class="nc" id="L35">        inventoryPojo.setQuantity(pojo.getQuantity());</span>
+<span class="nc" id="L36">        inventoryPojo.setId(pojo.getProductId());</span>
+<span class="nc" id="L37">        inventoryService.reduceInventory(inventoryPojo);</span>
+<span class="nc" id="L38">    }</span>
+
+    public void updateOrderItem(Integer id, OrderItemPojo pojo) throws ApiException
+    {
+<span class="nc" id="L42">        OrderItemPojo oldPojo = orderItemService.getOrderItemById(id);</span>
+<span class="nc" id="L43">        Integer oldQuantity = oldPojo.getQuantity();</span>
+<span class="nc" id="L44">        Integer newQuantity = pojo.getQuantity();</span>
+<span class="nc" id="L45">        InventoryPojo inventoryPojo = new InventoryPojo();</span>
+
+//        adding old quantity to old inventory
+<span class="nc" id="L48">        inventoryPojo.setId(oldPojo.getProductId());</span>
+<span class="nc" id="L49">        inventoryPojo.setQuantity(oldQuantity);</span>
+<span class="nc" id="L50">        inventoryService.addInventory(inventoryPojo);</span>
+//        removing new quantity to new inventory
+<span class="nc" id="L52">        inventoryPojo.setId(pojo.getProductId());</span>
+<span class="nc" id="L53">        inventoryPojo.setQuantity(newQuantity);</span>
+<span class="nc" id="L54">        inventoryService.reduceInventory(inventoryPojo);</span>
+
+<span class="nc" id="L56">        orderItemService.updateOrderItem(id, pojo);</span>
+<span class="nc" id="L57">    }</span>
+
+    public void deleteOrderItemById(Integer id) throws ApiException
+    {
+<span class="nc" id="L61">        OrderItemPojo orderItemPojo = orderItemService.getOrderItemById(id);</span>
+
+//        updating the inventory
+<span class="nc" id="L64">        InventoryPojo inventoryPojo = new InventoryPojo();</span>
+<span class="nc" id="L65">        inventoryPojo.setId(orderItemPojo.getProductId());</span>
+<span class="nc" id="L66">        inventoryPojo.setQuantity(orderItemPojo.getQuantity());</span>
+<span class="nc" id="L67">        inventoryService.addInventory(inventoryPojo);</span>
+
+<span class="nc" id="L69">        orderItemService.deleteOrderItemById(id);</span>
+<span class="nc" id="L70">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

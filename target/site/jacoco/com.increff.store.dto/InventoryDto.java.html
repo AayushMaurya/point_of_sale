@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InventoryDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.dto</a> &gt; <span class="el_source">InventoryDto.java</span></div><h1>InventoryDto.java</h1><pre class="source lang-java linenums">package com.increff.store.dto;
+
+import com.increff.store.model.InventoryData;
+import com.increff.store.model.InventoryForm;
+import com.increff.store.pojo.InventoryPojo;
+import com.increff.store.pojo.ProductPojo;
+import com.increff.store.service.ApiException;
+import com.increff.store.service.InventoryService;
+import com.increff.store.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static com.increff.store.dto.DtoUtils.*;
+
+@Service
+<span class="fc" id="L20">public class InventoryDto {</span>
+
+    @Autowired
+    InventoryService service;
+
+    @Autowired
+    ProductService productService;
+
+    public List&lt;InventoryData&gt; getAllInventory()
+    {
+<span class="nc" id="L30">        List&lt;InventoryPojo&gt; list1 = service.getAllInventory();</span>
+<span class="nc" id="L31">        List&lt;InventoryData&gt; list2 = new ArrayList&lt;InventoryData&gt;();</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        for(InventoryPojo p: list1)</span>
+<span class="nc" id="L33">            list2.add(convertInventoryPojoToInventoryData(p));</span>
+
+//        setting the barcode;
+//        needed in flow layer
+<span class="nc" id="L37">        List&lt;ProductPojo&gt; productPojoList = productService.getAllProducts();</span>
+
+<span class="nc" id="L39">        HashMap&lt;Integer, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        for(ProductPojo p: productPojoList)</span>
+<span class="nc" id="L41">            map.put(p.getId(), p.getBarcode());</span>
+
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        for(InventoryData d: list2)</span>
+<span class="nc" id="L44">            d.setBarcode(map.get(d.getId()));</span>
+
+<span class="nc" id="L46">        return list2;</span>
+    }
+
+    public void reduceInventory(InventoryForm form) throws ApiException
+    {
+<span class="nc" id="L51">        InventoryPojo p = convertInventoryFormToInventoryPojo(form);</span>
+<span class="nc" id="L52">        service.reduceInventory(p);</span>
+<span class="nc" id="L53">    }</span>
+
+    public void addInventory(InventoryForm form) throws ApiException
+    {
+<span class="nc" id="L57">        InventoryPojo p = convertInventoryFormToInventoryPojo(form);</span>
+<span class="nc" id="L58">        service.addInventory(p);</span>
+<span class="nc" id="L59">    }</span>
+
+    private InventoryPojo convertInventoryFormToInventoryPojo(InventoryForm form) throws ApiException
+    {
+<span class="nc" id="L63">        InventoryPojo p = new InventoryPojo();</span>
+//        converting the barcode into product id
+<span class="nc" id="L65">        String barcode = form.getBarcode();</span>
+<span class="nc" id="L66">        ProductPojo productPojo = productService.getProductByBarcode(barcode);</span>
+<span class="nc" id="L67">        p.setQuantity(form.getQuantity());</span>
+<span class="nc" id="L68">        p.setId(productPojo.getId());</span>
+<span class="nc" id="L69">        return p;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -112,7 +112,7 @@ public class OrderDto {
         orderPojo.setStatus("Placed");
         orderPojo.setCustomerName(form.getCustomerName());
         orderPojo.setPlaceDateTime(getCurrentDateTime());
-        normalize(orderPojo);
+        normalizeOrderPojo(orderPojo);
         service.updateOrder(id, orderPojo);
         try {
             downloadInvoice(id);

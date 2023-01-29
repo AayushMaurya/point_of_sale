@@ -20,21 +20,19 @@ public class UserDto {
     @Autowired
     UserService service;
 
-    public void addUser(UserForm form) throws ApiException
-    {
-        UserPojo p = convertUserFormToUserPojo(form);
-        service.add(p);
+    public Integer addUser(UserForm form) throws ApiException {
+        UserPojo pojo = convertUserFormToUserPojo(form);
+        return service.add(pojo);
     }
 
-    public void deleteUser(Integer id) throws ApiException
-    {
+    public void deleteUser(Integer id) throws ApiException {
         UserPojo pojo = service.getById(id);
-        if(Objects.equals(pojo.getRole(), "supervisor"))
+        if (Objects.equals(pojo.getRole(), "supervisor"))
             throw new ApiException("Cannot delete a supervisor");
         service.delete(id);
     }
 
-    public List<UserData> getAllUserData(){
+    public List<UserData> getAllUserData() {
         List<UserPojo> list = service.getAll();
         List<UserData> list2 = new ArrayList<UserData>();
         for (UserPojo p : list) {

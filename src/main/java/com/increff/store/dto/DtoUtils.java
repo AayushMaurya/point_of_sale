@@ -11,11 +11,11 @@ import java.util.Objects;
 public class DtoUtils {
 
     protected static BrandPojo convertBrandFormToBrandPojo(BrandForm form) {
-        BrandPojo p = new BrandPojo();
-        p.setBrand(form.getBrand());
-        p.setCategory(form.getCategory());
+        BrandPojo pojo = new BrandPojo();
+        pojo.setBrand(form.getBrand());
+        pojo.setCategory(form.getCategory());
 
-        return p;
+        return pojo;
     }
 
     protected static BrandData convertBrandPojoToBrandData(BrandPojo pojo) {
@@ -33,12 +33,6 @@ public class DtoUtils {
         return d;
     }
 
-    protected static OrderPojo convertOrderFormToOrderPojo(OrderForm form) {
-        OrderPojo orderPojo = new OrderPojo();
-        orderPojo.setCustomerName(form.getCustomerName());
-        return orderPojo;
-    }
-
     protected static OrderData convertOrderPojoToOrderData(OrderPojo p) {
         OrderData orderData = new OrderData();
         orderData.setId(p.getId());
@@ -54,12 +48,12 @@ public class DtoUtils {
         return orderData;
     }
 
-    protected static InventoryReportModel convertBrandPojoToInventoryReportModel(BrandPojo p) {
+    protected static InventoryReportModel convertBrandPojoToInventoryReportModel(BrandPojo pojo) {
         InventoryReportModel inventoryReportModel = new InventoryReportModel();
 
-        inventoryReportModel.setBrand(p.getBrand());
-        inventoryReportModel.setCategory(p.getCategory());
-        inventoryReportModel.setBrandCategoryId(p.getId());
+        inventoryReportModel.setBrand(pojo.getBrand());
+        inventoryReportModel.setCategory(pojo.getCategory());
+        inventoryReportModel.setBrandCategoryId(pojo.getId());
         inventoryReportModel.setQuantity(0);
 
         return inventoryReportModel;
@@ -70,7 +64,7 @@ public class DtoUtils {
         if (StringUtil.isEmpty(form.getCategory())) throw new ApiException("Category cannot be empty");
     }
 
-    protected static void normalize(OrderPojo p) {
+    protected static void normalizeOrderPojo(OrderPojo p) {
         p.setCustomerName(StringUtil.toLowerCase(p.getCustomerName()));
     }
 
@@ -82,12 +76,26 @@ public class DtoUtils {
     protected static void checkProductForm(ProductForm form) throws ApiException {
         if (StringUtil.isEmpty(form.getName()))
             throw new ApiException("Product name cannot be empty");
+        if(StringUtil.isLonger(form.getName()))
+            throw new ApiException("Product name cannot be longer than 15 characters");
+
         if (StringUtil.isEmpty(form.getBarcode()))
-            throw new ApiException("barcode cannot be empty");
+            throw new ApiException("Barcode cannot be empty");
+        if(StringUtil.isLonger(form.getBarcode()))
+            throw new ApiException("Barcode cannot be longer than 15 characters");
+
         if (StringUtil.isEmpty(form.getBrandName()))
             throw new ApiException("Brand name cannot be empty");
+        if(StringUtil.isLonger(form.getBrandName()))
+            throw new ApiException("Brand name cannot be longer than 15 characters");
+
         if (StringUtil.isEmpty(form.getCategoryName()))
             throw new ApiException("Category cannot be empty");
+        if(StringUtil.isLonger(form.getCategoryName()))
+            throw new ApiException("Category name cannot be longer than 15 characters");
+
+        if(form.getMrp() <= 0.0)
+            throw new ApiException("Mrp should be valid digit");
     }
 
     protected static UserData convertUserPojoToUserData(UserPojo p) {
@@ -108,7 +116,10 @@ public class DtoUtils {
     }
 
     protected static void checkOrderForm(OrderForm form) throws ApiException {
-        if (StringUtil.isEmpty(form.getCustomerName())) throw new ApiException("Customer name cannot be empty");
+        if (StringUtil.isEmpty(form.getCustomerName()))
+            throw new ApiException("Customer name cannot be empty");
+        if(StringUtil.isLonger(form.getCustomerName()))
+            throw new ApiException("Customer name cannot be longer than 15 characters");
     }
 
     protected static DailyReportData convertReportPojoToReportData(DailyReportPojo pojo) {
@@ -132,4 +143,10 @@ public class DtoUtils {
         return productRevenueData;
     }
 
+    protected static void normalize(ProductForm form)
+    {
+        form.setName(StringUtil.toLowerCase(form.getName()));
+        form.setBrandName(StringUtil.toLowerCase(form.getBrandName()));
+        form.setCategoryName(StringUtil.toLowerCase(form.getCategoryName()));
+    }
 }

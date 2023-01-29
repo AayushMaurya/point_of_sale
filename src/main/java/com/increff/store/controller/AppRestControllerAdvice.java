@@ -1,8 +1,7 @@
 package com.increff.store.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,6 +11,8 @@ import com.increff.store.service.ApiException;
 
 @RestControllerAdvice
 public class AppRestControllerAdvice {
+
+    private static Logger logger = Logger.getLogger(AppRestControllerAdvice.class);
 
     @ExceptionHandler(ApiException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -24,28 +25,9 @@ public class AppRestControllerAdvice {
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public MessageData handle(Throwable e) {
+        logger.error(e);
         MessageData data = new MessageData();
         data.setMessage("An unknown error has occurred - " + e.getMessage());
         return data;
     }
-
-//    @ExceptionHandler(AccessDeniedException.class)
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-//    public MessageData newAccessDeniedHandle(AccessDeniedException e)
-//    {
-//        System.out.println("this");
-//        MessageData data = new MessageData();
-//        data.setMessage(" you are not authorisedAccess denied");
-//        return data;
-//    }
-//
-//    @ExceptionHandler(AuthenticationException.class)
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-//    public MessageData newAccessDeniedHandle(AuthenticationException e)
-//    {
-//        System.out.println("this2");
-//        MessageData data = new MessageData();
-//        data.setMessage(" you are not authorisedAccess denied");
-//        return data;
-//    }
 }

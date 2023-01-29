@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReportDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.dto</a> &gt; <span class="el_source">ReportDto.java</span></div><h1>ReportDto.java</h1><pre class="source lang-java linenums">package com.increff.store.dto;
+
+import com.increff.store.model.DailyReportData;
+import com.increff.store.model.DateFilterForm;
+import com.increff.store.pojo.DailyReportPojo;
+import com.increff.store.pojo.OrderItemPojo;
+import com.increff.store.pojo.OrderPojo;
+import com.increff.store.service.ApiException;
+import com.increff.store.service.OrderItemService;
+import com.increff.store.service.OrderService;
+import com.increff.store.service.ReportService;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.increff.store.dto.DtoUtils.convertReportPojoToReportData;
+import static com.increff.store.util.GetCurrentDataTime.getLocalDate;
+
+@Service
+<span class="fc" id="L27">public class ReportDto {</span>
+    @Autowired
+    ReportService service;
+
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    OrderItemService orderItemService;
+
+<span class="fc" id="L37">    private static Logger logger = Logger.getLogger(ReportDto.class);</span>
+
+    @Scheduled(fixedDelay = 1000)
+    public void createDailyReport() throws ApiException {
+
+<span class="nc" id="L42">        DailyReportPojo reportPojo = new DailyReportPojo();</span>
+
+<span class="nc" id="L44">        LocalDate date = getLocalDate();</span>
+
+<span class="nc" id="L46">        Integer totalItems = 0;</span>
+<span class="nc" id="L47">        Double totalRevenue = 0.0;</span>
+
+<span class="nc" id="L49">        LocalDateTime startDate = null;</span>
+<span class="nc" id="L50">        LocalDateTime endDate = null;</span>
+
+        try {
+<span class="nc" id="L53">            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+
+<span class="nc" id="L55">            startDate = LocalDate.parse(date.toString(), formatter).atStartOfDay();</span>
+<span class="nc" id="L56">            endDate = LocalDate.parse(date.toString(), formatter).atTime(23, 59, 59);</span>
+        }
+<span class="nc" id="L58">        catch(Exception e)</span>
+        {
+<span class="nc" id="L60">            logger.error(e);</span>
+<span class="nc" id="L61">        }</span>
+<span class="nc" id="L62">        List&lt;OrderPojo&gt; orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);</span>
+
+<span class="nc" id="L64">        Integer totalOrders = orderPojoList.size();</span>
+
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        for (OrderPojo o : orderPojoList) {</span>
+<span class="nc" id="L67">            Integer id = o.getId();</span>
+<span class="nc" id="L68">            List&lt;OrderItemPojo&gt; orderItemPojoList = orderItemService.getOrder(id);</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            for (OrderItemPojo i : orderItemPojoList) {</span>
+<span class="nc" id="L70">                totalItems += i.getQuantity();</span>
+<span class="nc" id="L71">                totalRevenue += i.getQuantity() * i.getSellingPrice();</span>
+<span class="nc" id="L72">            }</span>
+<span class="nc" id="L73">        }</span>
+
+<span class="nc" id="L75">        reportPojo.setDate(date);</span>
+<span class="nc" id="L76">        reportPojo.setTotalRevenue(totalRevenue);</span>
+<span class="nc" id="L77">        reportPojo.setInvoicedItemsCount(totalItems);</span>
+<span class="nc" id="L78">        reportPojo.setInvoicedOrderCount(totalOrders);</span>
+
+<span class="nc" id="L80">        DailyReportPojo pojo = service.getReportByDate(date);</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (pojo == null) {</span>
+<span class="nc" id="L82">            logger.info(&quot;Creating report for : &quot; + date);</span>
+<span class="nc" id="L83">            service.addReport(reportPojo);</span>
+        } else {
+<span class="nc" id="L85">            logger.info(&quot;Updating report&quot;);</span>
+<span class="nc" id="L86">            service.update(date, reportPojo);</span>
+        }
+<span class="nc" id="L88">    }</span>
+
+    public List&lt;DailyReportData&gt; getAllDailyReport() throws ApiException
+    {
+<span class="nc" id="L92">        List&lt;DailyReportPojo&gt; dailyReportPojoList = service.getAllReport();</span>
+<span class="nc" id="L93">        List&lt;DailyReportData&gt; dailyReportData = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        for (DailyReportPojo p : dailyReportPojoList) {</span>
+<span class="nc" id="L96">            dailyReportData.add(convertReportPojoToReportData(p));</span>
+<span class="nc" id="L97">        }</span>
+
+<span class="nc" id="L99">        return dailyReportData;</span>
+    }
+
+    public List&lt;DailyReportData&gt; getAllDailyReport(DateFilterForm form) throws ApiException {
+        LocalDate startDate;
+        LocalDate endDate;
+        try {
+<span class="nc" id="L106">            startDate = LocalDate.parse(form.getStart(), DateTimeFormatter.ISO_DATE);</span>
+<span class="nc" id="L107">            endDate = LocalDate.parse(form.getEnd(), DateTimeFormatter.ISO_DATE);</span>
+<span class="nc" id="L108">        } catch (Exception e) {</span>
+<span class="nc" id="L109">            throw new ApiException(&quot;Please put valid start and end date&quot;);</span>
+<span class="nc" id="L110">        }</span>
+<span class="nc" id="L111">        List&lt;DailyReportPojo&gt; dailyReportPojoList = service.getAllReport(startDate, endDate);</span>
+<span class="nc" id="L112">        List&lt;DailyReportData&gt; dailyReportData = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        for (DailyReportPojo p : dailyReportPojoList) {</span>
+<span class="nc" id="L115">            dailyReportData.add(convertReportPojoToReportData(p));</span>
+<span class="nc" id="L116">        }</span>
+
+<span class="nc" id="L118">        return dailyReportData;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

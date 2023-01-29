@@ -15,13 +15,13 @@ public class UserService {
 	@Autowired
 	private UserDao dao;
 
-	public void add(UserPojo p) throws ApiException {
+	public Integer add(UserPojo p) throws ApiException {
 		normalize(p);
 		UserPojo existing = dao.select(p.getEmail());
 		if (existing != null) {
 			throw new ApiException("User with given email already exists");
 		}
-		dao.insert(p);
+		return dao.insert(p);
 	}
 
 	public UserPojo getById(Integer id) throws ApiException

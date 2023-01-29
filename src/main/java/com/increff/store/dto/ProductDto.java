@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.increff.store.dto.DtoUtils.checkProductForm;
+import static com.increff.store.dto.DtoUtils.normalize;
 
 @Service
 public class ProductDto {
@@ -24,12 +25,12 @@ public class ProductDto {
     @Autowired
     private BrandService brandService;
 
-    public void addProduct(ProductForm form) throws ApiException
+    public Integer addProduct(ProductForm form) throws ApiException
     {
         checkProductForm(form);
+        normalize(form);
         ProductPojo p = convert(form);
-        normalize(p);
-        service.addProduct(p);
+        return service.addProduct(p);
     }
 
     public ProductData getProductById(Integer id) throws ApiException
@@ -50,8 +51,8 @@ public class ProductDto {
 
     public void updateProduct(Integer id, ProductForm form) throws ApiException
     {
+        normalize(form);
         ProductPojo p = convert(form);
-        normalize(p);
         service.updateProduct(id, p);
     }
 
@@ -87,10 +88,6 @@ public class ProductDto {
         productData.setMrp(p.getMrp());
 
         return productData;
-    }
-
-    protected static void normalize(ProductPojo p) {
-        p.setName(StringUtil.toLowerCase(p.getName()));
     }
 
 }

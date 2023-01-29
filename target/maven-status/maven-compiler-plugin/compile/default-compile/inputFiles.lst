@@ -43,14 +43,12 @@ D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\controller\Si
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\dto\OrderDto.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\LoginForm.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\service\ApiException.java
-D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\scheduler\ReportScheduler.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\InventoryForm.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\UserForm.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\service\InventoryService.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\spring\ControllerConfig.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\controller\AbstractUiController.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\controller\AppRestControllerAdvice.java
-D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\spring\SchedulerInitializer.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\DailyReportData.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\dto\InventoryDto.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\BrandForm.java
@@ -65,7 +63,6 @@ D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\spring\Spring
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\util\UserPrincipal.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\MessageData.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\pojo\OrderPojo.java
-D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\spring\SchedulerConfig.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\util\SecurityUtil.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\spring\DbConfig.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\service\OrderService.java

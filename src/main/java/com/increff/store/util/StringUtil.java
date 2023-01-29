@@ -28,4 +28,11 @@ public class StringUtil {
         DecimalFormat formatter = new DecimalFormat("0.00");
         return Double.parseDouble(formatter.format(sellingPrice));
     }
+
+    public static boolean isLonger(String str)
+    {
+        if(str.length() > 15)
+            return true;
+        return false;
+    }
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InventoryService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.service</a> &gt; <span class="el_source">InventoryService.java</span></div><h1>InventoryService.java</h1><pre class="source lang-java linenums">package com.increff.store.service;
+
+import com.increff.store.dao.InventoryDao;
+import com.increff.store.pojo.InventoryPojo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+
+@Service
+@Transactional(rollbackOn = ApiException.class)
+<span class="fc" id="L13">public class InventoryService {</span>
+
+    @Autowired
+    private InventoryDao dao;
+
+    public void addInventory(InventoryPojo newPojo) throws ApiException {
+<span class="nc" id="L19">        InventoryPojo pojo = dao.selectById(newPojo.getId());</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        if (pojo == null) {</span>
+<span class="nc" id="L21">            dao.insert(newPojo);</span>
+        } else {
+<span class="nc" id="L23">            updateInventory(newPojo);</span>
+        }
+<span class="nc" id="L25">    }</span>
+
+    public void reduceInventory(InventoryPojo newPojo) throws ApiException {
+<span class="nc" id="L28">        InventoryPojo pojo = dao.selectById(newPojo.getId());</span>
+
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (pojo == null)</span>
+<span class="nc" id="L31">            throw new ApiException(&quot;No inventory found with given Id&quot;);</span>
+
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (pojo.getQuantity() &lt; newPojo.getQuantity())</span>
+<span class="nc" id="L34">            throw new ApiException(&quot;Inventory has only &quot; + pojo.getQuantity() + &quot; quantity left&quot;);</span>
+
+<span class="nc" id="L36">        newPojo.setQuantity(newPojo.getQuantity() * -1);</span>
+<span class="nc" id="L37">        updateInventory(newPojo);</span>
+<span class="nc" id="L38">    }</span>
+
+    public List&lt;InventoryPojo&gt; getAllInventory() {
+<span class="nc" id="L41">        return dao.selectAll();</span>
+    }
+
+    private void updateInventory(InventoryPojo newPojo) throws ApiException {
+<span class="nc" id="L45">        InventoryPojo pojo = dao.selectById(newPojo.getId());</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if(pojo == null)</span>
+<span class="nc" id="L47">            throw new ApiException(&quot;Cannot update inventory&quot;);</span>
+<span class="nc" id="L48">        pojo.setQuantity(pojo.getQuantity() + newPojo.getQuantity());</span>
+<span class="nc" id="L49">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

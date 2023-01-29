@@ -44,16 +44,10 @@ public class OrderItemService {
 
     public void updateOrderItem(Integer id, OrderItemPojo newPojo) throws ApiException {
         OrderItemPojo oldPojo = getOrderItemById(id);
-
-        try {
-            oldPojo.setQuantity(newPojo.getQuantity());
-            oldPojo.setOrderId(newPojo.getOrderId());
-            oldPojo.setSellingPrice(newPojo.getSellingPrice());
-            oldPojo.setProductId(newPojo.getProductId());
-        } catch (Exception e) {
-            logger.error(e);
-            throw new ApiException("Cannot update the given order item");
-        }
+        oldPojo.setQuantity(newPojo.getQuantity());
+        oldPojo.setOrderId(newPojo.getOrderId());
+        oldPojo.setSellingPrice(newPojo.getSellingPrice());
+        oldPojo.setProductId(newPojo.getProductId());
     }
 
     public OrderItemPojo getProductIdOrderId(Integer productId, Integer orderId) throws ApiException {

@@ -5,11 +5,6 @@ function getStoreUrl(){
  	return baseUrl + "/api/brand";
  }
 
- function getAdminBrandUrl(){
- var baseUrl = $("meta[name=baseUrl]").attr("content")
-  	return baseUrl + "/api/admin/brand";
- }
-
 function getBrandList(){
 	var url = getStoreUrl();
 	$.ajax({
@@ -25,6 +20,7 @@ function getBrandList(){
 }
 
 function displayBrandList(data){
+    $('#brand-table').DataTable().destroy();
 	var $tbody = $('#brand-table').find('tbody');
 	$tbody.empty();
 	var index = 0;
@@ -38,10 +34,12 @@ function displayBrandList(data){
 		+ '<td>' + index + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
+		+ '<td class="supervisor-view">' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
 	}
+	if($("meta[name=role]").attr("content") == "operator")
+        hideSupervisorView();
 	pagination();
 }
 
@@ -49,7 +47,7 @@ function addBrand(event)
 {
     var $form = $("#brand-form");
     var json = toJson($form);
-    var url = getAdminBrandUrl();
+    var url = getStoreUrl();
 
     $.ajax({
     	   url: url,
@@ -80,7 +78,7 @@ function updateBrand()
     var id = document.getElementById("inputUpdateBrandId").value;
     var $form = $("#updateBrandForm");
     var json = toJson($form);
-    var url = getAdminBrandUrl() + "/" + id ;
+    var url = getStoreUrl() + "/" + id ;
 
     $.ajax({
         	   url: url,
@@ -146,7 +144,7 @@ function uploadRows(){
 
 	   },
 	   error: function(response){
-	   		row.error=response.responseText
+	   		row.error=JSON.parse(response.responseText).message;
 	   		errorData.push(row);
 	   		uploadRows();
 	   }
@@ -154,7 +152,8 @@ function uploadRows(){
 }
 
 function downloadErrors(){
-	writeFileData(errorData);
+    if(errorData.length >= 0)
+	    writeFileData(errorData);
 }
 
 function resetUploadDialog(){
@@ -201,6 +200,8 @@ function init()
     $('#process-data').click(processData);
     $('#download-errors').click(downloadErrors);
     $('#brandFile').on('change', updateFileName);
+    if($("meta[name=role]").attr("content") == "operator")
+        document.getElementById('supervisor-view').style.display = "none";
 }
 
 $(document).ready(getBrandList);

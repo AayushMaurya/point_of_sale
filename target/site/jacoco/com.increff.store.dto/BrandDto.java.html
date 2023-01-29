@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BrandDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.dto</a> &gt; <span class="el_source">BrandDto.java</span></div><h1>BrandDto.java</h1><pre class="source lang-java linenums">package com.increff.store.dto;
+
+import com.increff.store.model.BrandData;
+import com.increff.store.model.BrandForm;
+import com.increff.store.pojo.BrandPojo;
+import com.increff.store.service.ApiException;
+import com.increff.store.service.BrandService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.increff.store.dto.DtoUtils.*;
+
+@Service
+<span class="fc" id="L17">public class BrandDto {</span>
+
+    @Autowired
+    BrandService service;
+
+    public Integer addBrand(BrandForm form) throws ApiException {
+<span class="fc" id="L23">        checkBrandForm(form);</span>
+<span class="fc" id="L24">        BrandPojo p = convertBrandFormToBrandPojo(form);</span>
+<span class="fc" id="L25">        normalizeBrandPojo(p);</span>
+<span class="fc" id="L26">        return service.addBrand(p);</span>
+    }
+
+    public List&lt;BrandData&gt; getAllBrands() {
+<span class="fc" id="L30">        List&lt;BrandPojo&gt; list = service.getAllBrands();</span>
+<span class="fc" id="L31">        List&lt;BrandData&gt; list2 = new ArrayList&lt;BrandData&gt;();</span>
+
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        for (BrandPojo p : list)</span>
+<span class="fc" id="L34">            list2.add(convertBrandPojoToBrandData(p));</span>
+
+<span class="fc" id="L36">        return list2;</span>
+    }
+
+    public void updateBrand(Integer id, BrandForm form) throws ApiException {
+<span class="fc" id="L40">        checkBrandForm(form);</span>
+<span class="fc" id="L41">        BrandPojo p = convertBrandFormToBrandPojo(form);</span>
+<span class="fc" id="L42">        normalizeBrandPojo(p);</span>
+<span class="fc" id="L43">        service.updateBrand(id, p);</span>
+<span class="fc" id="L44">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

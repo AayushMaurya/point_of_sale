@@ -7,11 +7,6 @@ function getStoreUrl(){
  	return baseUrl + "/api/product";
  }
 
- function getAdminProductUrl(){
- var baseUrl = $("meta[name=baseUrl]").attr("content")
-  	return baseUrl + "/api/admin/product";
- }
-
 function getBrandUrl()
 {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -45,6 +40,7 @@ function getProductList(){
 }
 
 function displayProductList(data){
+    $('#product-table').DataTable().destroy();
 	var $tbody = $('#product-table').find('tbody');
 	$tbody.empty();
 	var index = 0;
@@ -60,11 +56,12 @@ function displayProductList(data){
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>'  + e.name + '</td>'
 		+ '<td>'  + e.mrp + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
+		+ '<td class="supervisor-view">' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
 	}
-
+     if($("meta[name=role]").attr("content") == "operator")
+            hideSupervisorView();
 	pagination();
 }
 
@@ -72,7 +69,7 @@ function addProduct(event)
 {
     var $form = $("#product-form");
     var json = toJson($form);
-    var url = getAdminProductUrl();
+    var url = getStoreUrl();
 
     $.ajax({
     	   url: url,
@@ -171,7 +168,7 @@ function updateProduct()
     var id = document.getElementById("inputUpdateId").value;
     var $form = $("#updateProductForm");
     var json = toJson($form);
-    var url = getAdminProductUrl() + "/" + id ;
+    var url = getStoreUrl() + "/" + id ;
 
     $.ajax({
             	   url: url,
@@ -302,6 +299,8 @@ function init()
     $('#process-data').click(processData);
     $('#download-errors').click(downloadErrors);
     $('#productFile').on('change', updateFileName);
+    if($("meta[name=role]").attr("content") == "operator")
+            document.getElementById('supervisor-view').style.display = "none";
 }
 
 $(document).ready(getProductList);

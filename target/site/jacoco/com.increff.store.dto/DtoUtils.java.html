@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DtoUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.dto</a> &gt; <span class="el_source">DtoUtils.java</span></div><h1>DtoUtils.java</h1><pre class="source lang-java linenums">package com.increff.store.dto;
+
+import com.increff.store.model.*;
+import com.increff.store.pojo.*;
+import com.increff.store.service.ApiException;
+import com.increff.store.util.StringUtil;
+
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+
+<span class="nc" id="L11">public class DtoUtils {</span>
+
+    protected static BrandPojo convertBrandFormToBrandPojo(BrandForm form) {
+<span class="fc" id="L14">        BrandPojo pojo = new BrandPojo();</span>
+<span class="fc" id="L15">        pojo.setBrand(form.getBrand());</span>
+<span class="fc" id="L16">        pojo.setCategory(form.getCategory());</span>
+
+<span class="fc" id="L18">        return pojo;</span>
+    }
+
+    protected static BrandData convertBrandPojoToBrandData(BrandPojo pojo) {
+<span class="fc" id="L22">        BrandData brandData = new BrandData();</span>
+<span class="fc" id="L23">        brandData.setId(pojo.getId());</span>
+<span class="fc" id="L24">        brandData.setCategory(pojo.getCategory());</span>
+<span class="fc" id="L25">        brandData.setBrand(pojo.getBrand());</span>
+<span class="fc" id="L26">        return brandData;</span>
+    }
+
+    protected static InventoryData convertInventoryPojoToInventoryData(InventoryPojo p) {
+<span class="fc" id="L30">        InventoryData d = new InventoryData();</span>
+<span class="fc" id="L31">        d.setId(p.getId());</span>
+<span class="fc" id="L32">        d.setQuantity(p.getQuantity());</span>
+<span class="fc" id="L33">        return d;</span>
+    }
+
+    protected static OrderData convertOrderPojoToOrderData(OrderPojo p) {
+<span class="fc" id="L37">        OrderData orderData = new OrderData();</span>
+<span class="fc" id="L38">        orderData.setId(p.getId());</span>
+<span class="fc" id="L39">        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd hh:mm:ss&quot;);</span>
+<span class="fc" id="L40">        orderData.setCreatedDataTime(p.getCreatedAt().format(dateTimeFormatter));</span>
+<span class="fc" id="L41">        orderData.setPlacedDataTime(&quot;&quot;);</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if(Objects.equals(p.getStatus(), &quot;Placed&quot;))</span>
+<span class="fc" id="L43">            orderData.setPlacedDataTime(p.getPlaceDateTime().format(dateTimeFormatter));</span>
+<span class="fc" id="L44">        orderData.setCustomerName(p.getCustomerName());</span>
+<span class="fc" id="L45">        orderData.setStatus(p.getStatus());</span>
+<span class="fc" id="L46">        orderData.setOrderCode(p.getOrderCode());</span>
+
+<span class="fc" id="L48">        return orderData;</span>
+    }
+
+    protected static InventoryReportModel convertBrandPojoToInventoryReportModel(BrandPojo pojo) {
+<span class="fc" id="L52">        InventoryReportModel inventoryReportModel = new InventoryReportModel();</span>
+
+<span class="fc" id="L54">        inventoryReportModel.setBrand(pojo.getBrand());</span>
+<span class="fc" id="L55">        inventoryReportModel.setCategory(pojo.getCategory());</span>
+<span class="fc" id="L56">        inventoryReportModel.setBrandCategoryId(pojo.getId());</span>
+<span class="fc" id="L57">        inventoryReportModel.setQuantity(0);</span>
+
+<span class="fc" id="L59">        return inventoryReportModel;</span>
+    }
+
+    protected static void checkBrandForm(BrandForm form) throws ApiException {
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (StringUtil.isEmpty(form.getBrand())) throw new ApiException(&quot;Brand name cannot be empty&quot;);</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (StringUtil.isEmpty(form.getCategory())) throw new ApiException(&quot;Category cannot be empty&quot;);</span>
+<span class="fc" id="L65">    }</span>
+
+    protected static void normalizeOrderPojo(OrderPojo p) {
+<span class="fc" id="L68">        p.setCustomerName(StringUtil.toLowerCase(p.getCustomerName()));</span>
+<span class="fc" id="L69">    }</span>
+
+    protected static void normalizeBrandPojo(BrandPojo p) {
+<span class="fc" id="L72">        p.setCategory(StringUtil.toLowerCase(p.getCategory()));</span>
+<span class="fc" id="L73">        p.setBrand(StringUtil.toLowerCase(p.getBrand()));</span>
+<span class="fc" id="L74">    }</span>
+
+    protected static void checkProductForm(ProductForm form) throws ApiException {
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (StringUtil.isEmpty(form.getName()))</span>
+<span class="nc" id="L78">            throw new ApiException(&quot;Product name cannot be empty&quot;);</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if(StringUtil.isLonger(form.getName()))</span>
+<span class="nc" id="L80">            throw new ApiException(&quot;Product name cannot be longer than 15 characters&quot;);</span>
+
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (StringUtil.isEmpty(form.getBarcode()))</span>
+<span class="fc" id="L83">            throw new ApiException(&quot;Barcode cannot be empty&quot;);</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if(StringUtil.isLonger(form.getBarcode()))</span>
+<span class="nc" id="L85">            throw new ApiException(&quot;Barcode cannot be longer than 15 characters&quot;);</span>
+
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        if (StringUtil.isEmpty(form.getBrandName()))</span>
+<span class="nc" id="L88">            throw new ApiException(&quot;Brand name cannot be empty&quot;);</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if(StringUtil.isLonger(form.getBrandName()))</span>
+<span class="nc" id="L90">            throw new ApiException(&quot;Brand name cannot be longer than 15 characters&quot;);</span>
+
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (StringUtil.isEmpty(form.getCategoryName()))</span>
+<span class="nc" id="L93">            throw new ApiException(&quot;Category cannot be empty&quot;);</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if(StringUtil.isLonger(form.getCategoryName()))</span>
+<span class="nc" id="L95">            throw new ApiException(&quot;Category name cannot be longer than 15 characters&quot;);</span>
+
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if(form.getMrp() &lt;= 0.0)</span>
+<span class="nc" id="L98">            throw new ApiException(&quot;Mrp should be valid digit&quot;);</span>
+<span class="fc" id="L99">    }</span>
+
+    protected static UserData convertUserPojoToUserData(UserPojo p) {
+<span class="fc" id="L102">        UserData d = new UserData();</span>
+<span class="fc" id="L103">        d.setEmail(p.getEmail());</span>
+<span class="fc" id="L104">        d.setRole(p.getRole());</span>
+<span class="fc" id="L105">        d.setId(p.getId());</span>
+<span class="fc" id="L106">        return d;</span>
+    }
+
+    protected static UserPojo convertUserFormToUserPojo(UserForm f) {
+<span class="fc" id="L110">        UserPojo p = new UserPojo();</span>
+<span class="fc" id="L111">        p.setEmail(f.getEmail());</span>
+
+<span class="fc" id="L113">        p.setRole(&quot;operator&quot;);</span>
+<span class="fc" id="L114">        p.setPassword(f.getPassword());</span>
+<span class="fc" id="L115">        return p;</span>
+    }
+
+    protected static void checkOrderForm(OrderForm form) throws ApiException {
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (StringUtil.isEmpty(form.getCustomerName()))</span>
+<span class="fc" id="L120">            throw new ApiException(&quot;Customer name cannot be empty&quot;);</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">        if(StringUtil.isLonger(form.getCustomerName()))</span>
+<span class="nc" id="L122">            throw new ApiException(&quot;Customer name cannot be longer than 15 characters&quot;);</span>
+<span class="fc" id="L123">    }</span>
+
+    protected static DailyReportData convertReportPojoToReportData(DailyReportPojo pojo) {
+<span class="nc" id="L126">        DailyReportData dailyReportData = new DailyReportData();</span>
+<span class="nc" id="L127">        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;dd-MM-yyyy&quot;);</span>
+<span class="nc" id="L128">        String formattedDateTime = pojo.getDate().format(dateTimeFormatter);</span>
+<span class="nc" id="L129">        dailyReportData.setDate(formattedDateTime);</span>
+<span class="nc" id="L130">        dailyReportData.setTotalRevenue(pojo.getTotalRevenue());</span>
+<span class="nc" id="L131">        dailyReportData.setInvoicedItemsCount(pojo.getInvoicedItemsCount());</span>
+<span class="nc" id="L132">        dailyReportData.setInvoicedOrderCount(pojo.getInvoicedOrderCount());</span>
+<span class="nc" id="L133">        return dailyReportData;</span>
+    }
+
+    protected static ProductRevenueData convertBrandPojoToProductRevenueData(BrandPojo p) throws ApiException {
+<span class="nc" id="L137">        ProductRevenueData productRevenueData = new ProductRevenueData();</span>
+<span class="nc" id="L138">        productRevenueData.setId(p.getId());</span>
+<span class="nc" id="L139">        productRevenueData.setBrand(p.getBrand());</span>
+<span class="nc" id="L140">        productRevenueData.setCategory(p.getCategory());</span>
+<span class="nc" id="L141">        productRevenueData.setQuantity(0);</span>
+<span class="nc" id="L142">        productRevenueData.setTotal(0);</span>
+<span class="nc" id="L143">        return productRevenueData;</span>
+    }
+
+    protected static void normalize(ProductForm form)
+    {
+<span class="fc" id="L148">        form.setName(StringUtil.toLowerCase(form.getName()));</span>
+<span class="fc" id="L149">        form.setBrandName(StringUtil.toLowerCase(form.getBrandName()));</span>
+<span class="fc" id="L150">        form.setCategoryName(StringUtil.toLowerCase(form.getCategoryName()));</span>
+<span class="fc" id="L151">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

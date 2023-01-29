@@ -19,12 +19,7 @@ public class OrderService {
     private static Logger logger = Logger.getLogger(OrderService.class);
 
     public String addOrder(OrderPojo p) throws ApiException {
-        try {
-            return dao.insert(p);
-        } catch (Exception e) {
-            logger.error(e);
-            throw new ApiException("Cannot create new order.");
-        }
+        return dao.insert(p);
     }
 
     public List<OrderPojo> selectAllOrders() throws ApiException {
@@ -32,12 +27,7 @@ public class OrderService {
     }
 
     public List<OrderPojo> selectOrderByDateFilter(LocalDateTime startDate, LocalDateTime endDate) throws ApiException {
-        try {
-            return dao.selectByDateFilter(startDate, endDate);
-        } catch (Exception e) {
-            logger.error(e);
-            throw new ApiException("Cannot select orders within given dates");
-        }
+        return dao.selectByDateFilter(startDate, endDate);
     }
 
     public OrderPojo getOrderById(Integer id) throws ApiException {
@@ -49,7 +39,7 @@ public class OrderService {
 
     public void updateOrder(Integer id, OrderPojo newOrderPojo) throws ApiException {
         OrderPojo pojo = dao.selectById(id);
-        if(pojo == null) {
+        if (pojo == null) {
             logger.error("Order pojo to be update is null");
             throw new ApiException("Cannot place order");
         }

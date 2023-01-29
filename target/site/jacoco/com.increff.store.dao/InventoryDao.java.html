@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InventoryDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.dao</a> &gt; <span class="el_source">InventoryDao.java</span></div><h1>InventoryDao.java</h1><pre class="source lang-java linenums">package com.increff.store.dao;
+
+import com.increff.store.pojo.InventoryPojo;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+import java.util.List;
+
+@Repository
+<span class="fc" id="L14">public class InventoryDao {</span>
+<span class="fc" id="L15">    private static String DELETE_BY_ID = &quot;delete from InventoryPojo p where id=:id&quot;;</span>
+<span class="fc" id="L16">    private static String SELECT_BY_ID = &quot;select p from InventoryPojo p where id=:id&quot;;</span>
+<span class="fc" id="L17">    private static String SELECT_ALL = &quot;select p from InventoryPojo p&quot;;</span>
+
+    @PersistenceContext
+    private EntityManager em;
+
+    @Transactional
+    public void insert(InventoryPojo p) {
+<span class="nc" id="L24">        em.persist(p);</span>
+<span class="nc" id="L25">    }</span>
+
+    public void delete(Integer id) {
+<span class="nc" id="L28">        Query query = em.createQuery(DELETE_BY_ID);</span>
+<span class="nc" id="L29">        query.setParameter(&quot;id&quot;, id);</span>
+<span class="nc" id="L30">        query.executeUpdate();</span>
+<span class="nc" id="L31">    }</span>
+
+    public InventoryPojo selectById(Integer id) {
+<span class="nc" id="L34">        TypedQuery&lt;InventoryPojo&gt; query = getQuery(SELECT_BY_ID);</span>
+<span class="nc" id="L35">        query.setParameter(&quot;id&quot;, id);</span>
+<span class="nc" id="L36">        return query.getResultStream().findFirst().orElse(null);</span>
+    }
+
+    public List&lt;InventoryPojo&gt; selectAll() {
+<span class="nc" id="L40">        TypedQuery&lt;InventoryPojo&gt; query = getQuery(SELECT_ALL);</span>
+<span class="nc" id="L41">        return query.getResultList();</span>
+    }
+
+    TypedQuery&lt;InventoryPojo&gt; getQuery(String jpql) {
+<span class="nc" id="L45">        return em.createQuery(jpql, InventoryPojo.class);</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

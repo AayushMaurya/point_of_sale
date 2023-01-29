@@ -5,8 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class InventoryData {
+public class InventoryData extends InventoryForm {
     private Integer id;
-    private Integer quantity;
-    private String barcode;
 }

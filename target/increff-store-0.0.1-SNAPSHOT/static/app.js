@@ -15,7 +15,6 @@ function handleAjaxError(response){
 	var message = JSON.parse(response.responseText);
 	document.getElementById('status').style.backgroundColor = "red";
 	document.getElementById('status-message').innerHTML = message.message;
-	console.log(message);
 	$('.toast').toast('show');
 }
 
@@ -23,7 +22,6 @@ function handleSuccess(message)
 {
     document.getElementById('status-message').innerHTML = message;
     document.getElementById('status').style.backgroundColor = "green";
-    console.log(message);
    	$('.toast').toast('show');
 }
 
@@ -61,3 +59,20 @@ function writeFileData(arr){
     tempLink.setAttribute('download', 'download.tsv');
     tempLink.click();
 }
+
+function hideSupervisorView()
+{
+    var appBanners = document.getElementsByClassName('supervisor-view');
+
+    for (var i = 0; i < appBanners.length; i ++) {
+        appBanners[i].style.display = 'none';
+    }
+}
+
+function init()
+{
+    if($("meta[name=role]").attr("content") == "operator")
+        hideSupervisorView();
+}
+
+$(document).ready(init);
