@@ -99,28 +99,6 @@
 
                 <form class="form" id="updateProductForm">
                     <div class="form-group">
-                        <label for="inputUpdateBarcode" class="col-sm-2 col-form-label">Barcode</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" name="barcode" id="inputUpdateBarcode" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUpdateBrand" class="col-sm-2 col-form-label">Brand</label>
-                        <div class="col-sm-10">
-                            <select type="text" class="form-control" name="brandName" id="inputUpdateBrand">
-
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUpdateCategory" class="col-sm-2 col-form-label">Category</label>
-                        <div class="col-sm-10">
-                            <select type="text" class="form-control" name="categoryName" id="inputUpdateCategory">
-
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label for="inputUpdateName" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="name" id="inputUpdateName">
@@ -129,7 +107,8 @@
                     <div class="form-group">
                         <label for="inputUpdateMrp" class="col-sm-2 col-form-label">Mrp</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="mrp" id="inputUpdateMrp">
+                            <input type="number" min="0" step="0.01" class="form-control" name="mrp"
+                                   id="inputUpdateMrp">
                         </div>
                     </div>
                 </form>

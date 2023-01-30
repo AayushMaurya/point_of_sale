@@ -18,7 +18,7 @@ public class OrderService {
 
     private static Logger logger = Logger.getLogger(OrderService.class);
 
-    public String addOrder(OrderPojo p) throws ApiException {
+    public Integer addOrder(OrderPojo p) throws ApiException {
         return dao.insert(p);
     }
 
@@ -50,5 +50,13 @@ public class OrderService {
 
     public OrderPojo getOrderByOrderCode(String orderCode) throws ApiException {
         return dao.selectByOrderCode(orderCode);
+    }
+
+    public List<OrderPojo> getAllUnplacedOrders() {
+        return dao.selectAllUnplacedOrders();
+    }
+
+    public void deleteOrder(Integer id) {
+        dao.delete(id);
     }
 }

@@ -24,17 +24,19 @@ public class OrderItemFlow {
     @Autowired
     private OrderItemService orderItemService;
 
-    public void addOrderItem(OrderItemPojo pojo) throws ApiException
+    public Integer addOrderItem(OrderItemPojo pojo) throws ApiException
     {
         OrderPojo orderPojo = orderService.getOrderById(pojo.getOrderId());
 
-        orderItemService.addOrderItem(pojo);
+        Integer id = orderItemService.addOrderItem(pojo);
 
 //        reducing inventory
         InventoryPojo inventoryPojo = new InventoryPojo();
         inventoryPojo.setQuantity(pojo.getQuantity());
         inventoryPojo.setId(pojo.getProductId());
         inventoryService.reduceInventory(inventoryPojo);
+
+        return id;
     }
 
     public void updateOrderItem(Integer id, OrderItemPojo pojo) throws ApiException

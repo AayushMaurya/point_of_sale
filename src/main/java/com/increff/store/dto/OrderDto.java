@@ -1,29 +1,28 @@
 package com.increff.store.dto;
 
+import com.increff.store.client.InvoiceClient;
+import com.increff.store.flow.OrderItemFlow;
 import com.increff.store.model.*;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
 import com.increff.store.service.ApiException;
 import com.increff.store.service.OrderItemService;
 import com.increff.store.service.OrderService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import com.increff.store.invoice.InvoiceGenerator;
 
 import javax.transaction.Transactional;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.increff.store.dto.DtoUtils.*;
-import static com.increff.store.util.CreateRandomSequence.createRandomOrderCode;
 import static com.increff.store.util.GetCurrentDataTime.getCurrentDateTime;
 
 @Service
@@ -31,12 +30,16 @@ public class OrderDto {
 
     @Autowired
     private OrderService service;
+    @Autowired
+    InvoiceClient invoiceClient;
 
     @Autowired
     private OrderItemService orderItemService;
 
     @Autowired
-    private InvoiceGenerator invoiceGenerator;
+    private OrderItemFlow orderItemFlow;
+
+    private static Logger logger = Logger.getLogger(ReportDto.class);
 
     public String createOrder() throws ApiException {
         OrderPojo orderPojo = new OrderPojo();
@@ -45,16 +48,13 @@ public class OrderDto {
         orderPojo.setPlaceDateTime(null);
 
 //        creating random order code
-        String orderCode = createRandomOrderCode();
-
-        OrderPojo x = service.getOrderByOrderCode(orderCode);
-        while (x != null) {
-            orderCode = createRandomOrderCode();
-            x = service.getOrderByOrderCode(orderCode);
-        }
+        String orderCode = UUID.randomUUID().toString();
 
         orderPojo.setOrderCode(orderCode);
-        return service.addOrder(orderPojo);
+
+        service.addOrder(orderPojo);
+
+        return orderCode;
     }
 
     public List<OrderData> getAllOrders() throws ApiException {
@@ -115,26 +115,29 @@ public class OrderDto {
         normalizeOrderPojo(orderPojo);
         service.updateOrder(id, orderPojo);
         try {
-            downloadInvoice(id);
+            invoiceClient.downloadInvoice(id);
         } catch (Exception e) {
             throw new ApiException("Cannot create Invoice for given order");
         }
     }
 
-    private void downloadInvoice(Integer orderId) throws Exception {
+    //    method to delete all unplaced orders from one day before
+    @Scheduled(cron = "${cron.expression}")
+    public void deleteUnplacedOrders() throws ApiException {
+        logger.info("Deleting all unplaced orders");
+        List<OrderPojo> orderPojoList = service.getAllUnplacedOrders();
+        for (OrderPojo p : orderPojoList) {
+            if (getCurrentDateTime().minusDays(1).isAfter(p.getCreatedAt()))
+                deleteOrder(p.getId());
+        }
+    }
 
-//        generating invoice form
-        InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderId);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        String url = "http://localhost:8080/fop/api/invoice";
-
-        byte[] contents = restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody();
-
-//        saving pdf;
-        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderId + "_invoice.pdf");
-
-        Files.write(pdfPath, contents);
+    @Transactional(rollbackOn = ApiException.class)
+    public void deleteOrder(Integer id) throws ApiException {
+        logger.info("Deleting order: " + id);
+        List<OrderItemPojo> orderItemPojoList = orderItemService.getOrder(id);
+        for (OrderItemPojo p : orderItemPojoList)
+            orderItemFlow.deleteOrderItemById(p.getId());
+        service.deleteOrder(id);
     }
 }

@@ -149,4 +149,17 @@ public class DtoUtils {
         form.setBrandName(StringUtil.toLowerCase(form.getBrandName()));
         form.setCategoryName(StringUtil.toLowerCase(form.getCategoryName()));
     }
+
+    protected static void normalize(UpdateProductForm form)
+    {
+        form.setName(StringUtil.toLowerCase(form.getName()));
+    }
+
+    protected static void checkUpdateOrderItemForm(UpdateOrderItemForm form) throws ApiException {
+        if (!StringUtil.isPositive(form.getSellingPrice()))
+            throw new ApiException("Input valid Selling Price");
+        if (!StringUtil.isPositive(form.getQuantity()))
+            throw new ApiException("Input valid quantity");
+        form.setSellingPrice(StringUtil.normalizeDouble(form.getSellingPrice()));
+    }
 }

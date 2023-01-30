@@ -250,4 +250,32 @@ public class DtoUtilsTest extends AbstractUnitTest {
         exceptionRule.expectMessage("Customer name cannot be longer than 15 characters");
         checkOrderForm(form);
     }
+
+    @Test
+    public void checkUpdateOrderItemFormTest() throws ApiException
+    {
+        UpdateOrderItemForm form = new UpdateOrderItemForm();
+        form.setSellingPrice(12.343);
+        form.setQuantity(2);
+
+        checkUpdateOrderItemForm(form);
+
+        Integer expectedQuantity = 2;
+        Double expectedSellingPrice = 12.34;
+
+        assertEquals(expectedQuantity, form.getQuantity());
+        assertEquals(expectedSellingPrice, form.getSellingPrice());
+
+        form.setQuantity(-1);
+
+        exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("Input valid quantity");
+        checkUpdateOrderItemForm(form);
+
+        form.setSellingPrice(-12.2);
+
+        exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("Input valid Selling Price");
+        checkUpdateOrderItemForm(form);
+    }
 }

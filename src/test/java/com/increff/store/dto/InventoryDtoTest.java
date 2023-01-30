@@ -121,7 +121,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         ProductForm productForm = new ProductForm();
         productForm.setName("test name");
         productForm.setBarcode("qwertyuop");
-        productForm.setMrp(20);
+        productForm.setMrp(20.00);
         productForm.setBrandName("test brand");
         productForm.setCategoryName("test category");
 
@@ -149,7 +149,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
         ProductForm productForm = new ProductForm();
         productForm.setName("test name");
         productForm.setBarcode("qwertyuiop");
-        productForm.setMrp(20);
+        productForm.setMrp(20.00);
         productForm.setBrandName("test brand");
         productForm.setCategoryName("test category");
 

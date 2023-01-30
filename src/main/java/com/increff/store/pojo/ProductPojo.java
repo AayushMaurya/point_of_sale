@@ -14,8 +14,7 @@ public class ProductPojo extends AbstractDateAudit {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
-    @Size(min = 5)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String barcode;
     @Column(nullable = false, name = "brand_category_id")
     private Integer brandCategory;

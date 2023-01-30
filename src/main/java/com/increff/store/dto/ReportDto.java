@@ -36,9 +36,9 @@ public class ReportDto {
 
     private static Logger logger = Logger.getLogger(ReportDto.class);
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(cron = "${cron.expression}")
     public void createDailyReport() throws ApiException {
-
+        logger.info("Creating daily report");
         DailyReportPojo reportPojo = new DailyReportPojo();
 
         LocalDate date = getLocalDate();

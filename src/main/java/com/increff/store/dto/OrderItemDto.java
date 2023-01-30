@@ -1,6 +1,5 @@
 package com.increff.store.dto;
 
-import com.google.protobuf.Api;
 import com.increff.store.flow.OrderItemFlow;
 import com.increff.store.model.OrderItemData;
 import com.increff.store.model.OrderItemForm;
@@ -18,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.increff.store.dto.DtoUtils.checkUpdateOrderItemForm;
+
 @Service
 public class OrderItemDto {
 
@@ -33,7 +34,7 @@ public class OrderItemDto {
     @Autowired
     private OrderItemFlow orderItemFlow;
 
-    public void addOrderItem(OrderItemForm form) throws ApiException {
+    public Integer addOrderItem(OrderItemForm form) throws ApiException {
         checkOrderItemForm(form);
 
         OrderItemPojo pojo = convert(form);
@@ -42,9 +43,10 @@ public class OrderItemDto {
         if (oldPojo != null) {
             Integer q = pojo.getQuantity();
             pojo.setQuantity(oldPojo.getQuantity() + q);
-            service.updateOrderItem(oldPojo.getId(), pojo);
+            orderItemFlow.updateOrderItem(oldPojo.getId(), pojo);
+            return oldPojo.getId();
         } else {
-            orderItemFlow.addOrderItem(pojo);
+            return orderItemFlow.addOrderItem(pojo);
         }
     }
 
@@ -55,7 +57,7 @@ public class OrderItemDto {
             throw new ApiException("Cannot update item in placed order");
         newPojo.setQuantity(form.getQuantity());
         newPojo.setSellingPrice(form.getSellingPrice());
-        service.updateOrderItem(form.getOrderItemId(), newPojo);
+        orderItemFlow.updateOrderItem(form.getOrderItemId(), newPojo);
     }
 
     public List<OrderItemData> getOrderItemByOrderId(Integer id) throws ApiException {
@@ -92,17 +94,16 @@ public class OrderItemDto {
         return pojo;
     }
 
-    private OrderItemData convert(OrderItemPojo p) throws ApiException {
-        OrderItemData d = new OrderItemData();
-        d.setId(p.getId());
-        ;
-        d.setOrderId(p.getOrderId());
-        d.setQuantity(p.getQuantity());
-        d.setSellingPrice(p.getSellingPrice());
-        String productName = productService.getProductById(p.getProductId()).getName();
-        d.setProductName(productName);
-        d.setProductId(p.getProductId());
-        return d;
+    private OrderItemData convert(OrderItemPojo pojo) throws ApiException {
+        OrderItemData data = new OrderItemData();
+        data.setId(pojo.getId());
+        data.setOrderId(pojo.getOrderId());
+        data.setQuantity(pojo.getQuantity());
+        data.setSellingPrice(pojo.getSellingPrice());
+        String productName = productService.getProductById(pojo.getProductId()).getName();
+        data.setProductName(productName);
+        data.setProductId(pojo.getProductId());
+        return data;
     }
 
     private boolean checkIfOrderPlaced(Integer orderId) throws ApiException {
@@ -110,14 +111,6 @@ public class OrderItemDto {
         if (Objects.equals(orderPojo.getStatus(), "Placed"))
             return true;
         return false;
-    }
-
-    protected static void checkUpdateOrderItemForm(UpdateOrderItemForm form) throws ApiException {
-        if (!StringUtil.isPositive(form.getSellingPrice()))
-            throw new ApiException("Input valid Selling Price");
-        if (!StringUtil.isPositive(form.getQuantity()))
-            throw new ApiException("Input valid quantity");
-        form.setSellingPrice(StringUtil.normalizeDouble(form.getSellingPrice()));
     }
 
     private void checkOrderItemForm(OrderItemForm form) throws ApiException

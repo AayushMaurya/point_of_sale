@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -32,8 +33,9 @@ public class LoginController {
     private UserService service;
     @Autowired
     private InfoData info;
-    @Value("${supervisor.email}")
-    private String supervisorEmail;
+
+    @Value("#{'${supervisor.email}'.split(',')}")
+    private List<String> supervisorEmail;
 
     @ApiOperation(value = "Logs in a user")
     @RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -73,9 +75,12 @@ public class LoginController {
         // Create Authorities
         ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
         String role = "operator";
-        if (Objects.equals(supervisorEmail, p.getEmail()))
-            role = "supervisor";
-
+        for (String s : supervisorEmail) {
+            if (Objects.equals(s, p.getEmail())) {
+                role = "supervisor";
+                break;
+            }
+        }
         principal.setRole(role);
 
         authorities.add(new SimpleGrantedAuthority(role));

@@ -16,7 +16,6 @@ D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\dao\BrandDao.
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\OrderData.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\controller\InventoryApiController.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\spring\SpringSecurityInitializer.java
-D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\invoice\InvoiceGenerator.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\OrderForm.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\UpdateOrderItemForm.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\dao\AbstractDao.java
@@ -32,7 +31,9 @@ D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\Invoice
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\OrderItem.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\OrderStatusData.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\pojo\InventoryPojo.java
+D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\client\InvoiceClient.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\pojo\AbstractDateAudit.java
+D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\flow\InvoiceGenerator.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\pojo\UserPojo.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\pojo\DailyReportPojo.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\controller\BrandApiController.java
@@ -82,4 +83,5 @@ D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\pojo\ProductP
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\BrandData.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\service\UserService.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\InfoData.java
+D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\model\UpdateProductForm.java
 D:\java_projects\pos\point-of-sale\src\main\java\com\increff\store\util\CreateRandomSequence.java

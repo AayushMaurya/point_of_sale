@@ -23,8 +23,10 @@ public class OrderItemDao {
     private EntityManager em;
 
     @Transactional
-    public void insert(OrderItemPojo p) {
+    public Integer insert(OrderItemPojo p) {
         em.persist(p);
+        em.flush();
+        return p.getId();
     }
 
     @Transactional

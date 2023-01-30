@@ -2,6 +2,7 @@ package com.increff.store.dto;
 
 import com.increff.store.model.ProductData;
 import com.increff.store.model.ProductForm;
+import com.increff.store.model.UpdateProductForm;
 import com.increff.store.pojo.BrandPojo;
 import com.increff.store.pojo.ProductPojo;
 import com.increff.store.service.ApiException;
@@ -49,11 +50,13 @@ public class ProductDto {
         return list2;
     }
 
-    public void updateProduct(Integer id, ProductForm form) throws ApiException
+    public void updateProduct(Integer id, UpdateProductForm form) throws ApiException
     {
         normalize(form);
-        ProductPojo p = convert(form);
-        service.updateProduct(id, p);
+        ProductPojo pojo = new ProductPojo();
+        pojo.setName(form.getName());
+        pojo.setMrp(form.getMrp());
+        service.updateProduct(id, pojo);
     }
 
     private ProductPojo convert(ProductForm form) throws  ApiException

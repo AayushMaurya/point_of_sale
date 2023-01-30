@@ -18,8 +18,8 @@ public class OrderItemService {
 
     private static Logger logger = Logger.getLogger(OrderItemService.class);
 
-    public void addOrderItem(OrderItemPojo pojo) throws ApiException {
-        dao.insert(pojo);
+    public Integer addOrderItem(OrderItemPojo pojo) throws ApiException {
+        return dao.insert(pojo);
     }
 
     public List<OrderItemPojo> getOrder(Integer id) {
@@ -45,9 +45,7 @@ public class OrderItemService {
     public void updateOrderItem(Integer id, OrderItemPojo newPojo) throws ApiException {
         OrderItemPojo oldPojo = getOrderItemById(id);
         oldPojo.setQuantity(newPojo.getQuantity());
-        oldPojo.setOrderId(newPojo.getOrderId());
         oldPojo.setSellingPrice(newPojo.getSellingPrice());
-        oldPojo.setProductId(newPojo.getProductId());
     }
 
     public OrderItemPojo getProductIdOrderId(Integer productId, Integer orderId) throws ApiException {

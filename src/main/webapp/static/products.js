@@ -19,12 +19,6 @@ function getBrandOption() {
         return output;
 }
 
-function getBrandOption2() {
-        selectElement = document.querySelector('#inputUpdateBrand');
-        output = selectElement.options[selectElement.selectedIndex].value;
-        return output;
-}
-
 function getProductList(){
 	var url = getStoreUrl();
 	$.ajax({
@@ -117,16 +111,12 @@ function displayBrandsList(data)
     console.log(newBrands);
 
     var $elB = $("#inputBrandName");
-    var $elB2 = $("#inputUpdateBrand");
 
     $elB.empty();
-    $elB2.empty();
 
     $.each(newBrands, function(key,value) {
           $elB.append($("<option></option>")
              .attr("value", key).text(key));
-             $elB2.append($("<option></option>")
-                          .attr("value", key).text(key));
         });
 
     displayCategoryList();
@@ -135,14 +125,11 @@ function displayBrandsList(data)
 function displayCategoryList()
 {
     var $elC = $("#inputBrandCategory");
-    var $elC2 = $("#inputUpdateCategory");
 
     $elC.empty();
-    $elC2.empty();
 
     console.log("this is it");
     var a = getBrandOption();
-    var b = getBrandOption2();
 
     console.log(newBrands[a]);
 
@@ -150,17 +137,15 @@ function displayCategoryList()
     {
         $elC.append($("<option></option>")
             .attr("value", newBrands[a][i]).text(newBrands[a][i]));
-        $elC2.append($("<option></option>")
-                    .attr("value", newBrands[b][i]).text(newBrands[b][i]));
     }
 }
 
 function fillFields(index)
 {
-    document.getElementById("inputUpdateId").value = productData[index].id;
-    document.getElementById("inputUpdateBarcode").value = productData[index].barcode;
     document.getElementById("inputUpdateName").value = productData[index].name;
     document.getElementById("inputUpdateMrp").value = productData[index].mrp;
+    document.getElementById("inputUpdateId").value = productData[index].id;
+
 }
 
 function updateProduct()

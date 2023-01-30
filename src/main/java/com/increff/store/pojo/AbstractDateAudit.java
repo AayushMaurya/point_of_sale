@@ -11,11 +11,11 @@ import javax.persistence.Version;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+@Getter
+@Setter
 public abstract class AbstractDateAudit {
 
     @CreationTimestamp
-    @Getter
-    @Setter
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

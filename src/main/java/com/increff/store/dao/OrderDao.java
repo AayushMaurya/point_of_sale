@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,14 +19,16 @@ public class OrderDao {
     private static String SELECT_BY_ORDERCODE = "select p from OrderPojo p where orderCode=:orderCode";
     private static String SELECT_BY_DATE_FILTER = "select p from OrderPojo p where placeDateTime>=:startDate and " +
             "placeDateTime<=:endDate";
+    private static String SELECT_ALL_UNPLACED = "select p from OrderPojo p where status = 'pending'";
+    private static String DELETE_BY_ID = "delete from OrderPojo p where id=:id";
 
     @PersistenceContext
     private EntityManager em;
 
-    public String insert(OrderPojo pojo){
+    public Integer insert(OrderPojo pojo) {
         em.persist(pojo);
         em.flush();
-        return pojo.getOrderCode();
+        return pojo.getId();
     }
 
     public OrderPojo selectById(Integer id) {
@@ -35,13 +38,9 @@ public class OrderDao {
 
     }
 
-    public List<OrderPojo> selectAll() throws ApiException {
-        try {
-            TypedQuery<OrderPojo> query = getQuery(SELECT_ALL);
-            return query.getResultList();
-        } catch (Exception e) {
-            throw new ApiException("cannot select the orders from order table");
-        }
+    public List<OrderPojo> selectAll() {
+        TypedQuery<OrderPojo> query = getQuery(SELECT_ALL);
+        return query.getResultList();
     }
 
     public List<OrderPojo> selectByDateFilter(LocalDateTime startDate, LocalDateTime endDate) throws ApiException {
@@ -59,5 +58,17 @@ public class OrderDao {
         TypedQuery<OrderPojo> query = getQuery(SELECT_BY_ORDERCODE);
         query.setParameter("orderCode", orderCode);
         return query.getResultStream().findFirst().orElse(null);
+    }
+
+    public List<OrderPojo> selectAllUnplacedOrders() {
+        TypedQuery<OrderPojo> query = getQuery(SELECT_ALL_UNPLACED);
+        return query.getResultList();
+    }
+
+    public void delete(Integer id)
+    {
+        Query query = em.createQuery(DELETE_BY_ID);
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 }

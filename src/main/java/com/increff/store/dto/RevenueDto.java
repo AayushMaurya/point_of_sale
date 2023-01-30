@@ -30,16 +30,8 @@ public class RevenueDto {
     public List<ProductRevenueData> getBrandCategoryWiseReport(DateFilterForm form) throws ApiException {
         List<ProductRevenueData> list1 = new ArrayList<ProductRevenueData>();
 
-        List<BrandPojo> brandPojoList = brandService.getAllBrands();
-
 //        key: productId
         HashMap<Integer, ProductRevenueData> map = new HashMap<>();
-
-//        getting the list of all available products in map
-        for (BrandPojo p : brandPojoList) {
-            ProductRevenueData productRevenueData = convertBrandPojoToProductRevenueData(p);
-            map.put(p.getId(), productRevenueData);
-        }
 
         LocalDateTime startDate;
         LocalDateTime endDate;
@@ -63,6 +55,16 @@ public class RevenueDto {
 
             for (OrderItemPojo p : orderItemPojoList) {
                 Integer brandCategoryId = p.getBrandCategory();
+
+//                putting new key in map
+//                key-> brand category id, value-> productRevenueData
+                if (!map.containsKey(brandCategoryId)) {
+                    BrandPojo brandPojo = brandService.getByBrandId(brandCategoryId);
+                    ProductRevenueData productRevenueData = convertBrandPojoToProductRevenueData(brandPojo);
+                    map.put(brandCategoryId, productRevenueData);
+                }
+
+//                updating quantity and total
                 Integer quantity = map.get(brandCategoryId).getQuantity();
                 double total = map.get(brandCategoryId).getTotal();
 

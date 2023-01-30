@@ -1,4 +1,4 @@
-package com.increff.store.invoice;
+package com.increff.store.flow;
 
 import com.increff.store.model.InvoiceForm;
 import com.increff.store.model.OrderItem;
