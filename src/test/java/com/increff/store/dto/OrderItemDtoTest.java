@@ -4,8 +4,8 @@ import com.increff.store.dao.OrderDao;
 import com.increff.store.model.*;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
-import com.increff.store.service.ApiException;
-import com.increff.store.service.OrderItemService;
+import com.increff.store.api.ApiException;
+import com.increff.store.api.OrderItemService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

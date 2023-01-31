@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" name="quantity" id="inputQuantity"
+                        <input type="number" min="0" class="form-control" name="quantity" id="inputQuantity"
                                placeholder="Quantity">
                     </div>
                 </div>
@@ -93,6 +93,9 @@
                     </button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" id="update-inventory-remove">
                         Remove
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="update-inventory-edit">
+                        Update
                     </button>
                 </div>
             </div>

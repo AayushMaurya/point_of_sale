@@ -5,10 +5,9 @@ import com.increff.store.model.ProductForm;
 import com.increff.store.model.UpdateProductForm;
 import com.increff.store.pojo.BrandPojo;
 import com.increff.store.pojo.ProductPojo;
-import com.increff.store.service.ApiException;
-import com.increff.store.service.BrandService;
-import com.increff.store.service.ProductService;
-import com.increff.store.util.StringUtil;
+import com.increff.store.api.ApiException;
+import com.increff.store.api.BrandService;
+import com.increff.store.api.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

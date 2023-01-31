@@ -2,7 +2,7 @@ package com.increff.store.dto;
 
 import com.increff.store.model.*;
 import com.increff.store.pojo.*;
-import com.increff.store.service.ApiException;
+import com.increff.store.api.ApiException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -10,7 +10,6 @@ import org.junit.rules.ExpectedException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 import static com.increff.store.dto.DtoUtils.*;
 import static com.increff.store.util.GetCurrentDataTime.getCurrentDateTime;

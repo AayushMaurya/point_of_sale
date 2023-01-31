@@ -11,23 +11,16 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class InventoryDao {
-    private static String DELETE_BY_ID = "delete from InventoryPojo p where id=:id";
     private static String SELECT_BY_ID = "select p from InventoryPojo p where id=:id";
     private static String SELECT_ALL = "select p from InventoryPojo p";
 
     @PersistenceContext
     private EntityManager em;
 
-    @Transactional
     public void insert(InventoryPojo p) {
         em.persist(p);
-    }
-
-    public void delete(Integer id) {
-        Query query = em.createQuery(DELETE_BY_ID);
-        query.setParameter("id", id);
-        query.executeUpdate();
     }
 
     public InventoryPojo selectById(Integer id) {
@@ -44,6 +37,5 @@ public class InventoryDao {
     TypedQuery<InventoryPojo> getQuery(String jpql) {
         return em.createQuery(jpql, InventoryPojo.class);
     }
-
 
 }

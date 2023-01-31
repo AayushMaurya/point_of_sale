@@ -1,17 +1,16 @@
 package com.increff.store.dao;
 
 import com.increff.store.pojo.ProductPojo;
-import com.increff.store.service.ApiException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class ProductDao {
 
     private static String DELETE_BY_ID = "delete from ProductPojo p where id=:id";
@@ -22,7 +21,6 @@ public class ProductDao {
     @PersistenceContext
     private EntityManager em;
 
-    @Transactional
     public Integer insert(ProductPojo p) {
         em.persist(p);
         em.flush();

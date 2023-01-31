@@ -193,6 +193,13 @@ function processData(){
 
 function readFileDataCallback(results){
 	fileData = results.data;
+	if(fileData.length > 5000)
+    	{
+    	    document.getElementById('status-message').innerHTML = "Data length cannot be grater than 500";
+                document.getElementById('status').style.backgroundColor = "red";
+               	$('.toast').toast('show');
+            return false;
+    	}
 	uploadRows();
 }
 

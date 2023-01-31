@@ -35,7 +35,6 @@ function getInventoryReportList(){
 
 function displayBrandList(data)
 {
-
     Object.assign(newBrands, {"All":[]});
 
     for(var i in data)
@@ -110,7 +109,7 @@ function displayInventoryReport(data)
             + '</tr>';
             $tbody.append(row);
 
-    pagination();
+//    pagination();
 }
 
 function applyBrandCategoryFilter()

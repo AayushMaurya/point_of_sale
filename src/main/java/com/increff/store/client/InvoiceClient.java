@@ -24,6 +24,7 @@ public class InvoiceClient {
     @Value("${fop.url}")
     private String fopUrl;
 
+    private static String PDF_PATH = "./src/main/resources/pdf/";
     @Transactional(rollbackOn = Exception.class)
     public void downloadInvoice(Integer orderId) throws Exception {
 
@@ -35,7 +36,7 @@ public class InvoiceClient {
         byte[] contents = restTemplate.postForEntity(fopUrl, invoiceForm, byte[].class).getBody();
 
 //        saving pdf;
-        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderId + "_invoice.pdf");
+        Path pdfPath = Paths.get(PDF_PATH + orderId + "_invoice.pdf");
 
         Files.write(pdfPath, contents);
 

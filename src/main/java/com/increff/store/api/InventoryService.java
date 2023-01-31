@@ -1,4 +1,4 @@
-package com.increff.store.service;
+package com.increff.store.api;
 
 import com.increff.store.dao.InventoryDao;
 import com.increff.store.pojo.InventoryPojo;
@@ -41,18 +41,18 @@ public class InventoryService {
         return dao.selectAll();
     }
 
-    private void updateInventory(InventoryPojo newPojo) throws ApiException {
-        InventoryPojo pojo = dao.selectById(newPojo.getId());
-        if(pojo == null)
-            throw new ApiException("Cannot update inventory");
-        pojo.setQuantity(pojo.getQuantity() + newPojo.getQuantity());
-    }
-
     public InventoryPojo getInventoryById(Integer id) throws ApiException
     {
         InventoryPojo pojo = dao.selectById(id);
         if(pojo == null)
             throw new ApiException("Inventory with given id does not exist ");
         return pojo;
+    }
+
+    private void updateInventory(InventoryPojo newPojo) throws ApiException {
+        InventoryPojo pojo = dao.selectById(newPojo.getId());
+        if(pojo == null)
+            throw new ApiException("Cannot update inventory");
+        pojo.setQuantity(pojo.getQuantity() + newPojo.getQuantity());
     }
 }

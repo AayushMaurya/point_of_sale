@@ -1,7 +1,7 @@
 package com.increff.store.dao;
 
 import com.increff.store.pojo.BrandPojo;
-import com.increff.store.service.ApiException;
+import com.increff.store.api.ApiException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -11,8 +11,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class BrandDao {
-    private static String DELETE_BY_ID = "delete from BrandPojo p where id=:id";
     private static String SELECT_BY_ID = "select p from BrandPojo p where id=:id";
     private static String SELECT_ALL = "select p from BrandPojo p";
     private static String SELECT_BY_BRAND_CATEGORY = "select p from BrandPojo p where brand=:brand and " +
@@ -21,7 +21,6 @@ public class BrandDao {
     @PersistenceContext
     private EntityManager em;
 
-    @Transactional
     public Integer insert(BrandPojo pojo)throws ApiException{
        em.persist(pojo);
        em.flush();

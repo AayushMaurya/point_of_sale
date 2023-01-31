@@ -1,4 +1,4 @@
-package com.increff.store.service;
+package com.increff.store.api;
 
 import com.increff.store.dao.UserDao;
 import com.increff.store.pojo.UserPojo;

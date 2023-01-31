@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class OrderItemDao {
     private static String SELECT_BY_ID = "select p from OrderItemPojo p where id=:id";
     private static String SELECT_BY_PRODUCTID_ORDERID = "select p from OrderItemPojo p where productId=:id1 and " +
@@ -22,14 +23,12 @@ public class OrderItemDao {
     @PersistenceContext
     private EntityManager em;
 
-    @Transactional
     public Integer insert(OrderItemPojo p) {
         em.persist(p);
         em.flush();
         return p.getId();
     }
 
-    @Transactional
     public OrderItemPojo selectByItemId(Integer id) {
         TypedQuery<OrderItemPojo> query = getQuery(SELECT_BY_ID);
         query.setParameter("id", id);

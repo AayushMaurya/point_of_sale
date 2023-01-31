@@ -1,4 +1,4 @@
-package com.increff.store.service;
+package com.increff.store.api;
 
 public class ApiException extends Exception {
     private static final long serialVersionUID = 1L;

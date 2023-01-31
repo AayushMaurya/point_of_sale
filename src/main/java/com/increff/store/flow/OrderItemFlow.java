@@ -3,10 +3,10 @@ package com.increff.store.flow;
 import com.increff.store.pojo.InventoryPojo;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
-import com.increff.store.service.ApiException;
-import com.increff.store.service.InventoryService;
-import com.increff.store.service.OrderItemService;
-import com.increff.store.service.OrderService;
+import com.increff.store.api.ApiException;
+import com.increff.store.api.InventoryService;
+import com.increff.store.api.OrderItemService;
+import com.increff.store.api.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

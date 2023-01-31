@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDao extends AbstractDao {
 
     private static String DELETE_BY_ID = "delete from UserPojo p where id=:id";

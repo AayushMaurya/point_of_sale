@@ -1,4 +1,4 @@
-package com.increff.store.service;
+package com.increff.store.api;
 
 import com.increff.store.dao.ProductDao;
 import com.increff.store.pojo.ProductPojo;

@@ -5,10 +5,12 @@ import com.increff.store.pojo.UserPojo;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 @Repository
+@Transactional
 public class ReportDao extends AbstractDao{
     private static String SELECT_BY_ID = "select p from DailyReportPojo p where date=:date";
 

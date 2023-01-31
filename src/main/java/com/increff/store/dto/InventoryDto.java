@@ -4,12 +4,13 @@ import com.increff.store.model.InventoryData;
 import com.increff.store.model.InventoryForm;
 import com.increff.store.pojo.InventoryPojo;
 import com.increff.store.pojo.ProductPojo;
-import com.increff.store.service.ApiException;
-import com.increff.store.service.InventoryService;
-import com.increff.store.service.ProductService;
+import com.increff.store.api.ApiException;
+import com.increff.store.api.InventoryService;
+import com.increff.store.api.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,14 +48,32 @@ public class InventoryDto {
 
     public void reduceInventory(InventoryForm form) throws ApiException
     {
+        checkInventoryForm(form);
         InventoryPojo p = convertInventoryFormToInventoryPojo(form);
         service.reduceInventory(p);
     }
 
     public void addInventory(InventoryForm form) throws ApiException
     {
-        InventoryPojo p = convertInventoryFormToInventoryPojo(form);
-        service.addInventory(p);
+        checkInventoryForm(form);
+        InventoryPojo pojo = convertInventoryFormToInventoryPojo(form);
+        service.addInventory(pojo);
+    }
+
+    @Transactional(rollbackOn = ApiException.class)
+    public void updateInventory(InventoryForm form) throws ApiException
+    {
+        checkInventoryForm(form);
+        InventoryPojo pojo = convertInventoryFormToInventoryPojo(form);
+        Integer id = pojo.getId();
+
+        InventoryPojo oldPojo = service.getInventoryById(id);
+
+        Integer oldQuantity = oldPojo.getQuantity();
+
+        service.addInventory(pojo);
+        pojo.setQuantity(oldQuantity);
+        service.reduceInventory(pojo);
     }
 
     public InventoryPojo convertInventoryFormToInventoryPojo(InventoryForm form) throws ApiException
@@ -68,4 +87,9 @@ public class InventoryDto {
         return p;
     }
 
+    public static void checkInventoryForm(InventoryForm form) throws ApiException
+    {
+        if(form.getQuantity() <= 0)
+            throw new ApiException("Please input a valid positive quantity");
+    }
 }

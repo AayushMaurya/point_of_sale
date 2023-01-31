@@ -2,7 +2,7 @@ package com.increff.store.dto;
 
 import com.increff.store.model.*;
 import com.increff.store.pojo.*;
-import com.increff.store.service.*;
+import com.increff.store.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

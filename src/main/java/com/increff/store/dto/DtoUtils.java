@@ -2,7 +2,7 @@ package com.increff.store.dto;
 
 import com.increff.store.model.*;
 import com.increff.store.pojo.*;
-import com.increff.store.service.ApiException;
+import com.increff.store.api.ApiException;
 import com.increff.store.util.StringUtil;
 
 import java.time.format.DateTimeFormatter;

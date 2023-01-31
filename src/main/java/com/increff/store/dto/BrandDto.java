@@ -3,8 +3,8 @@ package com.increff.store.dto;
 import com.increff.store.model.BrandData;
 import com.increff.store.model.BrandForm;
 import com.increff.store.pojo.BrandPojo;
-import com.increff.store.service.ApiException;
-import com.increff.store.service.BrandService;
+import com.increff.store.api.ApiException;
+import com.increff.store.api.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

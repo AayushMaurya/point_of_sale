@@ -7,13 +7,13 @@
     <br/>
     <h3 class="d-flex justify-content-center">Users </h3>
 
-    <!--    brand form -->
+    <!--    user form -->
     <div class="row">
         <div class="col-12">
             <form class="form" id="user-form">
                 <div class="form-group">
                     <label for="inputUserEmail">Email</label>
-                    <input type="text" class="form-control" name="email" id="inputUserEmail"
+                    <input type="email" class="form-control" name="email" id="inputUserEmail"
                            placeholder="Enter user email">
                 </div>
                 <div class="form-group">
@@ -53,50 +53,6 @@
         </div>
 
     </div>
-
-    <!--update popup HTML-->
-
-<!--    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"-->
-<!--         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
-<!--        <div class="modal-dialog modal-dialog-centered" role="document">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <h5 class="modal-title" id="exampleModalLongTitle">Edit User title</h5>-->
-<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                        <span aria-hidden="true">&times;</span>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    <div class="form-group">-->
-<!--                        <label for="inputUpdateBrandId" class="col-sm-2 col-form-label">Id</label>-->
-<!--                        <div class="col-sm-10">-->
-<!--                            <input type="text" class="form-control" name="id" id="inputUpdateBrandId" readonly>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <form class="form" id="updateBrandForm">-->
-
-<!--                        <div class="form-group">-->
-<!--                            <label for="inputUpdateBrand" class="col-sm-2 col-form-label">Brand</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <input type="text" class="form-control" name="brand" id="inputUpdateBrand">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="inputUpdateCategory" class="col-sm-2 col-form-label">Category</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <input type="text" class="form-control" name="category" id="inputUpdateCategory">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </form>-->
-<!--                </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="update-brand">Save changes-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
     <!--status popup modal-->
     <div th:replace="snippets.html :: name_status_popup"></div>

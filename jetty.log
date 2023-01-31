@@ -1,2 +1,22 @@
 2023-01-31 11:03:30 INFO  SecurityConfig:41 - Configuration complete
 2023-01-31 11:06:45 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 11:09:38 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 11:09:58 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 11:22:27 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 11:25:37 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 11:30:01 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 11:31:50 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 11:35:56 ERROR AppRestControllerAdvice:28 - java.nio.file.NoSuchFileException: .\src\main\resources\pdf\7_invoice.pdf
+2023-01-31 11:51:16 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 11:58:46 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 11:59:32 ERROR AppRestControllerAdvice:28 - org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: Unrecognized token 'qw': was expecting ('true', 'false' or 'null')
+ at [Source: (PushbackInputStream); line: 3, column: 18]; nested exception is com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'qw': was expecting ('true', 'false' or 'null')
+ at [Source: (PushbackInputStream); line: 3, column: 18]
+2023-01-31 12:00:00 INFO  ReportDto:127 - Deleting all unplaced orders
+2023-01-31 12:00:00 INFO  ReportDto:41 - Creating daily report
+2023-01-31 12:00:00 INFO  ReportDto:85 - Updating report
+2023-01-31 12:18:42 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 12:18:57 ERROR AppRestControllerAdvice:28 - org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' not supported
+2023-01-31 12:19:56 ERROR AppRestControllerAdvice:28 - org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported
+2023-01-31 12:21:33 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 12:24:40 INFO  SecurityConfig:41 - Configuration complete
