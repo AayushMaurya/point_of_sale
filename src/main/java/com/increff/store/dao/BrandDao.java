@@ -2,7 +2,6 @@ package com.increff.store.dao;
 
 import com.increff.store.pojo.BrandPojo;
 import com.increff.store.service.ApiException;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

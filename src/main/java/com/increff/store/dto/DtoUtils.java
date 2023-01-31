@@ -99,9 +99,13 @@ public class DtoUtils {
     }
 
     protected static UserData convertUserPojoToUserData(UserPojo p) {
+        String role = "operator";
+
+
+
         UserData d = new UserData();
         d.setEmail(p.getEmail());
-        d.setRole(p.getRole());
+        d.setRole(role);
         d.setId(p.getId());
         return d;
     }
@@ -133,13 +137,13 @@ public class DtoUtils {
         return dailyReportData;
     }
 
-    protected static ProductRevenueData convertBrandPojoToProductRevenueData(BrandPojo p) throws ApiException {
+    protected static ProductRevenueData convertBrandPojoToProductRevenueData(BrandPojo p){
         ProductRevenueData productRevenueData = new ProductRevenueData();
         productRevenueData.setId(p.getId());
         productRevenueData.setBrand(p.getBrand());
         productRevenueData.setCategory(p.getCategory());
         productRevenueData.setQuantity(0);
-        productRevenueData.setTotal(0);
+        productRevenueData.setTotal(0.0);
         return productRevenueData;
     }
 

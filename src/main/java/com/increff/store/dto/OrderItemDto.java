@@ -65,7 +65,7 @@ public class OrderItemDto {
         List<OrderItemData> list2 = new ArrayList<OrderItemData>();
 
         for (OrderItemPojo p : list1)
-            list2.add(convert(p));
+            list2.add(convertOrderItemPojoToOrderItemDate(p));
 
         return list2;
     }
@@ -75,7 +75,7 @@ public class OrderItemDto {
         List<OrderItemData> list2 = new ArrayList<>();
 
         for (OrderItemPojo p : list1)
-            list2.add(convert(p));
+            list2.add(convertOrderItemPojoToOrderItemDate(p));
 
         return list2;
     }
@@ -94,7 +94,7 @@ public class OrderItemDto {
         return pojo;
     }
 
-    private OrderItemData convert(OrderItemPojo pojo) throws ApiException {
+    public OrderItemData convertOrderItemPojoToOrderItemDate(OrderItemPojo pojo) throws ApiException {
         OrderItemData data = new OrderItemData();
         data.setId(pojo.getId());
         data.setOrderId(pojo.getOrderId());
@@ -106,7 +106,7 @@ public class OrderItemDto {
         return data;
     }
 
-    private boolean checkIfOrderPlaced(Integer orderId) throws ApiException {
+    public boolean checkIfOrderPlaced(Integer orderId) throws ApiException {
         OrderPojo orderPojo = orderService.getOrderById(orderId);
         if (Objects.equals(orderPojo.getStatus(), "Placed"))
             return true;

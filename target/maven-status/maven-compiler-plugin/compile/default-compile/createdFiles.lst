@@ -10,7 +10,6 @@ com\increff\store\spring\SecurityConfig.class
 com\increff\store\util\UserPrincipal.class
 com\increff\store\dto\BrandDto.class
 com\increff\store\pojo\ProductPojo.class
-com\increff\store\util\CreateRandomSequence.class
 com\increff\store\dao\BrandDao.class
 com\increff\store\util\GetCurrentDataTime.class
 com\increff\store\controller\ProductApiController.class

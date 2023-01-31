@@ -1,17 +1,16 @@
 package com.increff.store.dto;
 
 import com.increff.store.model.*;
-import com.increff.store.pojo.BrandPojo;
-import com.increff.store.pojo.InventoryPojo;
-import com.increff.store.pojo.OrderPojo;
-import com.increff.store.pojo.UserPojo;
+import com.increff.store.pojo.*;
 import com.increff.store.service.ApiException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import static com.increff.store.dto.DtoUtils.*;
 import static com.increff.store.util.GetCurrentDataTime.getCurrentDateTime;
@@ -277,5 +276,43 @@ public class DtoUtilsTest extends AbstractUnitTest {
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("Input valid Selling Price");
         checkUpdateOrderItemForm(form);
+    }
+
+    @Test
+    public void convertReportPojoToReportDataTest()
+    {
+        DailyReportPojo pojo = new DailyReportPojo();
+        pojo.setDate(LocalDate.now());
+        pojo.setTotalRevenue(120.00);
+        pojo.setInvoicedOrderCount(20);
+        pojo.setInvoicedItemsCount(30);
+
+        DailyReportData data = convertReportPojoToReportData(pojo);
+
+        Double expectedRevenue = 120.00;
+        Integer expectedOrderCount = 20;
+        Integer expectedItemCount = 30;
+        assertEquals(expectedRevenue, data.getTotalRevenue());
+        assertEquals(expectedItemCount, data.getInvoicedItemsCount());
+        assertEquals(expectedOrderCount, data.getInvoicedOrderCount());
+
+    }
+
+    @Test
+    public void convertBrandPojoToProductRevenueDataTest()
+    {
+        BrandPojo pojo = new BrandPojo();
+        pojo.setCategory("test category");
+        pojo.setBrand("test brand");
+
+        ProductRevenueData data = convertBrandPojoToProductRevenueData(pojo);
+
+
+        assertEquals(pojo.getBrand(), data.getBrand());
+        assertEquals(pojo.getCategory(), data.getCategory());
+        Double expectedTotal = 0.0;
+        Integer expectedQuantity = 0;
+        assertEquals(expectedQuantity, data.getQuantity());
+//        assertEquals(expectedTotal, data.getTotal());
     }
 }

@@ -6,6 +6,7 @@ import com.increff.store.pojo.UserPojo;
 import com.increff.store.service.ApiException;
 import com.increff.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import static com.increff.store.dto.DtoUtils.convertUserPojoToUserData;
 public class UserDto {
     @Autowired
     UserService service;
+    @Value("#{'${supervisor.email}'.split(',')}")
+    private List<String> supervisorEmail;
 
     public Integer addUser(UserForm form) throws ApiException {
         UserPojo pojo = convertUserFormToUserPojo(form);
@@ -27,8 +30,11 @@ public class UserDto {
 
     public void deleteUser(Integer id) throws ApiException {
         UserPojo pojo = service.getById(id);
-        if (Objects.equals(pojo.getRole(), "supervisor"))
-            throw new ApiException("Cannot delete a supervisor");
+        for(String str: supervisorEmail)
+        {
+            if (Objects.equals(pojo.getEmail(), str))
+                throw new ApiException("Cannot delete a supervisor");
+        }
         service.delete(id);
     }
 
@@ -36,7 +42,16 @@ public class UserDto {
         List<UserPojo> list = service.getAll();
         List<UserData> list2 = new ArrayList<UserData>();
         for (UserPojo p : list) {
-            list2.add(convertUserPojoToUserData(p));
+            UserData data = convertUserPojoToUserData(p);
+            for(String str: supervisorEmail)
+            {
+                if(Objects.equals(data.getEmail(), str))
+                {
+                    data.setRole("supervisor");
+                    break;
+                }
+            }
+            list2.add(data);
         }
         return list2;
     }
