@@ -13,20 +13,20 @@ import java.text.DecimalFormat;
     }
 
     public static boolean isPositive(Double sellingPrice) {
-<span class="nc bnc" id="L16" title="All 2 branches missed.">        if(sellingPrice &gt; 0)</span>
-<span class="nc" id="L17">            return true;</span>
+<span class="pc bpc" id="L16" title="1 of 2 branches missed.">        if(sellingPrice &gt; 0)</span>
+<span class="fc" id="L17">            return true;</span>
 <span class="nc" id="L18">        return false;</span>
     }
 
     public static boolean isPositive(Integer i) {
-<span class="nc bnc" id="L22" title="All 2 branches missed.">        if(i &gt; 0)</span>
-<span class="nc" id="L23">            return true;</span>
-<span class="nc" id="L24">        return false;</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if(i &gt; 0)</span>
+<span class="fc" id="L23">            return true;</span>
+<span class="fc" id="L24">        return false;</span>
     }
 
     public static Double normalizeDouble(Double sellingPrice) {
-<span class="nc" id="L28">        DecimalFormat formatter = new DecimalFormat(&quot;0.00&quot;);</span>
-<span class="nc" id="L29">        return Double.parseDouble(formatter.format(sellingPrice));</span>
+<span class="fc" id="L28">        DecimalFormat formatter = new DecimalFormat(&quot;0.00&quot;);</span>
+<span class="fc" id="L29">        return Double.parseDouble(formatter.format(sellingPrice));</span>
     }
 
     public static boolean isLonger(String str)

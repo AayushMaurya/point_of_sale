@@ -14,15 +14,14 @@ import javax.validation.constraints.Size;
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
 <span class="fc" id="L16">    private Integer id;</span>
-    @Size(min = 5)
-    @Column(nullable = false)
-<span class="fc" id="L19">    private String barcode;</span>
+    @Column(nullable = false, unique = true)
+<span class="fc" id="L18">    private String barcode;</span>
     @Column(nullable = false, name = &quot;brand_category_id&quot;)
-<span class="fc" id="L21">    private Integer brandCategory;</span>
+<span class="fc" id="L20">    private Integer brandCategory;</span>
     @Size(min = 1)
     @Column(nullable = false)
-<span class="fc" id="L24">    private String name;</span>
+<span class="fc" id="L23">    private String name;</span>
     @Column(nullable = false)
-<span class="fc" id="L26">    private double mrp;</span>
+<span class="fc" id="L25">    private double mrp;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

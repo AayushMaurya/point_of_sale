@@ -2,7 +2,9 @@ package com.increff.store.dto;
 
 import com.increff.store.client.InvoiceClient;
 import com.increff.store.flow.OrderItemFlow;
-import com.increff.store.model.*;
+import com.increff.store.model.data.OrderData;
+import com.increff.store.model.form.DateFilterForm;
+import com.increff.store.model.form.OrderForm;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
 import com.increff.store.api.ApiException;
@@ -10,13 +12,10 @@ import com.increff.store.api.OrderItemService;
 import com.increff.store.api.OrderService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -49,11 +48,9 @@ public class OrderDto {
 
 //        creating random order code
         String orderCode = UUID.randomUUID().toString();
-
         orderPojo.setOrderCode(orderCode);
 
         service.addOrder(orderPojo);
-
         return orderCode;
     }
 
@@ -69,18 +66,10 @@ public class OrderDto {
     public List<OrderData> getOrderByDateFilter(DateFilterForm form) throws ApiException {
         List<OrderData> list1 = new ArrayList<OrderData>();
 
-        LocalDateTime startDate;
-        LocalDateTime endDate;
-
 //      converting to proper date time format
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            startDate = LocalDate.parse(form.getStart(), formatter).atStartOfDay();
-            endDate = LocalDate.parse(form.getEnd(), formatter).atTime(23, 59, 59);
-        } catch (Exception e) {
-            throw new ApiException("Please input valid start and end date");
-        }
+        LocalDateTime startDate = stringDateToLocalDate(form.getStart()).atStartOfDay();
+        LocalDateTime endDate = stringDateToLocalDate(form.getEnd()).atTime(23, 59, 59);
 
         List<OrderPojo> list2 = service.selectOrderByDateFilter(startDate, endDate);
 
@@ -122,7 +111,6 @@ public class OrderDto {
     }
 
     //    method to delete all unplaced orders from one day before
-    @Scheduled(cron = "${cron.expression}")
     public void deleteUnplacedOrders() throws ApiException {
         logger.info("Deleting all unplaced orders");
         List<OrderPojo> orderPojoList = service.getAllUnplacedOrders();

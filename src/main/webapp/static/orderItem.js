@@ -64,11 +64,11 @@ function displayOrderItemList(data){
 		var e = data[i];
 		var total = e.quantity * e.sellingPrice;
 		index++;
-		var buttonHtml = ' <button class="btn-disable btn btn-primary" onclick="deleteOrderItem('
+		var buttonHtml = ' <button class="btn-disable btn btn-primary btn-sm" onclick="deleteOrderItem('
 		+ e.id + ')">delete</button>'
 		+ ' <button onclick="fillFields(' + e.id + ','
 		+ e.quantity + ','
-		+ e.sellingPrice + ')" class="btn-disable btn btn-primary" data-toggle="modal"'
+		+ e.sellingPrice + ')" class="btn-disable btn btn-primary btn-sm" data-toggle="modal"'
 		+ 'data-target="#exampleModalCenter">Edit</button>';
 		var row = '<tr>'
 		+ '<td>' + index + '</td>'

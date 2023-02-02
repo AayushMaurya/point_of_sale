@@ -1,9 +1,9 @@
 package com.increff.store.controller;
 
 import com.increff.store.dto.ProductDto;
-import com.increff.store.model.ProductData;
-import com.increff.store.model.ProductForm;
-import com.increff.store.model.UpdateProductForm;
+import com.increff.store.model.data.ProductData;
+import com.increff.store.model.form.ProductForm;
+import com.increff.store.model.form.UpdateProductForm;
 import com.increff.store.api.ApiException;
 import com.increff.store.api.ProductService;
 import io.swagger.annotations.Api;

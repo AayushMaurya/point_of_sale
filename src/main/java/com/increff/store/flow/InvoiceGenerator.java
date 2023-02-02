@@ -1,6 +1,6 @@
 package com.increff.store.flow;
 
-import com.increff.store.model.InvoiceForm;
+import com.increff.store.model.form.InvoiceForm;
 import com.increff.store.model.OrderItem;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;

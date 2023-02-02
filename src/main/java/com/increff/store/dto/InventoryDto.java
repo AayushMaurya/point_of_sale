@@ -1,7 +1,7 @@
 package com.increff.store.dto;
 
-import com.increff.store.model.InventoryData;
-import com.increff.store.model.InventoryForm;
+import com.increff.store.model.data.InventoryData;
+import com.increff.store.model.form.InventoryForm;
 import com.increff.store.pojo.InventoryPojo;
 import com.increff.store.pojo.ProductPojo;
 import com.increff.store.api.ApiException;

@@ -18,8 +18,7 @@ function handleAjaxError(response){
 	$('.toast').toast('show');
 }
 
-function handleSuccess(message)
-{
+function handleSuccess(message){
     document.getElementById('status-message').innerHTML = message;
     document.getElementById('status').style.backgroundColor = "green";
    	$('.toast').toast('show');
@@ -36,7 +35,6 @@ function readFileData(file, callback){
 	}
 	Papa.parse(file, config);
 }
-
 
 function writeFileData(arr){
 	var config = {
@@ -60,8 +58,7 @@ function writeFileData(arr){
     tempLink.click();
 }
 
-function hideSupervisorView()
-{
+function hideSupervisorView(){
     var appBanners = document.getElementsByClassName('supervisor-view');
 
     for (var i = 0; i < appBanners.length; i ++) {
@@ -69,8 +66,23 @@ function hideSupervisorView()
     }
 }
 
-function init()
-{
+// General function for all ajax call
+function ajaxCall(callParams, dataParams, callback) {
+    $.ajax({
+        type: callParams.Type,
+        url: callParams.Url,
+        data: dataParams,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        success: function (response) {
+            callback(response);
+        },
+        error: handleAjaxError
+    });
+}
+
+function init(){
     if($("meta[name=role]").attr("content") == "operator")
         hideSupervisorView();
 }

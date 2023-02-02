@@ -11,40 +11,32 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-<span class="fc" id="L14">public class InventoryDao {</span>
-<span class="fc" id="L15">    private static String DELETE_BY_ID = &quot;delete from InventoryPojo p where id=:id&quot;;</span>
+@Transactional
+<span class="fc" id="L15">public class InventoryDao {</span>
 <span class="fc" id="L16">    private static String SELECT_BY_ID = &quot;select p from InventoryPojo p where id=:id&quot;;</span>
 <span class="fc" id="L17">    private static String SELECT_ALL = &quot;select p from InventoryPojo p&quot;;</span>
 
     @PersistenceContext
     private EntityManager em;
 
-    @Transactional
     public void insert(InventoryPojo p) {
-<span class="nc" id="L24">        em.persist(p);</span>
-<span class="nc" id="L25">    }</span>
-
-    public void delete(Integer id) {
-<span class="nc" id="L28">        Query query = em.createQuery(DELETE_BY_ID);</span>
-<span class="nc" id="L29">        query.setParameter(&quot;id&quot;, id);</span>
-<span class="nc" id="L30">        query.executeUpdate();</span>
-<span class="nc" id="L31">    }</span>
+<span class="fc" id="L23">        em.persist(p);</span>
+<span class="fc" id="L24">    }</span>
 
     public InventoryPojo selectById(Integer id) {
-<span class="nc" id="L34">        TypedQuery&lt;InventoryPojo&gt; query = getQuery(SELECT_BY_ID);</span>
-<span class="nc" id="L35">        query.setParameter(&quot;id&quot;, id);</span>
-<span class="nc" id="L36">        return query.getResultStream().findFirst().orElse(null);</span>
+<span class="fc" id="L27">        TypedQuery&lt;InventoryPojo&gt; query = getQuery(SELECT_BY_ID);</span>
+<span class="fc" id="L28">        query.setParameter(&quot;id&quot;, id);</span>
+<span class="fc" id="L29">        return query.getResultStream().findFirst().orElse(null);</span>
     }
 
     public List&lt;InventoryPojo&gt; selectAll() {
-<span class="nc" id="L40">        TypedQuery&lt;InventoryPojo&gt; query = getQuery(SELECT_ALL);</span>
-<span class="nc" id="L41">        return query.getResultList();</span>
+<span class="fc" id="L33">        TypedQuery&lt;InventoryPojo&gt; query = getQuery(SELECT_ALL);</span>
+<span class="fc" id="L34">        return query.getResultList();</span>
     }
 
     TypedQuery&lt;InventoryPojo&gt; getQuery(String jpql) {
-<span class="nc" id="L45">        return em.createQuery(jpql, InventoryPojo.class);</span>
+<span class="fc" id="L38">        return em.createQuery(jpql, InventoryPojo.class);</span>
     }
-
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

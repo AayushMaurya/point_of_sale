@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BrandService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.api</a> &gt; <span class="el_source">BrandService.java</span></div><h1>BrandService.java</h1><pre class="source lang-java linenums">package com.increff.store.api;
+
+import com.increff.store.dao.BrandDao;
+import com.increff.store.pojo.BrandPojo;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+
+@Service
+@Transactional(rollbackOn = ApiException.class)
+<span class="fc" id="L14">public class BrandService {</span>
+
+    @Autowired
+    private BrandDao dao;
+
+<span class="fc" id="L19">    private static Logger logger = Logger.getLogger(BrandService.class);</span>
+
+    public Integer addBrand(BrandPojo pojo) throws ApiException {
+<span class="fc" id="L22">        BrandPojo brandPojo = getByBrandCategory(pojo.getBrand(), pojo.getCategory());</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if (brandPojo != null)</span>
+<span class="nc" id="L24">            throw new ApiException(&quot;The given brand category combination already exists&quot;);</span>
+<span class="fc" id="L25">        return dao.insert(pojo);</span>
+    }
+
+    public BrandPojo getByBrandId(Integer id) throws ApiException {
+<span class="fc" id="L29">        BrandPojo brandPojo = dao.selectByBrandId(id);</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">        if (brandPojo == null)</span>
+<span class="nc" id="L31">            throw new ApiException(&quot;Cannot select a brand with given brand id&quot;);</span>
+<span class="fc" id="L32">        return brandPojo;</span>
+    }
+
+    public List&lt;BrandPojo&gt; getAllBrands() {
+<span class="fc" id="L36">        return dao.selectAll();</span>
+    }
+
+    public BrandPojo getByBrandCategory(String brand, String category) {
+<span class="fc" id="L40">        return dao.selectByBrandCategory(brand, category);</span>
+    }
+
+    public void updateBrand(Integer id, BrandPojo newPojo) throws ApiException {
+//        check if given brand category combination already exists.
+<span class="fc" id="L45">        String brand = newPojo.getBrand();</span>
+<span class="fc" id="L46">        String category = newPojo.getCategory();</span>
+<span class="fc" id="L47">        BrandPojo b = getByBrandCategory(brand, category);</span>
+<span class="pc bpc" id="L48" title="3 of 4 branches missed.">        if (b != null &amp;&amp; b.getId() != id)</span>
+<span class="nc" id="L49">            throw new ApiException(&quot;The brand with given brand category already exists&quot;);</span>
+
+<span class="fc" id="L51">        BrandPojo p = dao.selectByBrandId(id);</span>
+
+<span class="fc" id="L53">        p.setBrand(newPojo.getBrand());</span>
+<span class="fc" id="L54">        p.setCategory(newPojo.getCategory());</span>
+
+<span class="fc" id="L56">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

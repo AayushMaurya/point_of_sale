@@ -1,6 +1,8 @@
 package com.increff.store.dto;
 
 import com.increff.store.model.*;
+import com.increff.store.model.data.*;
+import com.increff.store.model.form.*;
 import com.increff.store.pojo.*;
 import com.increff.store.api.ApiException;
 import org.junit.Rule;
@@ -207,7 +209,7 @@ public class DtoUtilsTest extends AbstractUnitTest {
         UserData data = convertUserPojoToUserData(pojo);
 
         String expectedEmail = "test@email";
-        String expectedRole = "test role";
+        String expectedRole = "operator";
         Integer testId = 12;
 
         assertEquals(expectedEmail, data.getEmail());

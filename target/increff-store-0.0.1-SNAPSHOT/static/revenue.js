@@ -50,9 +50,11 @@ function displayRevenueProductList(data)
     $('#product-revenue-list-table').DataTable().destroy();
     var $tbody = $('#product-revenue-list-table').find('tbody');
     $tbody.empty();
+    var total = 0;
     var index = 0;
     for(var i in data){
     		var e = data[i];
+            total = total + e.total;
     		index++;
     		var row = '<tr>'
     		+ '<td>' + index + '</td>'
@@ -63,6 +65,14 @@ function displayRevenueProductList(data)
     		+ '</tr>';
             $tbody.append(row);
     	}
+    	var row = '<tr>'
+            		+ '<td></td>'
+            		+ '<td></td>'
+            		+ '<td></td>'
+            		+ '<td>' + "Total" + '</td>'
+            		+ '<td>'  + total + '</td>'
+            		+ '</tr>';
+                    $tbody.append(row);
 }
 
 function getBrandsList()

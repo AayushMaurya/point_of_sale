@@ -3,40 +3,26 @@ function getStoreUrl(){
  	return baseUrl + "/api/order";
  }
 
-function getOrderList(){
-	var url = getStoreUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   console.log(data);
-	   		displayOrderList(data);
-	   },
-	   error: handleAjaxError
-	});
-	return false;
+function getOrderList()
+{
+    var callParams = {};
+    callParams.Type = "GET";
+    callParams.Url = getStoreUrl();
+
+    ajaxCall(callParams, null, displayOrderList);
 }
 
 function getOrderListByDateFilter()
 {
-console.log("filtered orders");
-    var url = getStoreUrl() + "/date-filter";
+    var callParams = {};
+    callParams.Url = getStoreUrl() + "/date-filter";
+    callParams.Type = "POST";
     var $form = $("#date-filter-form");
-    var json = toJson($form);
-    	$.ajax({
-    	   url: url,
-    	   type: 'POST',
-    	   data: json,
-           headers: {
-              'Content-Type': 'application/json'
-           },
-    	   success: function(data) {
-    	   console.log(data);
-    	   		displayOrderList(data);
-    	   },
-    	   error: handleAjaxError
-    	});
-    	return false;
+    var dataParams = toJson($form);
+
+    ajaxCall(callParams, dataParams, displayOrderList);
+
+    return false;
 }
 
 function displayOrderList(data){
@@ -72,30 +58,25 @@ function redirect(id)
  function createOrder(event)
  {
      var $form = $("#order-form");
-     var json = toJson($form);
-     var url = getStoreUrl();
+     var dataParams = toJson($form);
+     var callParams = {};
+     callParams.Url = getStoreUrl();
+     callParams.Type = "POST";
 
-     $.ajax({
-     	   url: url,
-     	   type: 'POST',
-     	   data: json,
-     	   headers: {
-            	'Content-Type': 'application/json'
-            },
-     	   success: function(response) {
-     	   		getOrderList();
-     	   		redirect(response);
-     	   },
-     	   error: handleAjaxError
+     function callback(data){
+        getOrderList();
+        redirect(data);
+     }
 
-     	});
-     	return false;
- }
+     ajaxCall(callParams, dataParams, callback);
 
- function pagination(){
-   $('#order-table').DataTable();
-   $('.dataTables_length').addClass('bs-select');
- }
+     return false;
+}
+
+function pagination(){
+    $('#order-table').DataTable();
+    $('.dataTables_length').addClass('bs-select');
+}
 
  function init()
  {

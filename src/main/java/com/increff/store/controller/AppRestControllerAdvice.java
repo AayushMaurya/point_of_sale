@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.increff.store.model.MessageData;
+import com.increff.store.model.data.MessageData;
 import com.increff.store.api.ApiException;
 
 @RestControllerAdvice

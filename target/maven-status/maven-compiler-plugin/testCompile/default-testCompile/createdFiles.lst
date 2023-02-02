@@ -1,7 +1,9 @@
 com\increff\store\dto\BrandDtoTest.class
+com\increff\store\dto\OrderItemDtoTest.class
 com\increff\store\dto\AbstractUnitTest.class
 com\increff\store\dto\UserDtoTest.class
 com\increff\store\dto\DtoUtilsTest.class
 com\increff\store\config\QaConfig.class
 com\increff\store\dto\OrderDtoTest.class
+com\increff\store\dto\InventoryDtoTest.class
 com\increff\store\dto\ProductDtoTest.class

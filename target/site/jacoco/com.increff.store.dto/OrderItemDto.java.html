@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderItemDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.dto</a> &gt; <span class="el_source">OrderItemDto.java</span></div><h1>OrderItemDto.java</h1><pre class="source lang-java linenums">package com.increff.store.dto;
 
-import com.google.protobuf.Api;
 import com.increff.store.flow.OrderItemFlow;
 import com.increff.store.model.OrderItemData;
 import com.increff.store.model.OrderItemForm;
@@ -8,18 +7,20 @@ import com.increff.store.model.UpdateOrderItemForm;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
 import com.increff.store.pojo.ProductPojo;
-import com.increff.store.service.ApiException;
-import com.increff.store.service.OrderItemService;
-import com.increff.store.service.OrderService;
-import com.increff.store.service.ProductService;
+import com.increff.store.api.ApiException;
+import com.increff.store.api.OrderItemService;
+import com.increff.store.api.OrderService;
+import com.increff.store.api.ProductService;
 import com.increff.store.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.increff.store.dto.DtoUtils.checkUpdateOrderItemForm;
+
 @Service
-<span class="fc" id="L22">public class OrderItemDto {</span>
+<span class="fc" id="L23">public class OrderItemDto {</span>
 
     @Autowired
     private ProductService productService;
@@ -33,105 +34,97 @@ import java.util.*;
     @Autowired
     private OrderItemFlow orderItemFlow;
 
-    public void addOrderItem(OrderItemForm form) throws ApiException {
-<span class="nc" id="L37">        checkOrderItemForm(form);</span>
+    public Integer addOrderItem(OrderItemForm form) throws ApiException {
+<span class="fc" id="L38">        checkOrderItemForm(form);</span>
 
-<span class="nc" id="L39">        OrderItemPojo pojo = convert(form);</span>
+<span class="fc" id="L40">        OrderItemPojo pojo = convert(form);</span>
 
-<span class="nc" id="L41">        OrderItemPojo oldPojo = service.getProductIdOrderId(pojo.getProductId(), pojo.getOrderId());</span>
-<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (oldPojo != null) {</span>
-<span class="nc" id="L43">            Integer q = pojo.getQuantity();</span>
-<span class="nc" id="L44">            pojo.setQuantity(oldPojo.getQuantity() + q);</span>
-<span class="nc" id="L45">            service.updateOrderItem(oldPojo.getId(), pojo);</span>
-<span class="nc" id="L46">        } else {</span>
-<span class="nc" id="L47">            orderItemFlow.addOrderItem(pojo);</span>
+<span class="fc" id="L42">        OrderItemPojo oldPojo = service.getProductIdOrderId(pojo.getProductId(), pojo.getOrderId());</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (oldPojo != null) {</span>
+<span class="fc" id="L44">            Integer q = pojo.getQuantity();</span>
+<span class="fc" id="L45">            pojo.setQuantity(oldPojo.getQuantity() + q);</span>
+<span class="fc" id="L46">            orderItemFlow.updateOrderItem(oldPojo.getId(), pojo);</span>
+<span class="fc" id="L47">            return oldPojo.getId();</span>
+        } else {
+<span class="fc" id="L49">            return orderItemFlow.addOrderItem(pojo);</span>
         }
-<span class="nc" id="L49">    }</span>
+    }
 
     public void updateOrderItem(UpdateOrderItemForm form) throws ApiException {
-<span class="nc" id="L52">        checkUpdateOrderItemForm(form);</span>
-<span class="nc" id="L53">        OrderItemPojo newPojo = service.getOrderItemById(form.getOrderItemId());</span>
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (checkIfOrderPlaced(newPojo.getOrderId()))</span>
-<span class="nc" id="L55">            throw new ApiException(&quot;Cannot update item in placed order&quot;);</span>
-<span class="nc" id="L56">        newPojo.setQuantity(form.getQuantity());</span>
-<span class="nc" id="L57">        newPojo.setSellingPrice(form.getSellingPrice());</span>
-<span class="nc" id="L58">        service.updateOrderItem(form.getOrderItemId(), newPojo);</span>
-<span class="nc" id="L59">    }</span>
+<span class="nc" id="L54">        checkUpdateOrderItemForm(form);</span>
+<span class="nc" id="L55">        OrderItemPojo newPojo = service.getOrderItemById(form.getOrderItemId());</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (checkIfOrderPlaced(newPojo.getOrderId()))</span>
+<span class="nc" id="L57">            throw new ApiException(&quot;Cannot update item in placed order&quot;);</span>
+<span class="nc" id="L58">        newPojo.setQuantity(form.getQuantity());</span>
+<span class="nc" id="L59">        newPojo.setSellingPrice(form.getSellingPrice());</span>
+<span class="nc" id="L60">        orderItemFlow.updateOrderItem(form.getOrderItemId(), newPojo);</span>
+<span class="nc" id="L61">    }</span>
 
     public List&lt;OrderItemData&gt; getOrderItemByOrderId(Integer id) throws ApiException {
-<span class="nc" id="L62">        List&lt;OrderItemPojo&gt; list1 = service.getOrder(id);</span>
-<span class="nc" id="L63">        List&lt;OrderItemData&gt; list2 = new ArrayList&lt;OrderItemData&gt;();</span>
+<span class="nc" id="L64">        List&lt;OrderItemPojo&gt; list1 = service.getOrder(id);</span>
+<span class="nc" id="L65">        List&lt;OrderItemData&gt; list2 = new ArrayList&lt;OrderItemData&gt;();</span>
 
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        for (OrderItemPojo p : list1)</span>
-<span class="nc" id="L66">            list2.add(convert(p));</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        for (OrderItemPojo p : list1)</span>
+<span class="nc" id="L68">            list2.add(convertOrderItemPojoToOrderItemDate(p));</span>
 
-<span class="nc" id="L68">        return list2;</span>
+<span class="nc" id="L70">        return list2;</span>
     }
 
     public List&lt;OrderItemData&gt; getAllOrderItem() throws ApiException {
-<span class="nc" id="L72">        List&lt;OrderItemPojo&gt; list1 = service.getAllOrderItem();</span>
-<span class="nc" id="L73">        List&lt;OrderItemData&gt; list2 = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L74">        List&lt;OrderItemPojo&gt; list1 = service.getAllOrderItem();</span>
+<span class="nc" id="L75">        List&lt;OrderItemData&gt; list2 = new ArrayList&lt;&gt;();</span>
 
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        for (OrderItemPojo p : list1)</span>
-<span class="nc" id="L76">            list2.add(convert(p));</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (OrderItemPojo p : list1)</span>
+<span class="nc" id="L78">            list2.add(convertOrderItemPojoToOrderItemDate(p));</span>
 
-<span class="nc" id="L78">        return list2;</span>
+<span class="nc" id="L80">        return list2;</span>
     }
 
     private OrderItemPojo convert(OrderItemForm form) throws ApiException {
-<span class="nc" id="L82">        OrderItemPojo pojo = new OrderItemPojo();</span>
-<span class="nc" id="L83">        pojo.setOrderId(form.getOrderId());</span>
-<span class="nc" id="L84">        pojo.setQuantity(form.getQuantity());</span>
-<span class="nc" id="L85">        pojo.setSellingPrice(form.getSellingPrice());</span>
-<span class="nc" id="L86">        String code = form.getBarCode();</span>
-<span class="nc" id="L87">        ProductPojo productPojo = productService.getProductByBarcode(code);</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (form.getSellingPrice() &gt; productPojo.getMrp())</span>
-<span class="nc" id="L89">            throw new ApiException(&quot;Selling price cannot be greater than mrp&quot;);</span>
-<span class="nc" id="L90">        pojo.setProductId(productPojo.getId());</span>
-<span class="nc" id="L91">        pojo.setBrandCategory(productPojo.getBrandCategory());</span>
-<span class="nc" id="L92">        return pojo;</span>
+<span class="fc" id="L84">        OrderItemPojo pojo = new OrderItemPojo();</span>
+<span class="fc" id="L85">        pojo.setOrderId(form.getOrderId());</span>
+<span class="fc" id="L86">        pojo.setQuantity(form.getQuantity());</span>
+<span class="fc" id="L87">        pojo.setSellingPrice(form.getSellingPrice());</span>
+<span class="fc" id="L88">        String code = form.getBarCode();</span>
+<span class="fc" id="L89">        ProductPojo productPojo = productService.getProductByBarcode(code);</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (form.getSellingPrice() &gt; productPojo.getMrp())</span>
+<span class="nc" id="L91">            throw new ApiException(&quot;Selling price cannot be greater than mrp&quot;);</span>
+<span class="fc" id="L92">        pojo.setProductId(productPojo.getId());</span>
+<span class="fc" id="L93">        pojo.setBrandCategory(productPojo.getBrandCategory());</span>
+<span class="fc" id="L94">        return pojo;</span>
     }
 
-    private OrderItemData convert(OrderItemPojo p) throws ApiException {
-<span class="nc" id="L96">        OrderItemData d = new OrderItemData();</span>
-<span class="nc" id="L97">        d.setId(p.getId());</span>
-        ;
-<span class="nc" id="L99">        d.setOrderId(p.getOrderId());</span>
-<span class="nc" id="L100">        d.setQuantity(p.getQuantity());</span>
-<span class="nc" id="L101">        d.setSellingPrice(p.getSellingPrice());</span>
-<span class="nc" id="L102">        String productName = productService.getProductById(p.getProductId()).getName();</span>
-<span class="nc" id="L103">        d.setProductName(productName);</span>
-<span class="nc" id="L104">        d.setProductId(p.getProductId());</span>
-<span class="nc" id="L105">        return d;</span>
+    public OrderItemData convertOrderItemPojoToOrderItemDate(OrderItemPojo pojo) throws ApiException {
+<span class="fc" id="L98">        OrderItemData data = new OrderItemData();</span>
+<span class="fc" id="L99">        data.setId(pojo.getId());</span>
+<span class="fc" id="L100">        data.setOrderId(pojo.getOrderId());</span>
+<span class="fc" id="L101">        data.setQuantity(pojo.getQuantity());</span>
+<span class="fc" id="L102">        data.setSellingPrice(pojo.getSellingPrice());</span>
+<span class="fc" id="L103">        String productName = productService.getProductById(pojo.getProductId()).getName();</span>
+<span class="fc" id="L104">        data.setProductName(productName);</span>
+<span class="fc" id="L105">        data.setProductId(pojo.getProductId());</span>
+<span class="fc" id="L106">        return data;</span>
     }
 
-    private boolean checkIfOrderPlaced(Integer orderId) throws ApiException {
-<span class="nc" id="L109">        OrderPojo orderPojo = orderService.getOrderById(orderId);</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (Objects.equals(orderPojo.getStatus(), &quot;Placed&quot;))</span>
-<span class="nc" id="L111">            return true;</span>
-<span class="nc" id="L112">        return false;</span>
+    public boolean checkIfOrderPlaced(Integer orderId) throws ApiException {
+<span class="fc" id="L110">        OrderPojo orderPojo = orderService.getOrderById(orderId);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (Objects.equals(orderPojo.getStatus(), &quot;Placed&quot;))</span>
+<span class="fc" id="L112">            return true;</span>
+<span class="fc" id="L113">        return false;</span>
     }
-
-    protected static void checkUpdateOrderItemForm(UpdateOrderItemForm form) throws ApiException {
-<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (!StringUtil.isPositive(form.getSellingPrice()))</span>
-<span class="nc" id="L117">            throw new ApiException(&quot;Input valid Selling Price&quot;);</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (!StringUtil.isPositive(form.getQuantity()))</span>
-<span class="nc" id="L119">            throw new ApiException(&quot;Input valid quantity&quot;);</span>
-<span class="nc" id="L120">        form.setSellingPrice(StringUtil.normalizeDouble(form.getSellingPrice()));</span>
-<span class="nc" id="L121">    }</span>
 
     private void checkOrderItemForm(OrderItemForm form) throws ApiException
     {
-<span class="nc" id="L125">        OrderPojo orderPojo = orderService.getOrderById(form.getOrderId());</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">        if(checkIfOrderPlaced(orderPojo.getId()))</span>
-<span class="nc" id="L127">            throw new ApiException(&quot;Cannot add item in placed order&quot;);</span>
+<span class="fc" id="L118">        OrderPojo orderPojo = orderService.getOrderById(form.getOrderId());</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if(checkIfOrderPlaced(orderPojo.getId()))</span>
+<span class="nc" id="L120">            throw new ApiException(&quot;Cannot add item in placed order&quot;);</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (!StringUtil.isPositive(form.getSellingPrice()))</span>
-<span class="nc" id="L130">            throw new ApiException(&quot;Input valid Selling Price&quot;);</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (!StringUtil.isPositive(form.getQuantity()))</span>
-<span class="nc" id="L132">            throw new ApiException(&quot;Input valid quantity&quot;);</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (!StringUtil.isPositive(form.getSellingPrice()))</span>
+<span class="nc" id="L123">            throw new ApiException(&quot;Input valid Selling Price&quot;);</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        if (!StringUtil.isPositive(form.getQuantity()))</span>
+<span class="nc" id="L125">            throw new ApiException(&quot;Input valid quantity&quot;);</span>
 
-<span class="nc" id="L134">        form.setSellingPrice(StringUtil.normalizeDouble(form.getSellingPrice()));</span>
-<span class="nc" id="L135">    }</span>
+<span class="fc" id="L127">        form.setSellingPrice(StringUtil.normalizeDouble(form.getSellingPrice()));</span>
+<span class="fc" id="L128">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

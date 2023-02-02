@@ -5,10 +5,10 @@ import com.increff.store.model.DateFilterForm;
 import com.increff.store.pojo.DailyReportPojo;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
-import com.increff.store.service.ApiException;
-import com.increff.store.service.OrderItemService;
-import com.increff.store.service.OrderService;
-import com.increff.store.service.ReportService;
+import com.increff.store.api.ApiException;
+import com.increff.store.api.OrderItemService;
+import com.increff.store.api.OrderService;
+import com.increff.store.api.ReportService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,9 +36,9 @@ import static com.increff.store.util.GetCurrentDataTime.getLocalDate;
 
 <span class="fc" id="L37">    private static Logger logger = Logger.getLogger(ReportDto.class);</span>
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(cron = &quot;${cron.expression}&quot;)
     public void createDailyReport() throws ApiException {
-
+<span class="nc" id="L41">        logger.info(&quot;Creating daily report&quot;);</span>
 <span class="nc" id="L42">        DailyReportPojo reportPojo = new DailyReportPojo();</span>
 
 <span class="nc" id="L44">        LocalDate date = getLocalDate();</span>

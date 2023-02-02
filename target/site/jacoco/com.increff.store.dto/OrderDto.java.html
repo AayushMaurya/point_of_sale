@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.dto</a> &gt; <span class="el_source">OrderDto.java</span></div><h1>OrderDto.java</h1><pre class="source lang-java linenums">package com.increff.store.dto;
 
+import com.increff.store.client.InvoiceClient;
+import com.increff.store.flow.OrderItemFlow;
 import com.increff.store.model.*;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
-import com.increff.store.service.ApiException;
-import com.increff.store.service.OrderItemService;
-import com.increff.store.service.OrderService;
+import com.increff.store.api.ApiException;
+import com.increff.store.api.OrderItemService;
+import com.increff.store.api.OrderService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import com.increff.store.invoice.InvoiceGenerator;
 
 import javax.transaction.Transactional;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.increff.store.dto.DtoUtils.*;
-import static com.increff.store.util.CreateRandomSequence.createRandomOrderCode;
 import static com.increff.store.util.GetCurrentDataTime.getCurrentDateTime;
 
 @Service
-<span class="fc" id="L30">public class OrderDto {</span>
+<span class="fc" id="L29">public class OrderDto {</span>
 
     @Autowired
     private OrderService service;
+    @Autowired
+    InvoiceClient invoiceClient;
 
     @Autowired
     private OrderItemService orderItemService;
 
     @Autowired
-    private InvoiceGenerator invoiceGenerator;
+    private OrderItemFlow orderItemFlow;
+
+<span class="fc" id="L42">    private static Logger logger = Logger.getLogger(ReportDto.class);</span>
 
     public String createOrder() throws ApiException {
-<span class="fc" id="L42">        OrderPojo orderPojo = new OrderPojo();</span>
-<span class="fc" id="L43">        orderPojo.setCustomerName(&quot;&quot;);</span>
-<span class="fc" id="L44">        orderPojo.setStatus(&quot;pending&quot;);</span>
-<span class="fc" id="L45">        orderPojo.setPlaceDateTime(null);</span>
+<span class="fc" id="L45">        OrderPojo orderPojo = new OrderPojo();</span>
+<span class="fc" id="L46">        orderPojo.setCustomerName(&quot;&quot;);</span>
+<span class="fc" id="L47">        orderPojo.setStatus(&quot;pending&quot;);</span>
+<span class="fc" id="L48">        orderPojo.setPlaceDateTime(null);</span>
 
 //        creating random order code
-<span class="fc" id="L48">        String orderCode = createRandomOrderCode();</span>
+<span class="fc" id="L51">        String orderCode = UUID.randomUUID().toString();</span>
 
-<span class="fc" id="L50">        OrderPojo x = service.getOrderByOrderCode(orderCode);</span>
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        while (x != null) {</span>
-<span class="nc" id="L52">            orderCode = createRandomOrderCode();</span>
-<span class="nc" id="L53">            x = service.getOrderByOrderCode(orderCode);</span>
-        }
+<span class="fc" id="L53">        orderPojo.setOrderCode(orderCode);</span>
 
-<span class="fc" id="L56">        orderPojo.setOrderCode(orderCode);</span>
-<span class="fc" id="L57">        return service.addOrder(orderPojo);</span>
+<span class="fc" id="L55">        service.addOrder(orderPojo);</span>
+
+<span class="fc" id="L57">        return orderCode;</span>
     }
 
     public List&lt;OrderData&gt; getAllOrders() throws ApiException {
@@ -115,27 +115,30 @@ import static com.increff.store.util.GetCurrentDataTime.getCurrentDateTime;
 <span class="nc" id="L115">        normalizeOrderPojo(orderPojo);</span>
 <span class="nc" id="L116">        service.updateOrder(id, orderPojo);</span>
         try {
-<span class="nc" id="L118">            downloadInvoice(id);</span>
+<span class="nc" id="L118">            invoiceClient.downloadInvoice(id);</span>
 <span class="nc" id="L119">        } catch (Exception e) {</span>
 <span class="nc" id="L120">            throw new ApiException(&quot;Cannot create Invoice for given order&quot;);</span>
 <span class="nc" id="L121">        }</span>
 <span class="nc" id="L122">    }</span>
 
-    private void downloadInvoice(Integer orderId) throws Exception {
+    //    method to delete all unplaced orders from one day before
+    @Scheduled(cron = &quot;${cron.expression}&quot;)
+    public void deleteUnplacedOrders() throws ApiException {
+<span class="nc" id="L127">        logger.info(&quot;Deleting all unplaced orders&quot;);</span>
+<span class="nc" id="L128">        List&lt;OrderPojo&gt; orderPojoList = service.getAllUnplacedOrders();</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        for (OrderPojo p : orderPojoList) {</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (getCurrentDateTime().minusDays(1).isAfter(p.getCreatedAt()))</span>
+<span class="nc" id="L131">                deleteOrder(p.getId());</span>
+<span class="nc" id="L132">        }</span>
+<span class="nc" id="L133">    }</span>
 
-//        generating invoice form
-<span class="nc" id="L127">        InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderId);</span>
-
-<span class="nc" id="L129">        RestTemplate restTemplate = new RestTemplate();</span>
-
-<span class="nc" id="L131">        String url = &quot;http://localhost:8080/fop/api/invoice&quot;;</span>
-
-<span class="nc" id="L133">        byte[] contents = restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody();</span>
-
-//        saving pdf;
-<span class="nc" id="L136">        Path pdfPath = Paths.get(&quot;./src/main/resources/pdf/&quot; + orderId + &quot;_invoice.pdf&quot;);</span>
-
-<span class="nc" id="L138">        Files.write(pdfPath, contents);</span>
-<span class="nc" id="L139">    }</span>
+    @Transactional(rollbackOn = ApiException.class)
+    public void deleteOrder(Integer id) throws ApiException {
+<span class="nc" id="L137">        logger.info(&quot;Deleting order: &quot; + id);</span>
+<span class="nc" id="L138">        List&lt;OrderItemPojo&gt; orderItemPojoList = orderItemService.getOrder(id);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        for (OrderItemPojo p : orderItemPojoList)</span>
+<span class="nc" id="L140">            orderItemFlow.deleteOrderItemById(p.getId());</span>
+<span class="nc" id="L141">        service.deleteOrder(id);</span>
+<span class="nc" id="L142">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

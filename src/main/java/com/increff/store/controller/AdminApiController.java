@@ -1,7 +1,7 @@
 package com.increff.store.controller;
 
-import com.increff.store.model.UserData;
-import com.increff.store.model.UserForm;
+import com.increff.store.model.data.UserData;
+import com.increff.store.model.form.UserForm;
 import com.increff.store.api.ApiException;
 import com.increff.store.dto.UserDto;
 import io.swagger.annotations.Api;

@@ -9,22 +9,23 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @MappedSuperclass
-<span class="fc" id="L14">public abstract class AbstractDateAudit {</span>
+@Getter
+<span class="pc" id="L16">@Setter</span>
+<span class="fc" id="L17">public abstract class AbstractDateAudit {</span>
 
     @CreationTimestamp
-<span class="fc" id="L17">    @Getter</span>
-<span class="fc" id="L18">    @Setter</span>
     @Column(name = &quot;created_at&quot;)
-    private LocalDateTime createdAt;
+<span class="fc" id="L21">    private LocalDateTime createdAt;</span>
 
     @UpdateTimestamp
     @Column(name = &quot;updated_at&quot;)
-    private LocalDateTime updatedAt;
+<span class="nc" id="L25">    private ZonedDateTime updatedAt;</span>
 
     @Column(name = &quot;version&quot;)
     @Version
-    private Long version;
+<span class="nc" id="L29">    private Long version;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

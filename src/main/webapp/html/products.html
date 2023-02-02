@@ -8,23 +8,24 @@
     <br/>
     <h3 class="d-flex justify-content-center">Products </h3>
 
-    <div class="col-12">
-        <div class="row" id="supervisor-view">
-            <form class="form" id="product-form">
-                <div class="form-group">
-                    <label for="inputBrandCategory">Category</label>
-                    <div>
-                        <select type="text" class="form-control" name="categoryName" id="inputBrandCategory"
-                                placeholder="Brand Category">
 
-                        </select>
-                    </div>
-                </div>
+        <div class="row" id="supervisor-view">
+            <div class="col-6">
+            <form class="form" id="product-form">
                 <div class="form-group">
                     <label for="inputBrandName">Brand</label>
                     <div>
                         <select type="text" class="form-control" name="brandName" id="inputBrandName"
                                 placeholder="Brand Name">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputBrandCategory">Category</label>
+                    <div>
+                        <select type="text" class="form-control" name="categoryName" id="inputBrandCategory"
+                                placeholder="Brand Category">
 
                         </select>
                     </div>
@@ -49,10 +50,14 @@
                                placeholder="MRP">
                     </div>
                 </div>
+                <div class="half-space">
+                    <!--      Blank row -->
+                </div>
+            </form>
                 <button type="button" class="btn btn-primary" id="add-product">Add</button>
                 <button type="button" class="btn btn-warning" id="upload-data">Upload
                 </button>
-            </form>
+
         </div>
     </div>
 

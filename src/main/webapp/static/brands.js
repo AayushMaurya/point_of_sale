@@ -6,17 +6,15 @@ function getStoreUrl(){
  }
 
 function getBrandList(){
-	var url = getStoreUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   console.log(data);
-	   		displayBrandList(data);
-	   		brandData = data;
-	   },
-	   error: handleAjaxError
-	});
+    var callParams = {};
+    callParams.Type = "GET";
+    callParams.Url = getStoreUrl();
+    function callback(data)
+    {
+        displayBrandList(data);
+        brandData = data;
+    }
+    ajaxCall(callParams, null, callback);
 }
 
 function displayBrandList(data){
@@ -43,27 +41,41 @@ function displayBrandList(data){
 	pagination();
 }
 
-function addBrand(event)
+function addBrand()
 {
     var $form = $("#brand-form");
-    var json = toJson($form);
-    var url = getStoreUrl();
+    var dataParams = toJson($form);
+    var callParams = {};
+    callParams.Type = "POST";
+    callParams.Url = getStoreUrl();
 
-    $.ajax({
-    	   url: url,
-    	   type: 'POST',
-    	   data: json,
-    	   headers: {
-           	'Content-Type': 'application/json'
-           },
-    	   success: function(response) {
-    	   		getBrandList();
-    	   		handleSuccess("Brand added successfully");
-    	   		document.getElementById("brand-form").reset();
-    	   },
-    	   error: handleAjaxError
-    	});
-    	return false;
+    function callback(data){
+        getBrandList();
+        handleSuccess("Brand added successfully");
+        document.getElementById("brand-form").reset();
+    }
+
+    ajaxCall(callParams, dataParams, callback);
+
+    return false;
+}
+
+function addBrand()
+{
+    var callParams = {};
+    callParams.Type = "POST";
+    callParams.Url = getStoreUrl();
+    var $form = $("#brand-form");
+    var dataParams = toJson($form);
+
+    function callback(data)
+    {
+        getBrandList();
+        handleSuccess("Brand added successfully");
+        document.getElementById("brand-form").reset();
+    }
+
+    ajaxCall(callParams, dataParams, callback)
 }
 
 function fillUpdateFields(i)
@@ -77,25 +89,20 @@ function updateBrand()
 {
     var id = document.getElementById("inputUpdateBrandId").value;
     var $form = $("#updateBrandForm");
-    var json = toJson($form);
-    var url = getStoreUrl() + "/" + id ;
+    var dataParams = toJson($form);
+    var callParams = {};
+    callParams.Url = getStoreUrl() + "/" + id ;
+    callParams.Type = "PUT";
 
-    $.ajax({
-        	   url: url,
-        	   type: 'PUT',
-        	   data: json,
-        	   headers: {
-               	'Content-Type': 'application/json'
-               },
-        	   success: function(response) {
-        	   		getBrandList();
-        	   		handleSuccess("Brand Updated");
-        	   		$('#exampleModalCenter').modal('hide');
-        	   },
-        	   error: handleAjaxError
-        	});
+    function callback(data){
+        getBrandList();
+        handleSuccess("Brand Updated");
+        $('#exampleModalCenter').modal('hide');
+    }
 
-        	return false;
+    ajaxCall(callParams, dataParams, callback);
+
+    return false;
 }
 
 
@@ -112,8 +119,7 @@ function processData(){
 
 function readFileDataCallback(results){
 	fileData = results.data;
-	if(fileData.length > 5000)
-	{
+	if(fileData.length > 5000){
 	    document.getElementById('status-message').innerHTML = "Data length cannot be grater than 500";
             document.getElementById('status').style.backgroundColor = "red";
            	$('.toast').toast('show');
@@ -135,7 +141,7 @@ function uploadRows(){
 	processCount++;
 
 	var json = JSON.stringify(row);
-	var url = getAdminBrandUrl();
+	var url = getStoreUrl();
 
 	//Make ajax call
 	$.ajax({

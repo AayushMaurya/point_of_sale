@@ -2,7 +2,7 @@
 
 import com.increff.store.model.*;
 import com.increff.store.pojo.*;
-import com.increff.store.service.ApiException;
+import com.increff.store.api.ApiException;
 import com.increff.store.util.StringUtil;
 
 import java.time.format.DateTimeFormatter;
@@ -99,55 +99,72 @@ import java.util.Objects;
 <span class="fc" id="L99">    }</span>
 
     protected static UserData convertUserPojoToUserData(UserPojo p) {
-<span class="fc" id="L102">        UserData d = new UserData();</span>
-<span class="fc" id="L103">        d.setEmail(p.getEmail());</span>
-<span class="fc" id="L104">        d.setRole(p.getRole());</span>
-<span class="fc" id="L105">        d.setId(p.getId());</span>
-<span class="fc" id="L106">        return d;</span>
+<span class="fc" id="L102">        String role = &quot;operator&quot;;</span>
+
+
+
+<span class="fc" id="L106">        UserData d = new UserData();</span>
+<span class="fc" id="L107">        d.setEmail(p.getEmail());</span>
+<span class="fc" id="L108">        d.setRole(role);</span>
+<span class="fc" id="L109">        d.setId(p.getId());</span>
+<span class="fc" id="L110">        return d;</span>
     }
 
     protected static UserPojo convertUserFormToUserPojo(UserForm f) {
-<span class="fc" id="L110">        UserPojo p = new UserPojo();</span>
-<span class="fc" id="L111">        p.setEmail(f.getEmail());</span>
+<span class="fc" id="L114">        UserPojo p = new UserPojo();</span>
+<span class="fc" id="L115">        p.setEmail(f.getEmail());</span>
 
-<span class="fc" id="L113">        p.setRole(&quot;operator&quot;);</span>
-<span class="fc" id="L114">        p.setPassword(f.getPassword());</span>
-<span class="fc" id="L115">        return p;</span>
+<span class="fc" id="L117">        p.setRole(&quot;operator&quot;);</span>
+<span class="fc" id="L118">        p.setPassword(f.getPassword());</span>
+<span class="fc" id="L119">        return p;</span>
     }
 
     protected static void checkOrderForm(OrderForm form) throws ApiException {
-<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (StringUtil.isEmpty(form.getCustomerName()))</span>
-<span class="fc" id="L120">            throw new ApiException(&quot;Customer name cannot be empty&quot;);</span>
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">        if(StringUtil.isLonger(form.getCustomerName()))</span>
-<span class="nc" id="L122">            throw new ApiException(&quot;Customer name cannot be longer than 15 characters&quot;);</span>
-<span class="fc" id="L123">    }</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        if (StringUtil.isEmpty(form.getCustomerName()))</span>
+<span class="fc" id="L124">            throw new ApiException(&quot;Customer name cannot be empty&quot;);</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if(StringUtil.isLonger(form.getCustomerName()))</span>
+<span class="nc" id="L126">            throw new ApiException(&quot;Customer name cannot be longer than 15 characters&quot;);</span>
+<span class="fc" id="L127">    }</span>
 
     protected static DailyReportData convertReportPojoToReportData(DailyReportPojo pojo) {
-<span class="nc" id="L126">        DailyReportData dailyReportData = new DailyReportData();</span>
-<span class="nc" id="L127">        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;dd-MM-yyyy&quot;);</span>
-<span class="nc" id="L128">        String formattedDateTime = pojo.getDate().format(dateTimeFormatter);</span>
-<span class="nc" id="L129">        dailyReportData.setDate(formattedDateTime);</span>
-<span class="nc" id="L130">        dailyReportData.setTotalRevenue(pojo.getTotalRevenue());</span>
-<span class="nc" id="L131">        dailyReportData.setInvoicedItemsCount(pojo.getInvoicedItemsCount());</span>
-<span class="nc" id="L132">        dailyReportData.setInvoicedOrderCount(pojo.getInvoicedOrderCount());</span>
-<span class="nc" id="L133">        return dailyReportData;</span>
+<span class="fc" id="L130">        DailyReportData dailyReportData = new DailyReportData();</span>
+<span class="fc" id="L131">        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;dd-MM-yyyy&quot;);</span>
+<span class="fc" id="L132">        String formattedDateTime = pojo.getDate().format(dateTimeFormatter);</span>
+<span class="fc" id="L133">        dailyReportData.setDate(formattedDateTime);</span>
+<span class="fc" id="L134">        dailyReportData.setTotalRevenue(pojo.getTotalRevenue());</span>
+<span class="fc" id="L135">        dailyReportData.setInvoicedItemsCount(pojo.getInvoicedItemsCount());</span>
+<span class="fc" id="L136">        dailyReportData.setInvoicedOrderCount(pojo.getInvoicedOrderCount());</span>
+<span class="fc" id="L137">        return dailyReportData;</span>
     }
 
-    protected static ProductRevenueData convertBrandPojoToProductRevenueData(BrandPojo p) throws ApiException {
-<span class="nc" id="L137">        ProductRevenueData productRevenueData = new ProductRevenueData();</span>
-<span class="nc" id="L138">        productRevenueData.setId(p.getId());</span>
-<span class="nc" id="L139">        productRevenueData.setBrand(p.getBrand());</span>
-<span class="nc" id="L140">        productRevenueData.setCategory(p.getCategory());</span>
-<span class="nc" id="L141">        productRevenueData.setQuantity(0);</span>
-<span class="nc" id="L142">        productRevenueData.setTotal(0);</span>
-<span class="nc" id="L143">        return productRevenueData;</span>
+    protected static ProductRevenueData convertBrandPojoToProductRevenueData(BrandPojo p){
+<span class="fc" id="L141">        ProductRevenueData productRevenueData = new ProductRevenueData();</span>
+<span class="fc" id="L142">        productRevenueData.setId(p.getId());</span>
+<span class="fc" id="L143">        productRevenueData.setBrand(p.getBrand());</span>
+<span class="fc" id="L144">        productRevenueData.setCategory(p.getCategory());</span>
+<span class="fc" id="L145">        productRevenueData.setQuantity(0);</span>
+<span class="fc" id="L146">        productRevenueData.setTotal(0.0);</span>
+<span class="fc" id="L147">        return productRevenueData;</span>
     }
 
     protected static void normalize(ProductForm form)
     {
-<span class="fc" id="L148">        form.setName(StringUtil.toLowerCase(form.getName()));</span>
-<span class="fc" id="L149">        form.setBrandName(StringUtil.toLowerCase(form.getBrandName()));</span>
-<span class="fc" id="L150">        form.setCategoryName(StringUtil.toLowerCase(form.getCategoryName()));</span>
-<span class="fc" id="L151">    }</span>
+<span class="fc" id="L152">        form.setName(StringUtil.toLowerCase(form.getName()));</span>
+<span class="fc" id="L153">        form.setBrandName(StringUtil.toLowerCase(form.getBrandName()));</span>
+<span class="fc" id="L154">        form.setCategoryName(StringUtil.toLowerCase(form.getCategoryName()));</span>
+<span class="fc" id="L155">    }</span>
+
+    protected static void normalize(UpdateProductForm form)
+    {
+<span class="fc" id="L159">        form.setName(StringUtil.toLowerCase(form.getName()));</span>
+<span class="fc" id="L160">    }</span>
+
+    protected static void checkUpdateOrderItemForm(UpdateOrderItemForm form) throws ApiException {
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if (!StringUtil.isPositive(form.getSellingPrice()))</span>
+<span class="nc" id="L164">            throw new ApiException(&quot;Input valid Selling Price&quot;);</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        if (!StringUtil.isPositive(form.getQuantity()))</span>
+<span class="fc" id="L166">            throw new ApiException(&quot;Input valid quantity&quot;);</span>
+<span class="fc" id="L167">        form.setSellingPrice(StringUtil.normalizeDouble(form.getSellingPrice()));</span>
+<span class="fc" id="L168">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

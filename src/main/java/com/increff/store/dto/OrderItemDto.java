@@ -1,9 +1,9 @@
 package com.increff.store.dto;
 
 import com.increff.store.flow.OrderItemFlow;
-import com.increff.store.model.OrderItemData;
-import com.increff.store.model.OrderItemForm;
-import com.increff.store.model.UpdateOrderItemForm;
+import com.increff.store.model.data.OrderItemData;
+import com.increff.store.model.form.OrderItemForm;
+import com.increff.store.model.form.UpdateOrderItemForm;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
 import com.increff.store.pojo.ProductPojo;
@@ -90,7 +90,7 @@ public class OrderItemDto {
         if (form.getSellingPrice() > productPojo.getMrp())
             throw new ApiException("Selling price cannot be greater than mrp");
         pojo.setProductId(productPojo.getId());
-        pojo.setBrandCategory(productPojo.getBrandCategory());
+        pojo.setBrandCategory(productPojo.getBrandCategoryId());
         return pojo;
     }
 

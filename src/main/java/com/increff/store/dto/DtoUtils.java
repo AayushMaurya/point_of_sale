@@ -1,10 +1,13 @@
 package com.increff.store.dto;
 
 import com.increff.store.model.*;
+import com.increff.store.model.data.*;
+import com.increff.store.model.form.*;
 import com.increff.store.pojo.*;
 import com.increff.store.api.ApiException;
 import com.increff.store.util.StringUtil;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -39,7 +42,7 @@ public class DtoUtils {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         orderData.setCreatedDataTime(p.getCreatedAt().format(dateTimeFormatter));
         orderData.setPlacedDataTime("");
-        if(Objects.equals(p.getStatus(), "Placed"))
+        if (Objects.equals(p.getStatus(), "Placed"))
             orderData.setPlacedDataTime(p.getPlaceDateTime().format(dateTimeFormatter));
         orderData.setCustomerName(p.getCustomerName());
         orderData.setStatus(p.getStatus());
@@ -76,31 +79,30 @@ public class DtoUtils {
     protected static void checkProductForm(ProductForm form) throws ApiException {
         if (StringUtil.isEmpty(form.getName()))
             throw new ApiException("Product name cannot be empty");
-        if(StringUtil.isLonger(form.getName()))
+        if (StringUtil.isLonger(form.getName()))
             throw new ApiException("Product name cannot be longer than 15 characters");
 
         if (StringUtil.isEmpty(form.getBarcode()))
             throw new ApiException("Barcode cannot be empty");
-        if(StringUtil.isLonger(form.getBarcode()))
+        if (StringUtil.isLonger(form.getBarcode()))
             throw new ApiException("Barcode cannot be longer than 15 characters");
 
         if (StringUtil.isEmpty(form.getBrandName()))
             throw new ApiException("Brand name cannot be empty");
-        if(StringUtil.isLonger(form.getBrandName()))
+        if (StringUtil.isLonger(form.getBrandName()))
             throw new ApiException("Brand name cannot be longer than 15 characters");
 
         if (StringUtil.isEmpty(form.getCategoryName()))
             throw new ApiException("Category cannot be empty");
-        if(StringUtil.isLonger(form.getCategoryName()))
+        if (StringUtil.isLonger(form.getCategoryName()))
             throw new ApiException("Category name cannot be longer than 15 characters");
 
-        if(form.getMrp() <= 0.0)
+        if (form.getMrp() <= 0.0)
             throw new ApiException("Mrp should be valid digit");
     }
 
     protected static UserData convertUserPojoToUserData(UserPojo p) {
         String role = "operator";
-
 
 
         UserData d = new UserData();
@@ -122,7 +124,7 @@ public class DtoUtils {
     protected static void checkOrderForm(OrderForm form) throws ApiException {
         if (StringUtil.isEmpty(form.getCustomerName()))
             throw new ApiException("Customer name cannot be empty");
-        if(StringUtil.isLonger(form.getCustomerName()))
+        if (StringUtil.isLonger(form.getCustomerName()))
             throw new ApiException("Customer name cannot be longer than 15 characters");
     }
 
@@ -137,7 +139,7 @@ public class DtoUtils {
         return dailyReportData;
     }
 
-    protected static ProductRevenueData convertBrandPojoToProductRevenueData(BrandPojo p){
+    protected static ProductRevenueData convertBrandPojoToProductRevenueData(BrandPojo p) {
         ProductRevenueData productRevenueData = new ProductRevenueData();
         productRevenueData.setId(p.getId());
         productRevenueData.setBrand(p.getBrand());
@@ -147,15 +149,13 @@ public class DtoUtils {
         return productRevenueData;
     }
 
-    protected static void normalize(ProductForm form)
-    {
+    protected static void normalize(ProductForm form) {
         form.setName(StringUtil.toLowerCase(form.getName()));
         form.setBrandName(StringUtil.toLowerCase(form.getBrandName()));
         form.setCategoryName(StringUtil.toLowerCase(form.getCategoryName()));
     }
 
-    protected static void normalize(UpdateProductForm form)
-    {
+    protected static void normalize(UpdateProductForm form) {
         form.setName(StringUtil.toLowerCase(form.getName()));
     }
 
@@ -165,5 +165,14 @@ public class DtoUtils {
         if (!StringUtil.isPositive(form.getQuantity()))
             throw new ApiException("Input valid quantity");
         form.setSellingPrice(StringUtil.normalizeDouble(form.getSellingPrice()));
+    }
+
+    protected static LocalDate stringDateToLocalDate(String date) throws ApiException {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return LocalDate.parse(date, formatter);
+        } catch (Exception e) {
+            throw new ApiException("Please ender date in proper format: yyyy-MM-dd");
+        }
     }
 }

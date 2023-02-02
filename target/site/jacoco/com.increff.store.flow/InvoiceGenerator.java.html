@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InvoiceGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">point-of-sale</a> &gt; <a href="index.source.html" class="el_package">com.increff.store.flow</a> &gt; <span class="el_source">InvoiceGenerator.java</span></div><h1>InvoiceGenerator.java</h1><pre class="source lang-java linenums">package com.increff.store.flow;
+
+import com.increff.store.model.InvoiceForm;
+import com.increff.store.model.OrderItem;
+import com.increff.store.pojo.OrderItemPojo;
+import com.increff.store.pojo.OrderPojo;
+import com.increff.store.api.ApiException;
+import com.increff.store.api.OrderItemService;
+import com.increff.store.api.OrderService;
+import com.increff.store.api.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Service
+<span class="fc" id="L20">public class InvoiceGenerator {</span>
+
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    OrderItemService orderItemService;
+
+    @Autowired
+    ProductService productService;
+
+    public InvoiceForm generateInvoiceForOrder(Integer orderId) throws ApiException {
+<span class="nc" id="L32">        InvoiceForm invoiceForm = new InvoiceForm();</span>
+<span class="nc" id="L33">        OrderPojo orderPojo = orderService.getOrderById(orderId);</span>
+
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (!Objects.equals(orderPojo.getStatus(), &quot;Placed&quot;))</span>
+<span class="nc" id="L36">            throw new ApiException(&quot;The order is not yet placed&quot;);</span>
+
+<span class="nc" id="L38">        invoiceForm.setOrderId(orderPojo.getId());</span>
+<span class="nc" id="L39">        invoiceForm.setCustomerName(orderPojo.getCustomerName());</span>
+<span class="nc" id="L40">        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;dd-MM-yyyy hh:mm:ss&quot;);</span>
+<span class="nc" id="L41">        invoiceForm.setPlaceDate(orderPojo.getPlaceDateTime().format(dateTimeFormatter));</span>
+
+<span class="nc" id="L43">        List&lt;OrderItemPojo&gt; orderItemPojoList = orderItemService.getOrder(orderPojo.getId());</span>
+<span class="nc" id="L44">        List&lt;OrderItem&gt; orderItemList = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (OrderItemPojo p : orderItemPojoList) {</span>
+<span class="nc" id="L47">            OrderItem orderItem = new OrderItem();</span>
+<span class="nc" id="L48">            orderItem.setOrderItemId(p.getId());</span>
+<span class="nc" id="L49">            String productName = productService.getProductById(p.getProductId()).getName();</span>
+<span class="nc" id="L50">            orderItem.setProductName(productName);</span>
+<span class="nc" id="L51">            orderItem.setQuantity(p.getQuantity());</span>
+<span class="nc" id="L52">            orderItem.setSellingPrice(p.getSellingPrice());</span>
+<span class="nc" id="L53">            orderItemList.add(orderItem);</span>
+<span class="nc" id="L54">        }</span>
+
+<span class="nc" id="L56">        invoiceForm.setOrderItemList(orderItemList);</span>
+
+<span class="nc" id="L58">        return invoiceForm;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

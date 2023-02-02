@@ -1,7 +1,7 @@
 package com.increff.store.controller;
 
-import com.increff.store.model.InfoData;
-import com.increff.store.model.LoginForm;
+import com.increff.store.model.data.InfoData;
+import com.increff.store.model.form.LoginForm;
 import com.increff.store.pojo.UserPojo;
 import com.increff.store.api.ApiException;
 import com.increff.store.api.UserService;

@@ -1,8 +1,8 @@
 package com.increff.store.dto;
 
-import com.increff.store.model.ProductData;
-import com.increff.store.model.ProductForm;
-import com.increff.store.model.UpdateProductForm;
+import com.increff.store.model.data.ProductData;
+import com.increff.store.model.form.ProductForm;
+import com.increff.store.model.form.UpdateProductForm;
 import com.increff.store.pojo.BrandPojo;
 import com.increff.store.pojo.ProductPojo;
 import com.increff.store.api.ApiException;
@@ -69,7 +69,7 @@ public class ProductDto {
         if(brandPojo == null)
             throw new ApiException("no such brand category combination found");
 
-        p.setBrandCategory(brandPojo.getId());
+        p.setBrandCategoryId(brandPojo.getId());
         p.setMrp(form.getMrp());
         p.setName(form.getName());
         p.setBarcode(form.getBarcode());
@@ -80,8 +80,8 @@ public class ProductDto {
     private ProductData convert(ProductPojo p) throws ApiException
     {
         ProductData productData = new ProductData();
-        productData.setBrandCategory(p.getBrandCategory());
-        BrandPojo brandPojo = brandService.getByBrandId(p.getBrandCategory());
+        productData.setBrandCategory(p.getBrandCategoryId());
+        BrandPojo brandPojo = brandService.getByBrandId(p.getBrandCategoryId());
         productData.setBrand(brandPojo.getBrand());
         productData.setCategory(brandPojo.getCategory());
         productData.setName(p.getName());

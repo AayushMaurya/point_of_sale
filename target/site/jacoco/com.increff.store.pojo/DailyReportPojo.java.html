@@ -11,17 +11,17 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
-<span class="nc" id="L14">@Setter</span>
+<span class="fc" id="L14">@Setter</span>
 @Table(name = &quot;pos_day_sales&quot;)
-<span class="nc" id="L16">public class DailyReportPojo extends AbstractDateAudit{</span>
+<span class="fc" id="L16">public class DailyReportPojo extends AbstractDateAudit{</span>
     @Id
     @Column(nullable = false, name = &quot;date&quot;)
-<span class="nc" id="L19">    private LocalDate date;</span>
+<span class="fc" id="L19">    private LocalDate date;</span>
     @Column(nullable = false, name = &quot;invoiced_orders_count&quot;)
-<span class="nc" id="L21">    private Integer invoicedOrderCount;</span>
+<span class="fc" id="L21">    private Integer invoicedOrderCount;</span>
     @Column(nullable = false, name = &quot;invoiced_items_count&quot;)
-<span class="nc" id="L23">    private Integer invoicedItemsCount;</span>
+<span class="fc" id="L23">    private Integer invoicedItemsCount;</span>
     @Column(nullable = false, name = &quot;total_revenue&quot;)
-<span class="nc" id="L25">    private Double totalRevenue;</span>
+<span class="fc" id="L25">    private Double totalRevenue;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

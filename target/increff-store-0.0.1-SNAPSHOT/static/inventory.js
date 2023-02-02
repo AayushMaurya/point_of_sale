@@ -3,6 +3,11 @@ function getStoreUrl(){
  	return baseUrl + "/api/inventory";
  }
 
+ function getUpdateInventoryUrl(){
+  	var baseUrl = $("meta[name=baseUrl]").attr("content")
+  	return baseUrl + "/api/inventory-update";
+  }
+
 function getProductUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/product";
@@ -104,15 +109,14 @@ function updateInventoryAdd()
         getInventoryList()
         handleSuccess("Inventory Added");
         $('#exampleModalCenter').modal('hide');
+        document.getElementById('updateInventoryForm').reset();
         },
            error: handleAjaxError
-
         });
 }
 
 function updateInventoryRemove()
 {
-    console.log("this will update inventory Remove");
     var $form = $("#updateInventoryForm");
     var json = toJson($form);
     var url = getAdminInventoryUrl();
@@ -127,9 +131,9 @@ function updateInventoryRemove()
         success: function(response) {
         getInventoryList();
         handleSuccess("Inventory reduced");
+            document.getElementById('updateInventoryForm').reset();
         },
         error: handleAjaxError
-
         });
 }
 
@@ -148,11 +152,17 @@ var processCount = 0;
 function processData(){
 	var file = $('#inventoryFile')[0].files[0];
 	readFileData(file, readFileDataCallback);
-//	document.getElementById('logg').innerHTML = "The list has been updated";
 }
 
 function readFileDataCallback(results){
 	fileData = results.data;
+	if(fileData.length > 5000)
+    	{
+    	    document.getElementById('status-message').innerHTML = "Data length cannot be grater than 500";
+                document.getElementById('status').style.backgroundColor = "red";
+               	$('.toast').toast('show');
+            return false;
+    	}
 	uploadRows();
 }
 
@@ -205,6 +215,8 @@ function resetUploadDialog(){
 	$('#inventoryFileName').html("Choose File");
 	//Reset various counts
 	processCount = 0;
+	processCount = 0;
+	processCount = 0;
 	fileData = [];
 	errorData = [];
 	//Update counts
@@ -228,11 +240,35 @@ function displayUploadData(){
 	$('#upload-inventory-modal').modal('toggle');
 }
 
+function updateInventoryEdit()
+{
+        var $form = $("#updateInventoryForm");
+        var json = toJson($form);
+        var url = getUpdateInventoryUrl();
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: json,
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            success: function(response) {
+            getInventoryList()
+                handleSuccess("Inventory Added");
+                $('#exampleModalCenter').modal('hide');
+                document.getElementById('updateInventoryForm').reset();
+            },
+               error: handleAjaxError
+            });
+}
+
 function init()
 {
     $('#add-inventory').click(addInventory);
     $('#update-inventory-add').click(updateInventoryAdd);
     $('#update-inventory-remove').click(updateInventoryRemove);
+    $('#update-inventory-edit').click(updateInventoryEdit);
     $('#upload-data').click(displayUploadData);
     $('#process-data').click(processData);
     $('#download-errors').click(downloadErrors);

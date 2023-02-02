@@ -1,6 +1,6 @@
 package com.increff.store.controller;
 
-import com.increff.store.model.InfoData;
+import com.increff.store.model.data.InfoData;
 import com.increff.store.util.SecurityUtil;
 import com.increff.store.util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;

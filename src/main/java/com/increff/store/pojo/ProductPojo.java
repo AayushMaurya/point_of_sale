@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -17,8 +16,7 @@ public class ProductPojo extends AbstractDateAudit {
     @Column(nullable = false, unique = true)
     private String barcode;
     @Column(nullable = false, name = "brand_category_id")
-    private Integer brandCategory;
-    @Size(min = 1)
+    private Integer brandCategoryId;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)

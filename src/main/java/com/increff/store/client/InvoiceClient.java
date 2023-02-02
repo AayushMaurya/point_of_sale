@@ -1,7 +1,8 @@
 package com.increff.store.client;
 
+import com.increff.store.api.ApiException;
 import com.increff.store.dto.ReportDto;
-import com.increff.store.model.InvoiceForm;
+import com.increff.store.model.form.InvoiceForm;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +15,6 @@ import java.nio.file.Paths;
 
 import com.increff.store.flow.InvoiceGenerator;
 
-import javax.transaction.Transactional;
-
 @Service
 public class InvoiceClient {
     @Autowired
@@ -23,9 +22,8 @@ public class InvoiceClient {
     private static Logger logger = Logger.getLogger(ReportDto.class);
     @Value("${fop.url}")
     private String fopUrl;
-
     private static String PDF_PATH = "./src/main/resources/pdf/";
-    @Transactional(rollbackOn = Exception.class)
+
     public void downloadInvoice(Integer orderId) throws Exception {
 
 //        generating invoice form
@@ -35,10 +33,14 @@ public class InvoiceClient {
 
         byte[] contents = restTemplate.postForEntity(fopUrl, invoiceForm, byte[].class).getBody();
 
+        try {
 //        saving pdf;
-        Path pdfPath = Paths.get(PDF_PATH + orderId + "_invoice.pdf");
-
-        Files.write(pdfPath, contents);
+            Path pdfPath = Paths.get(PDF_PATH + orderId + "_invoice.pdf");
+            Files.write(pdfPath, contents);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new ApiException("Not able to create pdf at required path");
+        }
 
         logger.info(orderId + "_invoice.pdf created");
     }

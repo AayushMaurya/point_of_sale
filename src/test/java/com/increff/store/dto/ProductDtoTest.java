@@ -1,8 +1,8 @@
 package com.increff.store.dto;
 
-import com.increff.store.model.BrandForm;
-import com.increff.store.model.ProductData;
-import com.increff.store.model.ProductForm;
+import com.increff.store.model.form.BrandForm;
+import com.increff.store.model.data.ProductData;
+import com.increff.store.model.form.ProductForm;
 import com.increff.store.api.ApiException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

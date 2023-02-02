@@ -37,3 +37,7 @@ color:rgba(255,255,255,.5);}
 #dropMenu a:hover{
 color: black;}
 
+.card-img-top{
+height: 14rem;
+}
+

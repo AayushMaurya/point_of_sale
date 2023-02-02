@@ -19,18 +19,16 @@ function getBrandOption() {
         return output;
 }
 
-function getProductList(){
-	var url = getStoreUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   console.log(data);
-	   		displayProductList(data);
-	   		productData = data;
-	   },
-	   error: handleAjaxError
-	});
+function getProductList()
+{
+    var callParams = {};
+    callParams.Type = "GET";
+    callParams.Url = getStoreUrl();
+    function callback(data){
+        displayProductList(data);
+        productData = data;
+    }
+    ajaxCall(callParams, null, callback);
 }
 
 function displayProductList(data){
@@ -62,39 +60,31 @@ function displayProductList(data){
 function addProduct(event)
 {
     var $form = $("#product-form");
-    var json = toJson($form);
-    var url = getStoreUrl();
+    var dataParams = toJson($form);
+    var callParams = {};
+    callParams.Url = getStoreUrl();
+    callParams.Type = "POST";
 
-    $.ajax({
-    	   url: url,
-    	   type: 'POST',
-    	   data: json,
-    	   headers: {
-           	'Content-Type': 'application/json'
-           },
-    	   success: function(response) {
-    	   		getProductList();
-    	   		handleSuccess("Product Added");
-    	   		document.getElementById("product-form").reset();
-    	   },
-    	   error: handleAjaxError
+    function callback(){
+        getProductList();
+        handleSuccess("Product added.");
+        document.getElementById("product-form").reset();
+    }
 
-    	});
-    	return false;
+    ajaxCall(callParams, dataParams, callback);
+
+    return false;
 }
 
 function getBrandsList()
 {
-    var url = getBrandUrl();
-    $.ajax({
-    	   url: url,
-    	   type: 'GET',
-    	   success: function(data) {
-    	   		console.log(data);
-    	   		displayBrandsList(data);
-    	   }
-    	});
-   }
+    var callParams = {};
+    callParamsUrl = getBrandUrl();
+    callParamsType = "GET";
+
+    ajaxCall(callParams, null, callback);
+
+}
 
 
 function displayBrandsList(data)
@@ -152,26 +142,20 @@ function updateProduct()
 {
     var id = document.getElementById("inputUpdateId").value;
     var $form = $("#updateProductForm");
-    var json = toJson($form);
-    var url = getStoreUrl() + "/" + id ;
+    var dataParams = toJson($form);
+    var callParams = {};
+    callParams.Url = getStoreUrl() + "/" + id ;
+    callParams.Type = "PUT";
 
-    $.ajax({
-            	   url: url,
-            	   type: 'PUT',
-            	   data: json,
-            	   headers: {
-                   	'Content-Type': 'application/json'
-                   },
-            	   success: function(response) {
-            	   		getProductList();
-            	   		handleSuccess("Product Updated");
-            	   		$('#exampleModalCenter').modal('hide');
-            	   },
-            	   error: handleAjaxError
+    function callback(data){
+        getProductList();
+        handleSuccess("Product Updated");
+        $('#exampleModalCenter').modal('hide');
+    }
 
-            	});
-            	return false;
+    ajaxCall(callParams, dataParams, callback);
 
+    return false;
 }
 
 function pagination(){
@@ -220,7 +204,7 @@ function uploadRows(){
 
 
 	console.log(json);
-	var url = getAdminProductUrl();
+	var url = getStoreUrl();
 
 	//Make ajax call
 	$.ajax({

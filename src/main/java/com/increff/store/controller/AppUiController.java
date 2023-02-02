@@ -1,7 +1,7 @@
 package com.increff.store.controller;
 
 import com.increff.store.dto.OrderDto;
-import com.increff.store.model.OrderData;
+import com.increff.store.model.data.OrderData;
 import com.increff.store.api.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

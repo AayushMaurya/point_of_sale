@@ -1,6 +1,10 @@
 package com.increff.store.dto;
 
 import com.increff.store.model.*;
+import com.increff.store.model.data.ProductRevenueData;
+import com.increff.store.model.form.BrandCategoryFilterForm;
+import com.increff.store.model.form.DateFilterForm;
+import com.increff.store.model.form.FilterForm;
 import com.increff.store.pojo.*;
 import com.increff.store.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,12 +112,12 @@ public class RevenueDto {
         List<ProductPojo> productPojoList = productService.getAllProducts();
 
         for (ProductPojo p : productPojoList) {
-            Integer quantity = map.get(p.getBrandCategory()).getQuantity();
+            Integer quantity = map.get(p.getBrandCategoryId()).getQuantity();
             Integer newQuantity = 0;
             if (inventoryMap.containsKey(p.getId()))
                 newQuantity = inventoryMap.get(p.getId());
 
-            map.get(p.getBrandCategory()).setQuantity(quantity + newQuantity);
+            map.get(p.getBrandCategoryId()).setQuantity(quantity + newQuantity);
         }
 
         List<InventoryReportModel> list = new ArrayList<>();

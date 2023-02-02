@@ -20,3 +20,53 @@
 2023-01-31 12:19:56 ERROR AppRestControllerAdvice:28 - org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported
 2023-01-31 12:21:33 INFO  SecurityConfig:41 - Configuration complete
 2023-01-31 12:24:40 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 13:37:29 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 13:45:35 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 13:47:11 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 13:48:30 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 13:49:21 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 14:01:59 INFO  ReportDto:127 - Deleting all unplaced orders
+2023-01-31 14:01:59 INFO  ReportDto:41 - Creating daily report
+2023-01-31 14:01:59 INFO  ReportDto:85 - Updating report
+2023-01-31 14:38:48 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 14:39:07 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 14:39:25 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 14:41:15 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 14:59:46 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 15:00:00 INFO  ReportDto:41 - Creating daily report
+2023-01-31 15:00:00 INFO  ReportDto:85 - Updating report
+2023-01-31 15:00:00 INFO  ReportDto:127 - Deleting all unplaced orders
+2023-01-31 15:02:08 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 15:03:22 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 15:05:33 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 15:37:55 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 15:41:18 ERROR AppRestControllerAdvice:28 - java.lang.NullPointerException
+2023-01-31 15:41:30 ERROR AppRestControllerAdvice:28 - java.lang.NullPointerException
+2023-01-31 15:41:38 ERROR AppRestControllerAdvice:28 - java.lang.NullPointerException
+2023-01-31 15:41:41 ERROR AppRestControllerAdvice:28 - java.lang.NullPointerException
+2023-01-31 16:00:00 INFO  ReportDto:127 - Deleting all unplaced orders
+2023-01-31 16:00:00 INFO  ReportDto:41 - Creating daily report
+2023-01-31 16:00:00 INFO  ReportDto:85 - Updating report
+2023-01-31 16:20:33 INFO  SecurityConfig:41 - Configuration complete
+2023-01-31 16:35:25 ERROR AppRestControllerAdvice:28 - java.lang.NullPointerException
+2023-01-31 16:41:14 ERROR AppRestControllerAdvice:28 - java.lang.NullPointerException
+2023-01-31 16:48:19 INFO  ReportDto:43 - 7_invoice.pdf created
+2023-01-31 16:51:39 ERROR AppRestControllerAdvice:28 - org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: Cannot deserialize value of type `java.lang.Integer` from String "12.456": not a valid Integer value
+ at [Source: (PushbackInputStream); line: 1, column: 47] (through reference chain: com.increff.store.model.form.OrderItemForm["quantity"]); nested exception is com.fasterxml.jackson.databind.exc.InvalidFormatException: Cannot deserialize value of type `java.lang.Integer` from String "12.456": not a valid Integer value
+ at [Source: (PushbackInputStream); line: 1, column: 47] (through reference chain: com.increff.store.model.form.OrderItemForm["quantity"])
+2023-01-31 16:56:34 ERROR AppRestControllerAdvice:28 - java.nio.file.NoSuchFileException: .\src\main\resources\pdf\8_invoice.pdf
+2023-01-31 17:00:00 INFO  ReportDto:127 - Deleting all unplaced orders
+2023-01-31 17:00:00 INFO  ReportDto:41 - Creating daily report
+2023-01-31 17:00:00 INFO  ReportDto:83 - Updating report
+2023-02-01 18:16:40 INFO  SecurityConfig:41 - Configuration complete
+2023-02-01 18:40:21 INFO  SecurityConfig:41 - Configuration complete
+2023-02-01 18:42:26 INFO  SecurityConfig:41 - Configuration complete
+2023-02-01 18:42:51 ERROR AppRestControllerAdvice:28 - java.lang.NullPointerException
+2023-02-01 18:44:54 INFO  SecurityConfig:41 - Configuration complete
+2023-02-01 18:46:02 INFO  SecurityConfig:41 - Configuration complete
+2023-02-02 10:49:14 INFO  SecurityConfig:41 - Configuration complete
+2023-02-02 10:56:41 INFO  SecurityConfig:41 - Configuration complete
+2023-02-02 11:02:31 INFO  SecurityConfig:41 - Configuration complete
+2023-02-02 11:06:39 INFO  SecurityConfig:41 - Configuration complete
+2023-02-02 11:50:32 INFO  SecurityConfig:41 - Configuration complete
+2023-02-02 12:11:38 INFO  SecurityConfig:41 - Configuration complete

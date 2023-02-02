@@ -1,7 +1,7 @@
 package com.increff.store.dto;
 
-import com.increff.store.model.DailyReportData;
-import com.increff.store.model.DateFilterForm;
+import com.increff.store.model.data.DailyReportData;
+import com.increff.store.model.form.DateFilterForm;
 import com.increff.store.pojo.DailyReportPojo;
 import com.increff.store.pojo.OrderItemPojo;
 import com.increff.store.pojo.OrderPojo;
@@ -11,7 +11,6 @@ import com.increff.store.api.OrderService;
 import com.increff.store.api.ReportService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.increff.store.dto.DtoUtils.convertReportPojoToReportData;
+import static com.increff.store.dto.DtoUtils.stringDateToLocalDate;
 import static com.increff.store.util.GetCurrentDataTime.getLocalDate;
 
 @Service
@@ -36,7 +36,6 @@ public class ReportDto {
 
     private static Logger logger = Logger.getLogger(ReportDto.class);
 
-    @Scheduled(cron = "${cron.expression}")
     public void createDailyReport() throws ApiException {
         logger.info("Creating daily report");
         DailyReportPojo reportPojo = new DailyReportPojo();
@@ -54,9 +53,7 @@ public class ReportDto {
 
             startDate = LocalDate.parse(date.toString(), formatter).atStartOfDay();
             endDate = LocalDate.parse(date.toString(), formatter).atTime(23, 59, 59);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             logger.error(e);
         }
         List<OrderPojo> orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);
@@ -87,8 +84,7 @@ public class ReportDto {
         }
     }
 
-    public List<DailyReportData> getAllDailyReport() throws ApiException
-    {
+    public List<DailyReportData> getAllDailyReport() throws ApiException {
         List<DailyReportPojo> dailyReportPojoList = service.getAllReport();
         List<DailyReportData> dailyReportData = new ArrayList<>();
 
@@ -100,14 +96,9 @@ public class ReportDto {
     }
 
     public List<DailyReportData> getAllDailyReport(DateFilterForm form) throws ApiException {
-        LocalDate startDate;
-        LocalDate endDate;
-        try {
-            startDate = LocalDate.parse(form.getStart(), DateTimeFormatter.ISO_DATE);
-            endDate = LocalDate.parse(form.getEnd(), DateTimeFormatter.ISO_DATE);
-        } catch (Exception e) {
-            throw new ApiException("Please put valid start and end date");
-        }
+        LocalDate startDate = stringDateToLocalDate(form.getStart());
+        LocalDate endDate = stringDateToLocalDate(form.getEnd());
+
         List<DailyReportPojo> dailyReportPojoList = service.getAllReport(startDate, endDate);
         List<DailyReportData> dailyReportData = new ArrayList<>();
 

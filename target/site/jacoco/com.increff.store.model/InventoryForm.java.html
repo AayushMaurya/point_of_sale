@@ -3,10 +3,15 @@
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+
 @Getter
-<span class="pc" id="L7">@Setter</span>
-<span class="fc" id="L8">public class InventoryForm {</span>
-<span class="fc" id="L9">    private Integer quantity;</span>
-<span class="nc" id="L10">    private String barcode;</span>
+<span class="fc" id="L10">@Setter</span>
+<span class="fc" id="L11">public class InventoryForm {</span>
+    @Positive
+<span class="fc" id="L13">    private Integer quantity;</span>
+    @NotBlank
+<span class="fc" id="L15">    private String barcode;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

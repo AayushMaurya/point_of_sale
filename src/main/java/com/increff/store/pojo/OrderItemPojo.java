@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "order_items_table")
+@Table(name = "order_items_table", uniqueConstraints = { @UniqueConstraint(name = "UniqueOrderItemIdAndProductId",
+        columnNames = { "orderId", "productId" }) })
 public class OrderItemPojo extends AbstractDateAudit {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

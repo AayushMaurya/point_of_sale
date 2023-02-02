@@ -13,17 +13,16 @@ function getProductUrl(){
  	return baseUrl + "/api/product";
  }
 
-function getInventoryList(){
-	var url = getStoreUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   console.log(data);
-	   		displayInventoryList(data);
-	   },
-	   error: handleAjaxError
-	});
+function getInventoryList()
+{
+    var callParams = {};
+    callParams.Type = "GET";
+    callParams.Url = getStoreUrl();
+    function callback(data)
+    {
+        displayInventoryList(data);
+    }
+    ajaxCall(callParams, null, callback);
 }
 
 function displayInventoryList(data){
@@ -53,7 +52,6 @@ function displayInventoryList(data){
 
 function fillFields(id)
 {
-    console.log("this will fill the fields: " + id);
     var url = getProductUrl() + "/" + id;
     $.ajax({
     	   url: url,
@@ -179,7 +177,7 @@ function uploadRows(){
 	processCount++;
 
 	var json = JSON.stringify(row);
-	var url = getAdminInventoryUrl();
+	var url = getStoreUrl();
 
 	//Make ajax call
 	$.ajax({

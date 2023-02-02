@@ -1,9 +1,9 @@
 package com.increff.store.controller;
 
 import com.increff.store.dto.OrderDto;
-import com.increff.store.model.DateFilterForm;
-import com.increff.store.model.OrderData;
-import com.increff.store.model.OrderForm;
+import com.increff.store.model.form.DateFilterForm;
+import com.increff.store.model.data.OrderData;
+import com.increff.store.model.form.OrderForm;
 import com.increff.store.api.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

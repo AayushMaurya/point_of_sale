@@ -1,8 +1,8 @@
 package com.increff.store.controller;
 
 import com.increff.store.dto.InventoryDto;
-import com.increff.store.model.InventoryData;
-import com.increff.store.model.InventoryForm;
+import com.increff.store.model.data.InventoryData;
+import com.increff.store.model.form.InventoryForm;
 import com.increff.store.api.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

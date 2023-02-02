@@ -13,15 +13,11 @@ public class StringUtil {
     }
 
     public static boolean isPositive(Double sellingPrice) {
-        if(sellingPrice > 0)
-            return true;
-        return false;
+        return sellingPrice > 0;
     }
 
     public static boolean isPositive(Integer i) {
-        if(i > 0)
-            return true;
-        return false;
+        return i > 0;
     }
 
     public static Double normalizeDouble(Double sellingPrice) {
@@ -29,10 +25,7 @@ public class StringUtil {
         return Double.parseDouble(formatter.format(sellingPrice));
     }
 
-    public static boolean isLonger(String str)
-    {
-        if(str.length() > 15)
-            return true;
-        return false;
+    public static boolean isLonger(String str) {
+        return str.length()>=15;
     }
 }

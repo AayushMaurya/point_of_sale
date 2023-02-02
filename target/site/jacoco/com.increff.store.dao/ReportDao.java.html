@@ -5,36 +5,38 @@ import com.increff.store.pojo.UserPojo;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-<span class="fc" id="L12">public class ReportDao extends AbstractDao{</span>
-<span class="fc" id="L13">    private static String SELECT_BY_ID = &quot;select p from DailyReportPojo p where date=:date&quot;;</span>
+@Transactional
+<span class="fc" id="L14">public class ReportDao extends AbstractDao{</span>
+<span class="fc" id="L15">    private static String SELECT_BY_ID = &quot;select p from DailyReportPojo p where date=:date&quot;;</span>
 
-<span class="fc" id="L15">    private static String SELECT_ALL = &quot;select p from DailyReportPojo p&quot;;</span>
+<span class="fc" id="L17">    private static String SELECT_ALL = &quot;select p from DailyReportPojo p&quot;;</span>
 
-<span class="fc" id="L17">    private static String SELECT_WITH_DATE_FILTER = &quot;select p from DailyReportPojo p where date&gt;=:startDate and &quot; +</span>
+<span class="fc" id="L19">    private static String SELECT_WITH_DATE_FILTER = &quot;select p from DailyReportPojo p where date&gt;=:startDate and &quot; +</span>
             &quot;date&lt;=:endDate&quot;;
 
     public void insert(DailyReportPojo p) {
-<span class="nc" id="L21">        em().persist(p);</span>
-<span class="nc" id="L22">    }</span>
+<span class="nc" id="L23">        em().persist(p);</span>
+<span class="nc" id="L24">    }</span>
     public DailyReportPojo select(LocalDate date) {
-<span class="nc" id="L24">        TypedQuery&lt;DailyReportPojo&gt; query = getQuery(SELECT_BY_ID, DailyReportPojo.class);</span>
-<span class="nc" id="L25">        query.setParameter(&quot;date&quot;, date);</span>
-<span class="nc" id="L26">        return query.getResultStream().findFirst().orElse(null);</span>
+<span class="nc" id="L26">        TypedQuery&lt;DailyReportPojo&gt; query = getQuery(SELECT_BY_ID, DailyReportPojo.class);</span>
+<span class="nc" id="L27">        query.setParameter(&quot;date&quot;, date);</span>
+<span class="nc" id="L28">        return query.getResultStream().findFirst().orElse(null);</span>
     }
     public List&lt;DailyReportPojo&gt; selectAll(LocalDate startDate, LocalDate endDate) {
-<span class="nc" id="L29">        TypedQuery&lt;DailyReportPojo&gt; query = getQuery(SELECT_WITH_DATE_FILTER, DailyReportPojo.class);</span>
-<span class="nc" id="L30">        query.setParameter(&quot;startDate&quot;, startDate);</span>
-<span class="nc" id="L31">        query.setParameter(&quot;endDate&quot;, endDate);</span>
-<span class="nc" id="L32">        return query.getResultList();</span>
+<span class="nc" id="L31">        TypedQuery&lt;DailyReportPojo&gt; query = getQuery(SELECT_WITH_DATE_FILTER, DailyReportPojo.class);</span>
+<span class="nc" id="L32">        query.setParameter(&quot;startDate&quot;, startDate);</span>
+<span class="nc" id="L33">        query.setParameter(&quot;endDate&quot;, endDate);</span>
+<span class="nc" id="L34">        return query.getResultList();</span>
     }
 
     public List&lt;DailyReportPojo&gt; selectAll() {
-<span class="nc" id="L36">        TypedQuery&lt;DailyReportPojo&gt; query = getQuery(SELECT_ALL, DailyReportPojo.class);</span>
-<span class="nc" id="L37">        return query.getResultList();</span>
+<span class="nc" id="L38">        TypedQuery&lt;DailyReportPojo&gt; query = getQuery(SELECT_ALL, DailyReportPojo.class);</span>
+<span class="nc" id="L39">        return query.getResultList();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

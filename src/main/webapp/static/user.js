@@ -1,34 +1,23 @@
-function getAdminUrl()
-{
+function getAdminUrl(){
     var baseUrl = $("meta[name=baseUrl]").attr("content")
      	return baseUrl + "/api/admin/user";
 }
 
 function getUserList(){
-	var url = getAdminUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   console.log(data);
-	   		displayUserList(data);
-	   },
-	   error: handleAjaxError
-	});
+    var callParams = {};
+    callParams.Type = "GET";
+    callParams.Url = getAdminUrl();
+
+    ajaxCall(callParams, null, displayUserList);
 }
 
-function displayUserList(data)
-{
-//    $('#user-table').DataTable().destroy();
+function displayUserList(data){
     	var $tbody = $('#user-table').find('tbody');
     	$tbody.empty();
     	var index = 0;
     	for(var i in data){
     		var e = data[i];
     		index++;
-//    		var buttonHtml = ' <button class="btn btn-primary" data-toggle="modal"'
-//            + 'data-target="#exampleModalCenter" onclick="fillUpdateFields('
-//    		+ i +')" >Edit</button>';
             var buttonHtml = '<button class="btn btn-primary" onclick="deleteUser('+e.id+')">Delete</button>';
     		var row = '<tr>'
     		+ '<td>' + index + '</td>'
@@ -38,48 +27,40 @@ function displayUserList(data)
     		+ '</tr>';
             $tbody.append(row);
     	}
-//    	pagination();
 }
 
-function deleteUser(id)
-{
-    var url = getAdminUrl() + "/" + id;
-    	$.ajax({
-    	   url: url,
-    	   type: 'DELETE',
-    	   success: function(data) {
-    	   handleSuccess("User deleted Successfully");
-    	   getUserList();
-    	   },
-    	   error: handleAjaxError
-    	});
+function deleteUser(id){
+    var callParams = {};
+    callParams.Type = "DELETE";
+    callParams.Url = getAdminUrl() + "/" + id;
+
+    function callback(data){
+        handleSuccess("User deleted Successfully");
+        getUserList();
+    }
+
+    ajaxCall(callParams, null, callback);
 }
 
-function addUser()
-{
+function addUser(){
     var $form = $("#user-form");
-    var json = toJson($form);
-    var url = getAdminUrl();
+    var dataParams = toJson($form);
+    var callParams = {};
+    callParams.Type = "POST";
+    callParams.Url = getAdminUrl();
 
-    $.ajax({
-        	   url: url,
-        	   type: 'POST',
-        	   data: json,
-        	   headers: {
-               	'Content-Type': 'application/json'
-               },
-        	   success: function(response) {
-        	   		getUserList();
-        	   		handleSuccess("User added successfully");
-        	   		document.getElementById("user-form").reset();
-        	   },
-        	   error: handleAjaxError
-        	});
-        	return false;
+    function callback(data){
+        getUserList();
+        handleSuccess("User added successfully");
+        document.getElementById("user-form").reset();
+    }
+
+    ajaxCall(callParams, dataParams, callback);
+
+    return false;
 }
 
-function init()
-{
+function init(){
     $('#add-user').click(addUser);
 }
 
