@@ -151,8 +151,7 @@ public class DtoUtilsTest extends AbstractUnitTest {
     }
 
     @Test
-    public void normalizeBrandPojoTest()
-    {
+    public void normalizeBrandPojoTest() {
         BrandPojo pojo = new BrandPojo();
         pojo.setBrand(" TesT BranD ");
         pojo.setCategory(" test CaTegory");
@@ -166,8 +165,7 @@ public class DtoUtilsTest extends AbstractUnitTest {
     }
 
     @Test
-    public void checkProductFormTest() throws ApiException
-    {
+    public void checkProductFormTest() throws ApiException {
         ProductForm form = new ProductForm();
         form.setBarcode("");
         form.setName("test name");
@@ -198,8 +196,7 @@ public class DtoUtilsTest extends AbstractUnitTest {
     }
 
     @Test
-    public void convertUserPojoToUserDataTest()
-    {
+    public void convertUserPojoToUserDataTest() {
         UserPojo pojo = new UserPojo();
         pojo.setEmail("test@email");
         pojo.setRole("test role");
@@ -218,8 +215,7 @@ public class DtoUtilsTest extends AbstractUnitTest {
     }
 
     @Test
-    public void convertUserFormToUserPojoTest()
-    {
+    public void convertUserFormToUserPojoTest() {
         UserForm form = new UserForm();
         form.setEmail("test@email");
         form.setPassword("testpassword");
@@ -236,8 +232,7 @@ public class DtoUtilsTest extends AbstractUnitTest {
     }
 
     @Test
-    public void checkOrderFormTest() throws ApiException
-    {
+    public void checkOrderFormTest() throws ApiException {
         OrderForm form = new OrderForm();
         form.setCustomerName("");
 
@@ -252,8 +247,7 @@ public class DtoUtilsTest extends AbstractUnitTest {
     }
 
     @Test
-    public void checkUpdateOrderItemFormTest() throws ApiException
-    {
+    public void checkUpdateOrderItemFormTest() throws ApiException {
         UpdateOrderItemForm form = new UpdateOrderItemForm();
         form.setSellingPrice(12.343);
         form.setQuantity(2);
@@ -280,8 +274,7 @@ public class DtoUtilsTest extends AbstractUnitTest {
     }
 
     @Test
-    public void convertReportPojoToReportDataTest()
-    {
+    public void convertReportPojoToReportDataTest() {
         DailyReportPojo pojo = new DailyReportPojo();
         pojo.setDate(LocalDate.now());
         pojo.setTotalRevenue(120.00);
@@ -300,8 +293,7 @@ public class DtoUtilsTest extends AbstractUnitTest {
     }
 
     @Test
-    public void convertBrandPojoToProductRevenueDataTest()
-    {
+    public void convertBrandPojoToProductRevenueDataTest() {
         BrandPojo pojo = new BrandPojo();
         pojo.setCategory("test category");
         pojo.setBrand("test brand");

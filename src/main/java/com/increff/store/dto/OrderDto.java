@@ -45,7 +45,6 @@ public class OrderDto {
         orderPojo.setCustomerName("");
         orderPojo.setStatus("pending");
         orderPojo.setPlaceDateTime(null);
-
 //        creating random order code
         String orderCode = UUID.randomUUID().toString();
         orderPojo.setOrderCode(orderCode);
@@ -65,8 +64,6 @@ public class OrderDto {
 
     public List<OrderData> getOrderByDateFilter(DateFilterForm form) throws ApiException {
         List<OrderData> list1 = new ArrayList<OrderData>();
-
-//      converting to proper date time format
 
         LocalDateTime startDate = stringDateToLocalDate(form.getStart()).atStartOfDay();
         LocalDateTime endDate = stringDateToLocalDate(form.getEnd()).atTime(23, 59, 59);
@@ -93,11 +90,7 @@ public class OrderDto {
     public void placeOrder(Integer id, OrderForm form) throws ApiException {
         checkOrderForm(form);
         OrderPojo orderPojo = service.getOrderById(id);
-        List<OrderItemPojo> list = orderItemService.getOrder(id);
-        if (list.size() == 0)
-            throw new ApiException("Add at least one item");
-        if (Objects.equals(orderPojo.getStatus(), "Placed"))
-            throw new ApiException("Order already placed");
+        checkOrderPlaceable(id, orderPojo.getStatus());
         orderPojo.setStatus("Placed");
         orderPojo.setCustomerName(form.getCustomerName());
         orderPojo.setPlaceDateTime(getCurrentDateTime());
@@ -112,7 +105,6 @@ public class OrderDto {
 
     //    method to delete all unplaced orders from one day before
     public void deleteUnplacedOrders() throws ApiException {
-        logger.info("Deleting all unplaced orders");
         List<OrderPojo> orderPojoList = service.getAllUnplacedOrders();
         for (OrderPojo p : orderPojoList) {
             if (getCurrentDateTime().minusDays(1).isAfter(p.getCreatedAt()))
@@ -127,5 +119,14 @@ public class OrderDto {
         for (OrderItemPojo p : orderItemPojoList)
             orderItemFlow.deleteOrderItemById(p.getId());
         service.deleteOrder(id);
+    }
+
+    private void checkOrderPlaceable(Integer orderId, String status) throws ApiException
+    {
+        List<OrderItemPojo> list = orderItemService.getOrder(orderId);
+        if (list.size() == 0)
+            throw new ApiException("Add at least one item");
+        if (Objects.equals(status, "Placed"))
+            throw new ApiException("Order already placed");
     }
 }

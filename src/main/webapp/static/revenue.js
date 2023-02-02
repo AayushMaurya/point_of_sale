@@ -4,10 +4,9 @@ var salesReportData;
 function getRevenueUrl(){
  	var baseUrl = $("meta[name=baseUrl]").attr("content")
  	return baseUrl + "/api/admin/sales-report";
- }
+}
 
-function getBrandUrl()
-{
+function getBrandUrl(){
     var baseUrl = $("meta[name=baseUrl]").attr("content")
      	return baseUrl + "/api/brand";
 }
@@ -25,22 +24,12 @@ function getCategoryOption() {
 }
 
 function getRevenueList(){
-	var url = getRevenueUrl();
-	var $form = $("#filter-date-form");
-    var json = toJson($form);
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-            'Content-Type': 'application/json'
-       },
-	   success: function(data) {
-	   console.log(data);
-	   		displayRevenueProductList(data);
-	   },
-	   error: handleAjaxError
-	});
+    var callParams = {};
+	callParams.Url = getRevenueUrl();
+	callParams.Type = "POST";
+
+	ajaxCall(callParams, dataParams, displayRevenueProductList);
+
 	return false;
 }
 
@@ -77,47 +66,41 @@ function displayRevenueProductList(data)
 
 function getBrandsList()
 {
-    var url = getBrandUrl();
-    $.ajax({
-    	   url: url,
-    	   type: 'GET',
-    	   success: function(data) {
-    	   		console.log(data);
-    	   		displayBrandsList(data);
-    	   }
-    	});
-   }
-   function displayBrandsList(data)
-   {
-       Object.assign(newBrands, {"All":[]});
-       for(var i in data)
-       {
-           var a = data[i].brand;
-           var b = data[i].category;
-           if(!newBrands.hasOwnProperty(a))
-               Object.assign(newBrands, {[a]:[]});
-           newBrands[a].push(b);
-           newBrands["All"].push(b);
-       }
+    var callParams = {};
+    callParams.Type = "GET";
+    callParams.Url = getBrandUrl();
 
-       newBrands["All"] = removeDuplicates(newBrands["All"]);
+    ajaxCall(callParams, null, displayBrandsList);
 
-       console.log(newBrands);
+}
 
-       var $elB = $("#inputFilterBrand");
+function displayBrandsList(data){
+    Object.assign(newBrands, {"All":[]});
+    for(var i in data)
+    {
+        var a = data[i].brand;
+        var b = data[i].category;
+        if(!newBrands.hasOwnProperty(a))
+            Object.assign(newBrands, {[a]:[]});
+        newBrands[a].push(b);
+        ewBrands["All"].push(b);
+    }
 
-       $elB.empty();
+    newBrands["All"] = removeDuplicates(newBrands["All"]);
 
-       $.each(newBrands, function(key,value) {
-             $elB.append($("<option></option>")
-                .attr("value", key).text(key));
-           });
+    var $elB = $("#inputFilterBrand");
 
-       displayCategoryList();
-   }
+    $elB.empty();
 
-function displayCategoryList()
-{
+    $.each(newBrands, function(key,value) {
+        $elB.append($("<option></option>")
+            .attr("value", key).text(key));
+        });
+
+    displayCategoryList();
+}
+
+function displayCategoryList(){
     var $elC = $("#inputFilterCategory");
 
     $elC.empty();
@@ -130,28 +113,24 @@ function displayCategoryList()
     $elC.append($("<option></option>")
                     .attr("value", "All").text("All"));
 
-    for(var i=0; i<newBrands[a].length; i++)
-    {
+    for(var i=0; i<newBrands[a].length; i++){
         $elC.append($("<option></option>")
             .attr("value", newBrands[a][i]).text(newBrands[a][i]));
     }
 }
 
 function removeDuplicates(arr) {
-        return arr.filter((item,
-            index) => arr.indexOf(item) === index);
+    return arr.filter((item,index) => arr.indexOf(item) === index);
 }
 
-function downloadSalesReport()
-{
+function downloadSalesReport(){
     if(salesReportData.length == 0)
         return;
     salesReportData.forEach(function(v){ delete v.id });
     writeFileData(salesReportData);
 }
 
-function init()
-{
+function init(){
     $('#show-revenue').click(getRevenueList);
     $('#download-sales-report').click(downloadSalesReport);
     $('#inputFilterBrand').change(displayCategoryList);

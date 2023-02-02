@@ -1,23 +1,16 @@
 var dailyReportDate;
 
-function getDailyReportUrl()
-{
+function getDailyReportUrl(){
     var baseUrl = $("meta[name=baseUrl]").attr("content")
      	return baseUrl + "/api/admin/daily-report";
 }
 
-function getDailyReport()
-{
-    var $form = $("#date-filter-form");
-    var url = getDailyReportUrl();
-    $.ajax({
-    	   url: url,
-    	   type: 'GET',
-    	   success: function(data) {
-    	   		displayDailyReport(data);
-    	   },
-    	   error: handleAjaxError
-    	});
+function getDailyReport(){
+    var callParams = {};
+    callParams.Url = getDailyReportUrl();
+    callParams.Type = "GET";
+
+    ajaxCall(callParams, null, displayDailyReport);
 }
 
 function displayDailyReport(data){
@@ -41,32 +34,20 @@ function displayDailyReport(data){
 
 function getDailyReportByDateFilter()
 {
-    var url = getDailyReportUrl();
-    var $form = $("#date-filter-form");
-    var json = toJson($form);
-    $.ajax({
-        	   url: url,
-        	   type: 'POST',
-        	   data: json,
-               headers: {
-                  'Content-Type': 'application/json'
-               },
-        	   success: function(data) {
-        	   		displayDailyReport(data);
-        	   },
-        	   error: handleAjaxError
-        	});
-        	return false;
+    var callParams = {};
+    callParams.Url = getDailyReportUrl();
+    callParams.Type = "POST";
+    dataParams = toJson($form);
+
+    ajaxCall(callParams, dataParams, displayDailyReport);
+    return false;
 }
 
-function downloadDailyReport()
-{
-
+function downloadDailyReport(){
     writeFileData(dailyReportDate);
 }
 
-function init()
-{
+function init(){
     $('#apply-date-filter').click(getDailyReportByDateFilter);
     $('#download-daily-report').click(downloadDailyReport);
 }

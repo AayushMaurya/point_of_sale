@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 @Transactional
 public class ProductDao {
-
-    private static String DELETE_BY_ID = "delete from ProductPojo p where id=:id";
     private static String SELECT_BY_ID = "select p from ProductPojo p where id=:id";
     private static String SELECT_ALL = "select p from ProductPojo p";
     private static String SELECT_BY_BARCODE = "select p from ProductPojo p where barcode=:barcode";

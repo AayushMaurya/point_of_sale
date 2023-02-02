@@ -37,7 +37,6 @@ public class OrderDao {
         TypedQuery<OrderPojo> query = getQuery(SELECT_BY_ID);
         query.setParameter("id", id);
         return query.getResultStream().findFirst().orElse(null);
-
     }
 
     public List<OrderPojo> selectAll() {
@@ -52,10 +51,6 @@ public class OrderDao {
         return query.getResultList();
     }
 
-    TypedQuery<OrderPojo> getQuery(String jpql) {
-        return em.createQuery(jpql, OrderPojo.class);
-    }
-
     public OrderPojo selectByOrderCode(String orderCode) {
         TypedQuery<OrderPojo> query = getQuery(SELECT_BY_ORDERCODE);
         query.setParameter("orderCode", orderCode);
@@ -67,10 +62,13 @@ public class OrderDao {
         return query.getResultList();
     }
 
-    public void delete(Integer id)
-    {
+    public void deleteOrder(Integer id) {
         Query query = em.createQuery(DELETE_BY_ID);
         query.setParameter("id", id);
         query.executeUpdate();
+    }
+
+    TypedQuery<OrderPojo> getQuery(String jpql) {
+        return em.createQuery(jpql, OrderPojo.class);
     }
 }

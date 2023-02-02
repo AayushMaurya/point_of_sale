@@ -30,6 +30,7 @@ com\increff\store\client\InvoiceClient.class
 com\increff\store\api\ProductService.class
 com\increff\store\controller\AppRestControllerAdvice.class
 com\increff\store\pojo\AbstractDateAudit.class
+com\increff\store\postConstruct\PilotUser.class
 com\increff\store\spring\DbConfig.class
 com\increff\store\dto\OrderItemDto.class
 com\increff\store\dao\OrderItemDao.class

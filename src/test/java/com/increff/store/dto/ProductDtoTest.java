@@ -11,15 +11,15 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class ProductDtoTest extends AbstractUnitTest{
+public class ProductDtoTest extends AbstractUnitTest {
     @Autowired
     ProductDto dto;
 
     @Autowired
     BrandDto brandDto;
+
     @Test
-    public void addProductTest() throws ApiException
-    {
+    public void addProductTest() throws ApiException {
         ProductForm form = new ProductForm();
         form.setBarcode("test barcode");
         form.setCategoryName("category Name");
@@ -49,8 +49,7 @@ public class ProductDtoTest extends AbstractUnitTest{
     }
 
     @Test
-    public void getAllProductsTest() throws ApiException
-    {
+    public void getAllProductsTest() throws ApiException {
         BrandForm brandForm = new BrandForm();
         brandForm.setCategory("category name");
         brandForm.setBrand("brand name");
@@ -79,8 +78,7 @@ public class ProductDtoTest extends AbstractUnitTest{
     }
 
     @Test
-    public void updateProductTest() throws ApiException
-    {
+    public void updateProductTest() throws ApiException {
         BrandForm brandForm = new BrandForm();
         brandForm.setCategory("category name");
         brandForm.setBrand("brand name");

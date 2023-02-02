@@ -112,12 +112,12 @@ public class DtoUtils {
         return d;
     }
 
-    protected static UserPojo convertUserFormToUserPojo(UserForm f) {
+    protected static UserPojo convertUserFormToUserPojo(UserForm form) {
         UserPojo p = new UserPojo();
-        p.setEmail(f.getEmail());
+        p.setEmail(form.getEmail());
 
         p.setRole("operator");
-        p.setPassword(f.getPassword());
+        p.setPassword(form.getPassword());
         return p;
     }
 

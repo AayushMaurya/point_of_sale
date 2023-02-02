@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 
-public class OrderItemDtoTest extends AbstractUnitTest{
+public class OrderItemDtoTest extends AbstractUnitTest {
     @Autowired
     BrandDto brandDto;
     @Autowired
@@ -35,8 +35,7 @@ public class OrderItemDtoTest extends AbstractUnitTest{
     OrderDao orderDao;
 
     @Test
-    public void addOrderItemTest() throws ApiException
-    {
+    public void addOrderItemTest() throws ApiException {
         addBrandForTest();
         addProductForTest();
         addInventoryForTest();
@@ -59,10 +58,9 @@ public class OrderItemDtoTest extends AbstractUnitTest{
         assertEquals(expectedSellingPrice, orderItemPojo.getSellingPrice());
     }
 
-//    test if an product is already is in order item list
+    //    test if an product is already is in order item list
     @Test
-    public void addOrderItemTestWithExistingOrderItem() throws ApiException
-    {
+    public void addOrderItemTestWithExistingOrderItem() throws ApiException {
         addBrandForTest();
         addProductForTest();
         addInventoryForTest();
@@ -87,8 +85,7 @@ public class OrderItemDtoTest extends AbstractUnitTest{
     }
 
     @Test
-    public void orderItemPojoToOrderItemData() throws ApiException
-    {
+    public void orderItemPojoToOrderItemData() throws ApiException {
         addBrandForTest();
         Integer productId = addProductForTest();
 
@@ -106,8 +103,7 @@ public class OrderItemDtoTest extends AbstractUnitTest{
     }
 
     @Test
-    public void checkIfOrderPlacedTest() throws ApiException
-    {
+    public void checkIfOrderPlacedTest() throws ApiException {
         OrderPojo orderPojo = new OrderPojo();
 
         orderPojo.setOrderCode("qwertyuop");
@@ -127,7 +123,7 @@ public class OrderItemDtoTest extends AbstractUnitTest{
         assertEquals(false, check);
     }
 
-//    add dummy brand for test
+    //    add dummy brand for test
     public void addBrandForTest() throws ApiException {
         BrandForm brandForm = new BrandForm();
         brandForm.setBrand("test brand");
@@ -136,7 +132,7 @@ public class OrderItemDtoTest extends AbstractUnitTest{
         brandDto.addBrand(brandForm);
     }
 
-//    add dummy product for test
+    //    add dummy product for test
     public Integer addProductForTest() throws ApiException {
         ProductForm productForm = new ProductForm();
         productForm.setName("test name");
@@ -147,17 +143,15 @@ public class OrderItemDtoTest extends AbstractUnitTest{
         return productDto.addProduct(productForm);
     }
 
-//    add dummy inventory for test
-    public void addInventoryForTest() throws ApiException
-    {
+    //    add dummy inventory for test
+    public void addInventoryForTest() throws ApiException {
         InventoryForm inventoryForm = new InventoryForm();
         inventoryForm.setBarcode("qwertyuiop");
         inventoryForm.setQuantity(10);
         inventoryDto.addInventory(inventoryForm);
     }
 
-    public String createOrderForTest() throws ApiException
-    {
+    public String createOrderForTest() throws ApiException {
         return orderDto.createOrder();
     }
 }

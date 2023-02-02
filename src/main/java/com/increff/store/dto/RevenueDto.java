@@ -10,9 +10,7 @@ import com.increff.store.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,17 +35,8 @@ public class RevenueDto {
 //        key: productId
         HashMap<Integer, ProductRevenueData> map = new HashMap<>();
 
-        LocalDateTime startDate;
-        LocalDateTime endDate;
-
-//      converting the date into required format
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            startDate = LocalDate.parse(form.getStart(), formatter).atStartOfDay();
-            endDate = LocalDate.parse(form.getEnd(), formatter).atTime(23, 59, 59);
-        } catch (Exception e) {
-            throw new ApiException("Please enter valid start and end date");
-        }
+        LocalDateTime startDate = stringDateToLocalDate(form.getStart()).atStartOfDay();
+        LocalDateTime endDate = stringDateToLocalDate(form.getEnd()).atTime(23, 59, 59);
 
         List<OrderPojo> orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);
 

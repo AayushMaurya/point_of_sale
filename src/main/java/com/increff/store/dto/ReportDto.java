@@ -37,7 +37,6 @@ public class ReportDto {
     private static Logger logger = Logger.getLogger(ReportDto.class);
 
     public void createDailyReport() throws ApiException {
-        logger.info("Creating daily report");
         DailyReportPojo reportPojo = new DailyReportPojo();
 
         LocalDate date = getLocalDate();

@@ -19,26 +19,22 @@ function getCategoryOption() {
 }
 
 function getInventoryReportList(){
-    var url = getInventoryReportUrl();
+    var callParams = {};
+    callParams.Type = "GET";
+    callParams.Url = getInventoryReportUrl();
 
-    $.ajax({
-    	   url: url,
-    	   type: 'GET',
-    	   success: function(data) {
-    	   console.log(data);
-    	   		displayInventoryReport(data);
-    	   		displayBrandList(data);
-    	   },
-    	   error: handleAjaxError
-    	});
+    function callback(data){
+        displayInventoryReport(data);
+        displayBrandList(data);
+    }
+
+    ajaxCall(callParams, null, callback);
 }
 
-function displayBrandList(data)
-{
+function displayBrandList(data){
     Object.assign(newBrands, {"All":[]});
 
-    for(var i in data)
-    {
+    for(var i in data){
         var a = data[i].brand;
         var b = data[i].category;
         if(!newBrands.hasOwnProperty(a))
@@ -61,8 +57,7 @@ function displayBrandList(data)
     displayCategoryList();
 }
 
-function displayCategoryList()
-{
+function displayCategoryList(){
     var $elC = $("#inputFilterCategory");
 
     $elC.empty();
@@ -72,16 +67,14 @@ function displayCategoryList()
     $elC.append($("<option></option>")
         .attr("value", "All").text("All"));
 
-    for(var i=0; i<newBrands[a].length; i++)
-    {
+    for(var i=0; i<newBrands[a].length; i++){
         $elC.append($("<option></option>")
             .attr("value", newBrands[a][i]).text(newBrands[a][i]));
     }
 }
 
 
-function displayInventoryReport(data)
-{
+function displayInventoryReport(data){
     inventoryData = data;
     $('#inventory-report-table').DataTable().destroy();
     var $tbody = $('#inventory-report-table').find('tbody');
@@ -109,47 +102,30 @@ function displayInventoryReport(data)
             + '</tr>';
             $tbody.append(row);
 
-//    pagination();
 }
 
-function applyBrandCategoryFilter()
-{
-    var url = getInventoryReportUrl();
+function applyBrandCategoryFilter(){
+    var callParams = {};
+    callParams.Url = getInventoryReportUrl();
+    callParams.Type = "POST";
     var $form = $("#filter-brand-category-form");
-    var json = toJson($form);
-        $.ajax({
-        	   url: url,
-        	   type: 'POST',
-        	   data: json,
-        	   headers: {
-                    'Content-Type': 'application/json'
-                    },
-        	   success: function(data) {
-        	   console.log(data);
-        	   		displayInventoryReport(data);
-        	   },
-        	   error: handleAjaxError
-        	});
+    var dataParams = toJson($form);
+
+    ajaxCall(callParams, dataParams, displayInventoryReport);
 }
 
 function removeDuplicates(arr) {
-        return arr.filter((item,
-            index) => arr.indexOf(item) === index);
+    return arr.filter((item,
+        index) => arr.indexOf(item) === index);
 }
 
-function pagination(){
-  $('#inventory-report-table').DataTable();
-  $('.dataTables_length').addClass('bs-select');
-}
 
-function downloadReport()
-{
+function downloadReport(){
     inventoryData.forEach(function(v){ delete v.brandCategoryId });
     writeFileData(inventoryData);
 }
 
-function init()
-{
+function init(){
     $('#inputFilterBrand').change(displayCategoryList);
     $('#apply-brand-category-filter').click(applyBrandCategoryFilter);
     $('#download-inventory-report').click(downloadReport);

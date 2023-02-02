@@ -57,6 +57,6 @@ public class OrderService {
     }
 
     public void deleteOrder(Integer id) {
-        dao.delete(id);
+        dao.deleteOrder(id);
     }
 }

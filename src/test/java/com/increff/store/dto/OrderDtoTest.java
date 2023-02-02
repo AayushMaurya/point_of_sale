@@ -113,9 +113,8 @@ public class OrderDtoTest extends AbstractUnitTest {
 
     }
 
-//    adds dummy brand for test
-    public void addBrandForTest() throws ApiException
-    {
+    //    adds dummy brand for test
+    public void addBrandForTest() throws ApiException {
         BrandPojo pojo = new BrandPojo();
         pojo.setBrand("test brand");
         pojo.setCategory("test category");
@@ -123,9 +122,8 @@ public class OrderDtoTest extends AbstractUnitTest {
         brandService.addBrand(pojo);
     }
 
-//    adds a dummy product for test
-    public void addProductForTest() throws ApiException
-    {
+    //    adds a dummy product for test
+    public void addProductForTest() throws ApiException {
         ProductForm form = new ProductForm();
         form.setMrp(12.00);
         form.setName("test name");
@@ -136,9 +134,8 @@ public class OrderDtoTest extends AbstractUnitTest {
         productDto.addProduct(form);
     }
 
-//    adds a dummy inventory for test
-    public void addInventoryForTest() throws ApiException
-    {
+    //    adds a dummy inventory for test
+    public void addInventoryForTest() throws ApiException {
         InventoryForm inventoryForm = new InventoryForm();
         inventoryForm.setBarcode("qwertyuiop");
         inventoryForm.setQuantity(10);
@@ -146,9 +143,8 @@ public class OrderDtoTest extends AbstractUnitTest {
         inventoryDto.addInventory(inventoryForm);
     }
 
-//    this adds a dummy order for test
-    public void addOrderForTest()
-    {
+    //    this adds a dummy order for test
+    public void addOrderForTest() {
         OrderPojo pojo = new OrderPojo();
         pojo.setId(12);
         pojo.setOrderCode("qwertyuiop");

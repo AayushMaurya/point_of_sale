@@ -37,5 +37,4 @@ public class InventoryDao {
     TypedQuery<InventoryPojo> getQuery(String jpql) {
         return em.createQuery(jpql, InventoryPojo.class);
     }
-
 }

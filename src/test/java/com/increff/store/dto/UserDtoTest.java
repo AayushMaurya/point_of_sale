@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class UserDtoTest extends AbstractUnitTest{
+public class UserDtoTest extends AbstractUnitTest {
     @Autowired
     UserDto dto;
     @Autowired
@@ -42,8 +42,7 @@ public class UserDtoTest extends AbstractUnitTest{
     }
 
     @Test
-    public void deleteUserTest() throws ApiException
-    {
+    public void deleteUserTest() throws ApiException {
         UserForm form = new UserForm();
         form.setEmail("test@email.com");
         form.setPassword("testPassword");
@@ -57,8 +56,7 @@ public class UserDtoTest extends AbstractUnitTest{
     }
 
     @Test
-    public void getALlUsersTest() throws ApiException
-    {
+    public void getALlUsersTest() throws ApiException {
         UserForm form = new UserForm();
         form.setEmail("test2@email.com");
         form.setPassword("testPassword");

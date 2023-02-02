@@ -53,8 +53,7 @@ public class BrandDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void updateBrandTest() throws ApiException
-    {
+    public void updateBrandTest() throws ApiException {
         BrandForm form = new BrandForm();
         form.setBrand("Test Brand Name");
         form.setCategory("Test Category Name");

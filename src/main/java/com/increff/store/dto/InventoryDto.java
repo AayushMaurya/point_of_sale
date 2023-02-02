@@ -78,13 +78,13 @@ public class InventoryDto {
 
     public InventoryPojo convertInventoryFormToInventoryPojo(InventoryForm form) throws ApiException
     {
-        InventoryPojo p = new InventoryPojo();
+        InventoryPojo pojo = new InventoryPojo();
 //        converting the barcode into product id
         String barcode = form.getBarcode();
         ProductPojo productPojo = productService.getProductByBarcode(barcode);
-        p.setQuantity(form.getQuantity());
-        p.setId(productPojo.getId());
-        return p;
+        pojo.setQuantity(form.getQuantity());
+        pojo.setId(productPojo.getId());
+        return pojo;
     }
 
     public static void checkInventoryForm(InventoryForm form) throws ApiException
