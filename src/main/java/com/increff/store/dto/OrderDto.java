@@ -76,31 +76,27 @@ public class OrderDto {
         return list1;
     }
 
-    public OrderData getOrderById(Integer id) throws ApiException {
-        OrderPojo p = service.getOrderById(id);
-        return convertOrderPojoToOrderData(p);
+    public OrderData getOrderById(Integer orderId) throws ApiException {
+        OrderPojo pojo = service.getOrderById(orderId);
+        return convertOrderPojoToOrderData(pojo);
     }
 
     public OrderData getOrderByOrderCode(String orderCode) throws ApiException {
-        OrderPojo p = service.getOrderByOrderCode(orderCode);
-        return convertOrderPojoToOrderData(p);
+        OrderPojo pojo = service.getOrderByOrderCode(orderCode);
+        return convertOrderPojoToOrderData(pojo);
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void placeOrder(Integer id, OrderForm form) throws ApiException {
+    public void placeOrder(Integer orderId, OrderForm form) throws ApiException {
         checkOrderForm(form);
-        OrderPojo orderPojo = service.getOrderById(id);
-        checkOrderPlaceable(id, orderPojo.getStatus());
+        OrderPojo orderPojo = service.getOrderById(orderId);
+        checkOrderPlaceable(orderId, orderPojo.getStatus());
         orderPojo.setStatus("Placed");
         orderPojo.setCustomerName(form.getCustomerName());
         orderPojo.setPlaceDateTime(getCurrentDateTime());
         normalizeOrderPojo(orderPojo);
-        service.updateOrder(id, orderPojo);
-        try {
-            invoiceClient.downloadInvoice(id);
-        } catch (Exception e) {
-            throw new ApiException("Cannot create Invoice for given order");
-        }
+        service.updateOrder(orderId, orderPojo);
+        invoiceClient.downloadInvoice(orderId);
     }
 
     //    method to delete all unplaced orders from one day before

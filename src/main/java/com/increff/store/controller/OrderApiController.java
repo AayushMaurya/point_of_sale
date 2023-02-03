@@ -27,6 +27,8 @@ public class OrderApiController {
     @Autowired
     private OrderDto dto;
 
+    private static String PDF_PATH = "./src/main/resources/pdf/";
+
     @ApiOperation(value = "Adds order to order table")
     @RequestMapping(path = "/api/order", method = RequestMethod.POST)
     public String createOrder() throws ApiException {
@@ -60,10 +62,8 @@ public class OrderApiController {
     @ApiOperation(value = "Download Invoice")
     @RequestMapping(path = "/api/invoice/{orderId}", method = RequestMethod.GET)
     public ResponseEntity<byte[]> getPDF(@PathVariable Integer orderId) throws Exception {
-
         OrderData orderData = dto.getOrderById(orderId);
-
-        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderData.getId() + "_invoice.pdf");
+        Path pdfPath = Paths.get( PDF_PATH + orderData.getId() + "_invoice.pdf");
 
         byte[] contents = Base64.getDecoder().decode(Files.readAllBytes(pdfPath));
 

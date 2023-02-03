@@ -101,24 +101,20 @@ public class DtoUtils {
             throw new ApiException("Mrp should be valid digit");
     }
 
-    protected static UserData convertUserPojoToUserData(UserPojo p) {
-        String role = "operator";
-
-
-        UserData d = new UserData();
-        d.setEmail(p.getEmail());
-        d.setRole(role);
-        d.setId(p.getId());
-        return d;
+    protected static UserData convertUserPojoToUserData(UserPojo pojo) {
+        UserData data = new UserData();
+        data.setEmail(pojo.getEmail());
+        data.setRole(pojo.getRole());
+        data.setId(pojo.getId());
+        return data;
     }
 
     protected static UserPojo convertUserFormToUserPojo(UserForm form) {
-        UserPojo p = new UserPojo();
-        p.setEmail(form.getEmail());
-
-        p.setRole("operator");
-        p.setPassword(form.getPassword());
-        return p;
+        UserPojo pojo = new UserPojo();
+        pojo.setEmail(form.getEmail());
+        pojo.setRole(form.getRole());
+        pojo.setPassword(form.getPassword());
+        return pojo;
     }
 
     protected static void checkOrderForm(OrderForm form) throws ApiException {

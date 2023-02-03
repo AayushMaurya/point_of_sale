@@ -30,8 +30,9 @@ public class PilotUser {
         UserForm userForm = new UserForm();
         userForm.setEmail(pilotEmail);
         userForm.setPassword(pilotPassword);
-
+        userForm.setRole("supervisor");
         try {
+            logger.info("Created pilot user");
             userDto.addUser(userForm);
         } catch (ApiException e) {
             logger.info("Pilot user already exists");

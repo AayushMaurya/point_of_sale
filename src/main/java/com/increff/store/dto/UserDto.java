@@ -5,6 +5,8 @@ import com.increff.store.model.form.UserForm;
 import com.increff.store.pojo.UserPojo;
 import com.increff.store.api.ApiException;
 import com.increff.store.api.UserService;
+import com.increff.store.util.SecurityUtil;
+import com.increff.store.util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,6 @@ import static com.increff.store.dto.DtoUtils.convertUserPojoToUserData;
 public class UserDto {
     @Autowired
     UserService service;
-    @Value("#{'${supervisor.email}'.split(',')}")
-    private List<String> supervisorEmail;
 
     public Integer addUser(UserForm form) throws ApiException {
         UserPojo pojo = convertUserFormToUserPojo(form);
@@ -30,29 +30,18 @@ public class UserDto {
 
     public void deleteUser(Integer id) throws ApiException {
         UserPojo pojo = service.getById(id);
-        for(String str: supervisorEmail)
-        {
-            if (Objects.equals(pojo.getEmail(), str))
-                throw new ApiException("Cannot delete a supervisor");
-        }
+        UserPrincipal principal = SecurityUtil.getPrincipal();
+        assert principal != null;
+        if(Objects.equals(principal.getEmail(), pojo.getEmail()))
+            throw new ApiException("Cannot delete logged in user.");
         service.delete(id);
     }
 
     public List<UserData> getAllUserData() {
         List<UserPojo> list = service.getAll();
         List<UserData> list2 = new ArrayList<UserData>();
-        for (UserPojo p : list) {
-            UserData data = convertUserPojoToUserData(p);
-            for(String str: supervisorEmail)
-            {
-                if(Objects.equals(data.getEmail(), str))
-                {
-                    data.setRole("supervisor");
-                    break;
-                }
-            }
-            list2.add(data);
-        }
+        for (UserPojo p : list)
+            list2.add(convertUserPojoToUserData(p));
         return list2;
     }
 }

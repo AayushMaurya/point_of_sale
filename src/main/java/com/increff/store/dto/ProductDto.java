@@ -25,71 +25,64 @@ public class ProductDto {
     @Autowired
     private BrandService brandService;
 
-    public Integer addProduct(ProductForm form) throws ApiException
-    {
+    public Integer addProduct(ProductForm form) throws ApiException {
         checkProductForm(form);
         normalize(form);
-        ProductPojo p = convert(form);
-        return service.addProduct(p);
+        ProductPojo pojo = convertProductFormToProductPojo(form);
+        return service.addProduct(pojo);
     }
 
-    public ProductData getProductById(Integer id) throws ApiException
-    {
-        ProductPojo p = service.getProductById(id);
-        return convert(p);
+    public ProductData getProductById(Integer productId) throws ApiException {
+        ProductPojo pojo = service.getProductById(productId);
+        return convertProductPojoToProductData(pojo);
     }
 
-    public List<ProductData> getAllProducts() throws ApiException
-    {
+    public List<ProductData> getAllProducts() throws ApiException {
         List<ProductPojo> list1 = service.getAllProducts();
         List<ProductData> list2 = new ArrayList<ProductData>();
-        for(ProductPojo p: list1)
-            list2.add(convert(p));
+        for (ProductPojo p : list1)
+            list2.add(convertProductPojoToProductData(p));
 
         return list2;
     }
 
-    public void updateProduct(Integer id, UpdateProductForm form) throws ApiException
-    {
+    public void updateProduct(Integer productId, UpdateProductForm form) throws ApiException {
         normalize(form);
         ProductPojo pojo = new ProductPojo();
         pojo.setName(form.getName());
         pojo.setMrp(form.getMrp());
-        service.updateProduct(id, pojo);
+        service.updateProduct(productId, pojo);
     }
 
-    private ProductPojo convert(ProductForm form) throws  ApiException
-    {
-        ProductPojo p = new ProductPojo();
+    private ProductPojo convertProductFormToProductPojo(ProductForm form) throws ApiException {
+        ProductPojo pojo = new ProductPojo();
 
 //        converting the unique brand category combination to brand category id
         String brandName = form.getBrandName();
         String brandCategory = form.getCategoryName();
         BrandPojo brandPojo = brandService.getByBrandCategory(brandName, brandCategory);
-        if(brandPojo == null)
-            throw new ApiException("no such brand category combination found");
+        if (brandPojo == null)
+            throw new ApiException("No such brand category combination found");
 
-        p.setBrandCategoryId(brandPojo.getId());
-        p.setMrp(form.getMrp());
-        p.setName(form.getName());
-        p.setBarcode(form.getBarcode());
+        pojo.setBrandCategoryId(brandPojo.getId());
+        pojo.setMrp(form.getMrp());
+        pojo.setName(form.getName());
+        pojo.setBarcode(form.getBarcode());
 
-        return p;
+        return pojo;
     }
 
-    private ProductData convert(ProductPojo p) throws ApiException
-    {
+    private ProductData convertProductPojoToProductData(ProductPojo pojo) throws ApiException {
         ProductData productData = new ProductData();
-        productData.setBrandCategory(p.getBrandCategoryId());
-        BrandPojo brandPojo = brandService.getByBrandId(p.getBrandCategoryId());
+        productData.setBrandCategory(pojo.getBrandCategoryId());
+        BrandPojo brandPojo = brandService.getByBrandId(pojo.getBrandCategoryId());
         productData.setBrand(brandPojo.getBrand());
         productData.setCategory(brandPojo.getCategory());
-        productData.setName(p.getName());
-        productData.setId(p.getId());
-        productData.setBarcode(p.getBarcode());
-        productData.setMrp(p.getMrp());
+        productData.setName(pojo.getName());
+        productData.setId(pojo.getId());
+        productData.setBarcode(pojo.getBarcode());
+        productData.setMrp(pojo.getMrp());
 
         return productData;
     }
-
 }

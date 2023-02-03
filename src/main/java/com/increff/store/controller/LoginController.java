@@ -34,21 +34,18 @@ public class LoginController {
     @Autowired
     private InfoData info;
 
-    @Value("#{'${supervisor.email}'.split(',')}")
-    private List<String> supervisorEmail;
-
     @ApiOperation(value = "Logs in a user")
     @RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
-        UserPojo p = service.getByEmail(f.getEmail());
-        boolean authenticated = (p != null && Objects.equals(p.getPassword(), f.getPassword()));
+        UserPojo pojo = service.getByEmail(f.getEmail());
+        boolean authenticated = (pojo != null && Objects.equals(pojo.getPassword(), f.getPassword()));
         if (!authenticated) {
             info.setMessage("Invalid username or password");
             return new ModelAndView("redirect:/site/login");
         }
 
         // Create authentication object
-        Authentication authentication = convert(p);
+        Authentication authentication = convert(pojo);
         // Create new session
         HttpSession session = req.getSession(true);
         // Attach Spring SecurityContext to this new session
@@ -66,24 +63,17 @@ public class LoginController {
         return new ModelAndView("redirect:/site/logout");
     }
 
-    private Authentication convert(UserPojo p) {
+    private Authentication convert(UserPojo pojo) {
         // Create principal
         UserPrincipal principal = new UserPrincipal();
-        principal.setEmail(p.getEmail());
-        principal.setId(p.getId());
+        principal.setEmail(pojo.getEmail());
+        principal.setId(pojo.getId());
+        principal.setRole(pojo.getRole());
 
         // Create Authorities
         ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-        String role = "operator";
-        for (String s : supervisorEmail) {
-            if (Objects.equals(s, p.getEmail())) {
-                role = "supervisor";
-                break;
-            }
-        }
-        principal.setRole(role);
 
-        authorities.add(new SimpleGrantedAuthority(role));
+        authorities.add(new SimpleGrantedAuthority(pojo.getRole()));
         // you can add more roles if required
 
         // Create Authentication
@@ -91,5 +81,4 @@ public class LoginController {
                 authorities);
         return token;
     }
-
 }

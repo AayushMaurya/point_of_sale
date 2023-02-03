@@ -24,14 +24,18 @@ public class InvoiceClient {
     private String fopUrl;
     private static String PDF_PATH = "./src/main/resources/pdf/";
 
-    public void downloadInvoice(Integer orderId) throws Exception {
+    public void downloadInvoice(Integer orderId) throws ApiException {
 
+        byte [] contents;
 //        generating invoice form
-        InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderId);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        byte[] contents = restTemplate.postForEntity(fopUrl, invoiceForm, byte[].class).getBody();
+        try {
+            InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderId);
+            RestTemplate restTemplate = new RestTemplate();
+            contents = restTemplate.postForEntity(fopUrl, invoiceForm, byte[].class).getBody();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new ApiException("No able to connect to fop");
+        }
 
         try {
 //        saving pdf;
