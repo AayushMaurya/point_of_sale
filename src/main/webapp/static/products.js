@@ -7,8 +7,7 @@ function getStoreUrl(){
  	return baseUrl + "/api/product";
  }
 
-function getBrandUrl()
-{
+function getBrandUrl(){
     var baseUrl = $("meta[name=baseUrl]").attr("content")
      	return baseUrl + "/api/brand";
 }
@@ -19,8 +18,7 @@ function getBrandOption() {
         return output;
 }
 
-function getProductList()
-{
+function getProductList(){
     var callParams = {};
     callParams.Type = "GET";
     callParams.Url = getStoreUrl();
@@ -57,8 +55,7 @@ function displayProductList(data){
 	pagination();
 }
 
-function addProduct(event)
-{
+function addProduct(event){
     var $form = $("#product-form");
     var dataParams = toJson($form);
     var callParams = {};
@@ -76,19 +73,15 @@ function addProduct(event)
     return false;
 }
 
-function getBrandsList()
-{
+function getBrandsList(){
     var callParams = {};
-    callParamsUrl = getBrandUrl();
-    callParamsType = "GET";
+    callParams.Url = getBrandUrl();
+    callParams.Type = "GET";
 
-    ajaxCall(callParams, null, callback);
-
+    ajaxCall(callParams, null, displayBrandsList);
 }
 
-
-function displayBrandsList(data)
-{
+function displayBrandsList(data){
     for(var i in data)
     {
         var a = data[i].brand;
@@ -97,8 +90,6 @@ function displayBrandsList(data)
             Object.assign(newBrands, {[a]:[]});
         newBrands[a].push(b);
     }
-
-    console.log(newBrands);
 
     var $elB = $("#inputBrandName");
 
@@ -112,8 +103,7 @@ function displayBrandsList(data)
     displayCategoryList();
 }
 
-function displayCategoryList()
-{
+function displayCategoryList(){
     var $elC = $("#inputBrandCategory");
 
     $elC.empty();
@@ -130,16 +120,13 @@ function displayCategoryList()
     }
 }
 
-function fillFields(index)
-{
+function fillFields(index){
     document.getElementById("inputUpdateName").value = productData[index].name;
     document.getElementById("inputUpdateMrp").value = productData[index].mrp;
     document.getElementById("inputUpdateId").value = productData[index].id;
-
 }
 
-function updateProduct()
-{
+function updateProduct(){
     var id = document.getElementById("inputUpdateId").value;
     var $form = $("#updateProductForm");
     var dataParams = toJson($form);

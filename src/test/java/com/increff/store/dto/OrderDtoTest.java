@@ -97,7 +97,7 @@ public class OrderDtoTest extends AbstractUnitTest {
         OrderItemForm orderItemForm = new OrderItemForm();
         orderItemForm.setOrderId(12);
         orderItemForm.setBarCode("qwertyuiop");
-        orderItemForm.setSellingPrice(10);
+        orderItemForm.setSellingPrice(10.22);
         orderItemForm.setQuantity(2);
         orderItemDto.addOrderItem(orderItemForm);
 

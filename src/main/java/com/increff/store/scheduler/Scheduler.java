@@ -24,8 +24,7 @@ public class Scheduler {
 
     @Async
     @Scheduled(cron = "${cron.expression}")
-    public void deleteUnplacedOrders() throws ApiException
-    {
+    public void deleteUnplacedOrders() throws ApiException {
         logger.info("Deleting all unplaced orders");
         orderDto.deleteUnplacedOrders();
     }

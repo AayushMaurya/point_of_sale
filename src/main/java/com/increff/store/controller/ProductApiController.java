@@ -5,7 +5,6 @@ import com.increff.store.model.data.ProductData;
 import com.increff.store.model.form.ProductForm;
 import com.increff.store.model.form.UpdateProductForm;
 import com.increff.store.api.ApiException;
-import com.increff.store.api.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +17,17 @@ import java.util.List;
 public class ProductApiController {
 
     @Autowired
-    private ProductService service;
-
-    @Autowired
     private ProductDto dto;
 
     @ApiOperation(value = "Get a product")
     @RequestMapping(path = "api/product/{id}", method = RequestMethod.GET)
-    public ProductData get_id(@PathVariable Integer id) throws ApiException {
+    public ProductData getProductById(@PathVariable Integer id) throws ApiException {
         return dto.getProductById(id);
     }
 
     @ApiOperation(value = "Select all products")
     @RequestMapping(path = "api/product", method = RequestMethod.GET)
-    public List<ProductData> get_all() throws ApiException {
+    public List<ProductData> getAllProducts() throws ApiException {
         return dto.getAllProducts();
     }
 

@@ -29,6 +29,7 @@ public class OrderDto {
 
     @Autowired
     private OrderService service;
+
     @Autowired
     InvoiceClient invoiceClient;
 
@@ -41,16 +42,9 @@ public class OrderDto {
     private static Logger logger = Logger.getLogger(ReportDto.class);
 
     public String createOrder() throws ApiException {
-        OrderPojo orderPojo = new OrderPojo();
-        orderPojo.setCustomerName("");
-        orderPojo.setStatus("pending");
-        orderPojo.setPlaceDateTime(null);
-//        creating random order code
-        String orderCode = UUID.randomUUID().toString();
-        orderPojo.setOrderCode(orderCode);
-
+        OrderPojo orderPojo = initializeOrderPojo();
         service.addOrder(orderPojo);
-        return orderCode;
+        return orderPojo.getOrderCode();
     }
 
     public List<OrderData> getAllOrders() throws ApiException {
@@ -63,17 +57,18 @@ public class OrderDto {
     }
 
     public List<OrderData> getOrderByDateFilter(DateFilterForm form) throws ApiException {
-        List<OrderData> list1 = new ArrayList<OrderData>();
 
         LocalDateTime startDate = stringDateToLocalDate(form.getStart()).atStartOfDay();
         LocalDateTime endDate = stringDateToLocalDate(form.getEnd()).atTime(23, 59, 59);
 
-        List<OrderPojo> list2 = service.selectOrderByDateFilter(startDate, endDate);
+        List<OrderPojo> orderPojoList = service.selectOrderByDateFilter(startDate, endDate);
 
-        for (OrderPojo p : list2)
-            list1.add(convertOrderPojoToOrderData(p));
+        List<OrderData> orderDataList = new ArrayList<OrderData>();
 
-        return list1;
+        for (OrderPojo p : orderPojoList)
+            orderDataList.add(convertOrderPojoToOrderData(p));
+
+        return orderDataList;
     }
 
     public OrderData getOrderById(Integer orderId) throws ApiException {
@@ -89,12 +84,15 @@ public class OrderDto {
     @Transactional(rollbackOn = ApiException.class)
     public void placeOrder(Integer orderId, OrderForm form) throws ApiException {
         checkOrderForm(form);
+
         OrderPojo orderPojo = service.getOrderById(orderId);
         checkOrderPlaceable(orderId, orderPojo.getStatus());
+
         orderPojo.setStatus("Placed");
         orderPojo.setCustomerName(form.getCustomerName());
         orderPojo.setPlaceDateTime(getCurrentDateTime());
         normalizeOrderPojo(orderPojo);
+
         service.updateOrder(orderId, orderPojo);
         invoiceClient.downloadInvoice(orderId);
     }
@@ -117,8 +115,7 @@ public class OrderDto {
         service.deleteOrder(id);
     }
 
-    private void checkOrderPlaceable(Integer orderId, String status) throws ApiException
-    {
+    private void checkOrderPlaceable(Integer orderId, String status) throws ApiException {
         List<OrderItemPojo> list = orderItemService.getOrder(orderId);
         if (list.size() == 0)
             throw new ApiException("Add at least one item");

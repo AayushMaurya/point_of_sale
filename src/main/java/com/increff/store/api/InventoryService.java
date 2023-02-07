@@ -17,11 +17,10 @@ public class InventoryService {
 
     public void addInventory(InventoryPojo newPojo) throws ApiException {
         InventoryPojo pojo = dao.selectById(newPojo.getId());
-        if (pojo == null) {
+        if (pojo == null)
             dao.insert(newPojo);
-        } else {
+        else
             updateInventory(newPojo);
-        }
     }
 
     public void reduceInventory(InventoryPojo newPojo) throws ApiException {
@@ -41,17 +40,16 @@ public class InventoryService {
         return dao.selectAll();
     }
 
-    public InventoryPojo getInventoryById(Integer id) throws ApiException
-    {
+    public InventoryPojo getInventoryById(Integer id) throws ApiException {
         InventoryPojo pojo = dao.selectById(id);
-        if(pojo == null)
+        if (pojo == null)
             throw new ApiException("Inventory with given id does not exist ");
         return pojo;
     }
 
     private void updateInventory(InventoryPojo newPojo) throws ApiException {
         InventoryPojo pojo = dao.selectById(newPojo.getId());
-        if(pojo == null)
+        if (pojo == null)
             throw new ApiException("Cannot update inventory");
         pojo.setQuantity(pojo.getQuantity() + newPojo.getQuantity());
     }

@@ -42,5 +42,4 @@ public class BrandDto {
         normalizeBrandPojo(p);
         service.updateBrand(id, p);
     }
-
 }

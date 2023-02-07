@@ -37,25 +37,13 @@ public class ReportDto {
     private static Logger logger = Logger.getLogger(ReportDto.class);
 
     public void createDailyReport() throws ApiException {
-        DailyReportPojo reportPojo = new DailyReportPojo();
 
         LocalDate date = getLocalDate();
 
         Integer totalItems = 0;
         Double totalRevenue = 0.0;
 
-        LocalDateTime startDate = null;
-        LocalDateTime endDate = null;
-
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-            startDate = LocalDate.parse(date.toString(), formatter).atStartOfDay();
-            endDate = LocalDate.parse(date.toString(), formatter).atTime(23, 59, 59);
-        } catch (Exception e) {
-            logger.error(e);
-        }
-        List<OrderPojo> orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);
+        List<OrderPojo> orderPojoList = getAllPresentDayOrders();
 
         Integer totalOrders = orderPojoList.size();
 
@@ -68,6 +56,7 @@ public class ReportDto {
             }
         }
 
+        DailyReportPojo reportPojo = new DailyReportPojo();
         reportPojo.setDate(date);
         reportPojo.setTotalRevenue(totalRevenue);
         reportPojo.setInvoicedItemsCount(totalItems);
@@ -104,8 +93,13 @@ public class ReportDto {
         for (DailyReportPojo p : dailyReportPojoList) {
             dailyReportData.add(convertReportPojoToReportData(p));
         }
-
         return dailyReportData;
     }
 
+    private List<OrderPojo> getAllPresentDayOrders() throws ApiException {
+        String date = getLocalDate().toString();
+        LocalDateTime startDate = stringDateToLocalDate(date).atStartOfDay();
+        LocalDateTime endDate = stringDateToLocalDate(date).atTime(23, 59, 59);
+        return orderService.selectOrderByDateFilter(startDate, endDate);
+    }
 }

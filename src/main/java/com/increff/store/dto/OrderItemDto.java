@@ -37,12 +37,12 @@ public class OrderItemDto {
     public Integer addOrderItem(OrderItemForm form) throws ApiException {
         checkOrderItemForm(form);
 
-        OrderItemPojo pojo = convert(form);
+        OrderItemPojo pojo = convertOrderItemFormToOrderItemPojo(form);
 
         OrderItemPojo oldPojo = service.getProductIdOrderId(pojo.getProductId(), pojo.getOrderId());
         if (oldPojo != null) {
-            Integer q = pojo.getQuantity();
-            pojo.setQuantity(oldPojo.getQuantity() + q);
+            Integer oldQuantity = pojo.getQuantity();
+            pojo.setQuantity(oldPojo.getQuantity() + oldQuantity);
             orderItemFlow.updateOrderItem(oldPojo.getId(), pojo);
             return oldPojo.getId();
         } else {
@@ -80,15 +80,17 @@ public class OrderItemDto {
         return list2;
     }
 
-    private OrderItemPojo convert(OrderItemForm form) throws ApiException {
+    private OrderItemPojo convertOrderItemFormToOrderItemPojo(OrderItemForm form) throws ApiException {
         OrderItemPojo pojo = new OrderItemPojo();
         pojo.setOrderId(form.getOrderId());
         pojo.setQuantity(form.getQuantity());
         pojo.setSellingPrice(form.getSellingPrice());
         String code = form.getBarCode();
+
         ProductPojo productPojo = productService.getProductByBarcode(code);
         if (form.getSellingPrice() > productPojo.getMrp())
             throw new ApiException("Selling price cannot be greater than mrp");
+
         pojo.setProductId(productPojo.getId());
         pojo.setBrandCategory(productPojo.getBrandCategoryId());
         return pojo;
@@ -113,10 +115,9 @@ public class OrderItemDto {
         return false;
     }
 
-    private void checkOrderItemForm(OrderItemForm form) throws ApiException
-    {
+    private void checkOrderItemForm(OrderItemForm form) throws ApiException {
         OrderPojo orderPojo = orderService.getOrderById(form.getOrderId());
-        if(checkIfOrderPlaced(orderPojo.getId()))
+        if (checkIfOrderPlaced(orderPojo.getId()))
             throw new ApiException("Cannot add item in placed order");
 
         if (!StringUtil.isPositive(form.getSellingPrice()))

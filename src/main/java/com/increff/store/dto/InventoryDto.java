@@ -26,49 +26,34 @@ public class InventoryDto {
     @Autowired
     ProductService productService;
 
-    public List<InventoryData> getAllInventory()
-    {
+    public List<InventoryData> getAllInventory() {
         List<InventoryPojo> list1 = service.getAllInventory();
         List<InventoryData> list2 = new ArrayList<InventoryData>();
-        for(InventoryPojo p: list1)
+        for (InventoryPojo p : list1)
             list2.add(convertInventoryPojoToInventoryData(p));
 
-//        setting the barcode;
-        List<ProductPojo> productPojoList = productService.getAllProducts();
-
-        HashMap<Integer, String> map = new HashMap<>();
-        for(ProductPojo p: productPojoList)
-            map.put(p.getId(), p.getBarcode());
-
-        for(InventoryData d: list2)
-            d.setBarcode(map.get(d.getId()));
-
-        return list2;
+        return setBarcode(list2);
     }
 
-    public void reduceInventory(InventoryForm form) throws ApiException
-    {
+    public void reduceInventory(InventoryForm form) throws ApiException {
         checkInventoryForm(form);
         InventoryPojo p = convertInventoryFormToInventoryPojo(form);
         service.reduceInventory(p);
     }
 
-    public void addInventory(InventoryForm form) throws ApiException
-    {
+    public void addInventory(InventoryForm form) throws ApiException {
         checkInventoryForm(form);
         InventoryPojo pojo = convertInventoryFormToInventoryPojo(form);
         service.addInventory(pojo);
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void updateInventory(InventoryForm form) throws ApiException
-    {
+    public void updateInventory(InventoryForm form) throws ApiException {
         checkInventoryForm(form);
         InventoryPojo pojo = convertInventoryFormToInventoryPojo(form);
         Integer id = pojo.getId();
 
         InventoryPojo oldPojo = service.getInventoryById(id);
-
         Integer oldQuantity = oldPojo.getQuantity();
 
         service.addInventory(pojo);
@@ -76,20 +61,27 @@ public class InventoryDto {
         service.reduceInventory(pojo);
     }
 
-    public InventoryPojo convertInventoryFormToInventoryPojo(InventoryForm form) throws ApiException
-    {
-        InventoryPojo pojo = new InventoryPojo();
-//        converting the barcode into product id
+    public InventoryPojo convertInventoryFormToInventoryPojo(InventoryForm form) throws ApiException {
         String barcode = form.getBarcode();
         ProductPojo productPojo = productService.getProductByBarcode(barcode);
+
+        InventoryPojo pojo = new InventoryPojo();
         pojo.setQuantity(form.getQuantity());
         pojo.setId(productPojo.getId());
         return pojo;
     }
 
-    public static void checkInventoryForm(InventoryForm form) throws ApiException
-    {
-        if(form.getQuantity() <= 0)
-            throw new ApiException("Please input a valid positive quantity");
+    //    setting barcode
+    private List<InventoryData> setBarcode(List<InventoryData> inventoryDataList) {
+        List<ProductPojo> productPojoList = productService.getAllProducts();
+
+        HashMap<Integer, String> map = new HashMap<>();
+        for (ProductPojo p : productPojoList)
+            map.put(p.getId(), p.getBarcode());
+
+        for (InventoryData d : inventoryDataList)
+            d.setBarcode(map.get(d.getId()));
+
+        return inventoryDataList;
     }
 }

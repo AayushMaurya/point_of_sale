@@ -24,8 +24,7 @@ public class OrderItemFlow {
     @Autowired
     private OrderItemService orderItemService;
 
-    public Integer addOrderItem(OrderItemPojo pojo) throws ApiException
-    {
+    public Integer addOrderItem(OrderItemPojo pojo) throws ApiException {
         OrderPojo orderPojo = orderService.getOrderById(pojo.getOrderId());
 
         Integer id = orderItemService.addOrderItem(pojo);
@@ -39,8 +38,7 @@ public class OrderItemFlow {
         return id;
     }
 
-    public void updateOrderItem(Integer id, OrderItemPojo pojo) throws ApiException
-    {
+    public void updateOrderItem(Integer id, OrderItemPojo pojo) throws ApiException {
         OrderItemPojo oldPojo = orderItemService.getOrderItemById(id);
         Integer oldQuantity = oldPojo.getQuantity();
         Integer newQuantity = pojo.getQuantity();
@@ -58,8 +56,7 @@ public class OrderItemFlow {
         orderItemService.updateOrderItem(id, pojo);
     }
 
-    public void deleteOrderItemById(Integer id) throws ApiException
-    {
+    public void deleteOrderItemById(Integer id) throws ApiException {
         OrderItemPojo orderItemPojo = orderItemService.getOrderItemById(id);
 
 //        updating the inventory

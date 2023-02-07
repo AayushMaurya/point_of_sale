@@ -46,8 +46,8 @@
                 <div class="form-group">
                     <label for="inputMrp">MRP</label>
                     <div>
-                        <input type="text" class="form-control" name="mrp" id="inputMrp"
-                               placeholder="MRP">
+                        <input type="number" step="0.01" class="form-control" name="mrp" id="inputMrp"
+                               placeholder="MRP" onkeypress="return isDecimalKey(event)">
                     </div>
                 </div>
                 <div class="half-space">
@@ -114,7 +114,7 @@
                             <label for="inputUpdateMrp" class="col-sm-2 col-form-label">Mrp</label>
                             <div class="col-sm-10">
                                 <input type="number" min="0" step="0.01" class="form-control" name="mrp"
-                                       id="inputUpdateMrp">
+                                       id="inputUpdateMrp" onkeypress="return isDecimalKey(event)">
                             </div>
                         </div>
                     </form>

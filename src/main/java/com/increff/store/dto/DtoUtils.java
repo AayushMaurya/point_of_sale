@@ -10,6 +10,7 @@ import com.increff.store.util.StringUtil;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.UUID;
 
 public class DtoUtils {
 
@@ -149,6 +150,7 @@ public class DtoUtils {
         form.setName(StringUtil.toLowerCase(form.getName()));
         form.setBrandName(StringUtil.toLowerCase(form.getBrandName()));
         form.setCategoryName(StringUtil.toLowerCase(form.getCategoryName()));
+        form.setMrp(StringUtil.normalizeDouble(form.getMrp()));
     }
 
     protected static void normalize(UpdateProductForm form) {
@@ -170,5 +172,22 @@ public class DtoUtils {
         } catch (Exception e) {
             throw new ApiException("Please ender date in proper format: yyyy-MM-dd");
         }
+    }
+
+    protected static void checkInventoryForm(InventoryForm form) throws ApiException {
+        if (form.getQuantity() <= 0)
+            throw new ApiException("Please input a valid positive quantity");
+    }
+
+    protected static OrderPojo initializeOrderPojo() {
+        OrderPojo orderPojo = new OrderPojo();
+        orderPojo.setCustomerName("");
+        orderPojo.setStatus("pending");
+        orderPojo.setPlaceDateTime(null);
+
+//        creating random order code
+        orderPojo.setOrderCode(UUID.randomUUID().toString());
+
+        return orderPojo;
     }
 }

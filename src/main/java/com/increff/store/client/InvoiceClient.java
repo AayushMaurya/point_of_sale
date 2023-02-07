@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 
 import com.increff.store.flow.InvoiceGenerator;
 
@@ -32,9 +33,10 @@ public class InvoiceClient {
             InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderId);
             RestTemplate restTemplate = new RestTemplate();
             contents = restTemplate.postForEntity(fopUrl, invoiceForm, byte[].class).getBody();
+            contents = Base64.getDecoder().decode(contents);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            throw new ApiException("No able to connect to fop");
+            throw new ApiException("Not able to connect to fop");
         }
 
         try {

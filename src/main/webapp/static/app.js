@@ -82,6 +82,20 @@ function ajaxCall(callParams, dataParams, callback) {
     });
 }
 
+function isNumberKey(evt){
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+}
+
+function isDecimalKey(evt){
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if (charCode > 31 && (charCode != 46 &&(charCode < 48 || charCode > 57)))
+        return false;
+    return true;
+}
+
 function init(){
     if($("meta[name=role]").attr("content") == "operator")
         hideSupervisorView();

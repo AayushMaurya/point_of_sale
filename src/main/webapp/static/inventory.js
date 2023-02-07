@@ -13,16 +13,12 @@ function getProductUrl(){
  	return baseUrl + "/api/product";
  }
 
-function getInventoryList()
-{
+function getInventoryList(){
     var callParams = {};
     callParams.Type = "GET";
     callParams.Url = getStoreUrl();
-    function callback(data)
-    {
-        displayInventoryList(data);
-    }
-    ajaxCall(callParams, null, callback);
+
+    ajaxCall(callParams, null, displayInventoryList);
 }
 
 function displayInventoryList(data){
@@ -50,71 +46,56 @@ function displayInventoryList(data){
 	pagination();
 }
 
-function fillFields(id)
-{
-    var url = getProductUrl() + "/" + id;
-    $.ajax({
-    	   url: url,
-    	   type: 'GET',
-    	   success: function(data) {
-    	   document.getElementById("inputUpdateBarcode").value = data.barcode;
-    	   },
-    	   error: handleAjaxError
-    	});
+function fillFields(id){
+    var callParams = {};
+    callParams.Url = getProductUrl() + "/" + id;
+    callParams.Type = "GET";
 
+    function callback(data){
+        document.getElementById("inputUpdateBarcode").value = data.barcode;
+    }
+
+    ajaxCall(callParams, null, callback);
 }
 
-function addInventory(event)
-{
+function addInventory(event){
+
+    var callParams = {};
     var $form = $("#inventory-form");
-    var json = toJson($form);
-    console.log(json);
-    var url = getStoreUrl();
+    var dataParams = toJson($form);
+    callParams.Url = getStoreUrl();
+    callParams.Type = "POST";
 
-    $.ajax({
-    	   url: url,
-    	   type: 'POST',
-    	   data: json,
-    	   headers: {
-           	'Content-Type': 'application/json'
-           },
-    	   success: function(response) {
-    	   		getInventoryList();
-    	   		handleSuccess("Inventory Added");
-    	   		document.getElementById("inventory-form").reset();
-    	   },
-    	   error: handleAjaxError
+    function callback(data){
+        getInventoryList();
+        handleSuccess("Inventory Added");
+        document.getElementById("inventory-form").reset();
+    }
 
-    	});
-    	return false;
+    ajaxCall(callParams, dataParams, callback);
+    return false;
 }
 
-function updateInventoryAdd()
-{
-    console.log("this will update inventory Add");
-    var $form = $("#updateInventoryForm");
-    var json = toJson($form);
-    var url = getStoreUrl();
+function updateInventoryAdd(){
 
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: json,
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        success: function(response) {
+    var callParams = {};
+    var $form = $("#updateInventoryForm");
+    var dataParams = toJson($form);
+    callParams.Url = getStoreUrl();
+    callParams.Type = "POST";
+
+    function callback(data){
         getInventoryList()
         handleSuccess("Inventory Added");
         $('#exampleModalCenter').modal('hide');
         document.getElementById('updateInventoryForm').reset();
-        },
-           error: handleAjaxError
-        });
+    }
+
+    ajaxCall(callParams, dataParams, callback);
+    return false;
 }
 
-function updateInventoryRemove()
-{
+function updateInventoryRemove(){
     var $form = $("#updateInventoryForm");
     var json = toJson($form);
     var url = getAdminInventoryUrl();
@@ -238,8 +219,7 @@ function displayUploadData(){
 	$('#upload-inventory-modal').modal('toggle');
 }
 
-function updateInventoryEdit()
-{
+function updateInventoryEdit(){
         var $form = $("#updateInventoryForm");
         var json = toJson($form);
         var url = getUpdateInventoryUrl();

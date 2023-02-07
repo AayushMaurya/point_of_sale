@@ -22,7 +22,7 @@
                     <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
                     <div class="col-sm-10">
                         <input type="number" min="0" class="form-control" name="quantity" id="inputQuantity"
-                               placeholder="Quantity" required>
+                               placeholder="Quantity" onkeypress="return isNumberKey(event)">
                     </div>
                 </div>
                 <button type="button" class="btn btn-primary" id="add-inventory">Update</button>
@@ -82,7 +82,7 @@
                             <label for="inputUpdateQuantity" class="col-sm-2 col-form-label">Quantity</label>
                             <div class="col-sm-10">
                                 <input type="number" min="0" class="form-control" name="quantity"
-                                       id="inputUpdateQuantity">
+                                       id="inputUpdateQuantity" onkeypress="return isNumberKey(event)">
                             </div>
                         </div>
                     </form>
